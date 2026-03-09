@@ -12,14 +12,16 @@ Plugin Claude Code pour générer des posts viraux adaptés à chaque réseau so
 
 ## Installation
 
+Ajouter la marketplace :
+
 ```bash
-claude plugin add /chemin/vers/claude-viral-post
+claude plugin marketplace add jh3ady/claude-plugins
 ```
 
-Ou depuis GitHub :
+Puis installer le plugin :
 
 ```bash
-claude plugin add <url-du-repo>
+claude plugin install claude-viral-post@jh3ady-plugins
 ```
 
 ## Utilisation
