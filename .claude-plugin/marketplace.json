@@ -1,0 +1,17 @@
+{
+  "name": "jh3ady-plugins",
+  "owner": {
+    "name": "Jean-Denis VIDOT"
+  },
+  "plugins": [
+    {
+      "name": "claude-viral-post",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/jh3ady/claude-plugins.git",
+        "path": "viral-post"
+      },
+      "description": "Générateur de posts viraux pour les réseaux sociaux avec mémoire persistante et recherche web"
+    }
+  ]
+}
