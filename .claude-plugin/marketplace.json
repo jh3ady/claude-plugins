@@ -5,5 +5,18 @@
     "email": "5817251+jh3ady@users.noreply.github.com",
     "url": "https://github.com/jh3ady"
   },
-  "plugins": []
+  "plugins": [
+    {
+      "name": "commit-conventions",
+      "source": "./plugins/commit-conventions",
+      "description": "The gitmoji + Conventional Commits standard for commit messages: subject-based scopes, the 50/72 rule, and lower-case-verb casing. Composable with your own conventions.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "review-conventions",
+      "source": "./plugins/review-conventions",
+      "description": "The Conventional Comments standard for pull and merge request reviews: labelled, decorated, actionable comments. Composable with your own conventions.",
+      "version": "0.1.0"
+    }
+  ]
 }

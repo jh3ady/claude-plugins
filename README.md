@@ -30,7 +30,8 @@ You can also declare the marketplace in your `settings.json`:
 
 | Plugin | Description |
 | ------ | ----------- |
-| _No plugins published yet._ | |
+| [`commit-conventions`](plugins/commit-conventions) | gitmoji + Conventional Commits for commit messages: subject-based scopes, the 50/72 rule, lower-case-verb casing. |
+| [`review-conventions`](plugins/review-conventions) | Conventional Comments for pull and merge request reviews: labelled, decorated, actionable comments. |
 
 ## Contributing
 

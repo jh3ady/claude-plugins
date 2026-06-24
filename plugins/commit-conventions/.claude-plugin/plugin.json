@@ -1,0 +1,17 @@
+{
+  "name": "commit-conventions",
+  "version": "0.1.0",
+  "description": "The gitmoji + Conventional Commits standard for commit messages: subject-based scopes, the 50/72 rule, and lower-case-verb casing. Composable with your own conventions.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/commit-conventions",
+  "keywords": [
+    "git",
+    "commit",
+    "gitmoji",
+    "conventional-commits"
+  ]
+}
