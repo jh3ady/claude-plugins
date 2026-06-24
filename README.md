@@ -1,0 +1,43 @@
+# claude-plugins
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+A curated marketplace of open-source [Claude Code](https://www.anthropic.com/claude-code)
+plugins, maintained by [Jean-Denis VIDOT](https://github.com/jh3ady).
+
+## Installation
+
+Add the marketplace, then install a plugin:
+
+```bash
+/plugin marketplace add jh3ady/claude-plugins
+/plugin install <plugin>@jh3ady-claude-plugins
+```
+
+You can also declare the marketplace in your `settings.json`:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "jh3ady-claude-plugins": {
+      "source": { "source": "github", "repo": "jh3ady/claude-plugins" }
+    }
+  }
+}
+```
+
+## Plugins
+
+| Plugin | Description |
+| ------ | ----------- |
+| _No plugins published yet._ | |
+
+## Contributing
+
+Issues and suggestions are welcome. Open an issue to report a problem or
+propose a plugin.
+
+## License
+
+Released under the [MIT License](LICENSE). Individual plugins may carry
+their own license; see each plugin's directory.
