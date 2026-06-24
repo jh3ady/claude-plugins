@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 A curated marketplace of open-source [Claude Code](https://www.anthropic.com/claude-code)
-plugins, maintained by [Jean-Denis VIDOT](https://github.com/jh3ady).
+plugins.
 
 ## Installation
 
