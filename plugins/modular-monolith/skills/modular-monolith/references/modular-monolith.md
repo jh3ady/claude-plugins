@@ -146,8 +146,10 @@ a hard boundary. Costs include bundler slowdown, broken tree-shaking via
   the library `index.ts` is a valid entry point. Circular dependencies are
   flagged. ([Nx docs](https://nx.dev/docs/features/enforce-module-boundaries))
 - `dependency-cruiser` (framework-agnostic, no monorepo required) expresses
-  forbidden rules with from/to path regexes. The canonical rule uses a capture
-  group to ban any module from importing the internals of a sibling module.
+  forbidden rules with from/to path regexes. A capture group in `from.path`
+  is referenced as `$1` inside `to.pathNot`, so a single rule can allow
+  intra-module imports while forbidding any cross-module import that does not
+  go through the target module's public `index.ts`.
   ([dependency-cruiser rules reference](https://github.com/sverweij/dependency-cruiser/blob/main/doc/rules-reference.md))
 
 **3. Separate pnpm workspace packages with `workspace:*` (strongest).** pnpm's
@@ -167,33 +169,29 @@ are configured. Do not rely on project references to enforce module boundaries.
 ### TypeScript example: dependency-cruiser forbidden rule and Nx constraint
 
 ```javascript
-// .dependency-cruiser.cjs - forbid deep imports across modules
+// .dependency-cruiser.cjs - forbid reaching past another module's public index
 module.exports = {
   forbidden: [
     {
       name: "no-cross-module-internals",
       severity: "error",
-      from: { path: "^src/modules/([^/]+)" },
+      comment: "A module may import another module only through its index.ts barrel.",
+      from: { path: "^src/modules/([^/]+)/" },
       to: {
-        // Bans imports into the internals of a different module
-        path: "^src/modules/([^/]+)",
-        pathNot: "^src/modules/$1/index\\.ts$",
+        path: "^src/modules/([^/]+)/",
+        // $1 is from's capture: allow all intra-module imports,
+        // and allow any module's public index.ts entry point.
+        pathNot: ["^src/modules/$1/", "^src/modules/[^/]+/index\\.ts$"],
       },
     },
   ],
 };
 ```
 
-```json
-// project.json (Nx) - tag-based dependency constraint
-{
-  "tags": ["scope:payments"],
-  "implicitDependencies": []
-}
-```
-
-```javascript
-// .eslintrc.json - Nx enforce-module-boundaries constraint
+```jsonc
+// .eslintrc.json - Nx enforce-module-boundaries constraint.
+// Tag each library in its project.json (e.g. "tags": ["scope:payments"]),
+// then express the allowed dependency directions here:
 {
   "rules": {
     "@nx/enforce-module-boundaries": [
@@ -344,7 +342,7 @@ export class OrdersService {
     private readonly customersApi: CustomersApi,
   ) {}
 
-  async getOrderSummary(orderId: string): Promise<OrderSummary> {
+  async getOrderSummary(orderId: string): Promise<OrderSummary | null> {
     const order = await this.ordersRepo.findById(orderId);
     if (!order) return null;
 
@@ -578,6 +576,17 @@ internal.
 // src/modules/orders/order-repo.ts     - internal
 // src/modules/orders/order.entity.ts   - internal
 ```
+
+### When not to apply
+
+These are smells, not absolute prohibitions. Not every `common/` or `shared/`
+directory is a dumping ground: pure value types, stateless utilities, and
+framework adapters with no business rules legitimately live there. Likewise, a
+deliberate, documented shared read model (a reporting projection that several
+modules feed, owned by one module) is not the "shared tables" anti-pattern; the
+anti-pattern is two modules silently writing the same operational table. Judge
+each case by ownership and the presence of business rules, not by the directory
+name alone.
 
 ---
 
