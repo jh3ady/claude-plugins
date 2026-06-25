@@ -17,6 +17,24 @@
       "source": "./plugins/review-conventions",
       "description": "The Conventional Comments standard for pull and merge request reviews: labelled, decorated, actionable comments. Composable with your own conventions.",
       "version": "0.1.0"
+    },
+    {
+      "name": "solid-principles",
+      "source": "./plugins/solid-principles",
+      "description": "The five SOLID principles applied pragmatically: recognizable smells, focused refactorings, and guardrails against speculative abstraction. Composable with your own conventions.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "simplicity-principles",
+      "source": "./plugins/simplicity-principles",
+      "description": "The simplicity cluster KISS, DRY, and YAGNI applied pragmatically: do-less heuristics, the rule of three, and the trade-offs such as duplication versus the wrong abstraction. Composable with your own conventions.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "clean-code",
+      "source": "./plugins/clean-code",
+      "description": "Clean code craftsmanship applied pragmatically: naming, small focused functions, intent-revealing comments, and disciplined error handling. Composable with your own conventions.",
+      "version": "0.1.0"
     }
   ]
 }

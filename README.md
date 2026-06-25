@@ -32,6 +32,9 @@ You can also declare the marketplace in your `settings.json`:
 | ------ | ----------- |
 | [`commit-conventions`](plugins/commit-conventions) | gitmoji + Conventional Commits for commit messages: subject-based scopes, the 50/72 rule, lower-case-verb casing. |
 | [`review-conventions`](plugins/review-conventions) | Conventional Comments for pull and merge request reviews: labelled, decorated, actionable comments. |
+| [`solid-principles`](plugins/solid-principles) | The five SOLID principles applied pragmatically: recognizable smells, focused refactorings, guardrails against over-engineering. |
+| [`simplicity-principles`](plugins/simplicity-principles) | KISS, DRY, and YAGNI applied pragmatically: do-less heuristics, the rule of three, duplication versus the wrong abstraction. |
+| [`clean-code`](plugins/clean-code) | Clean code craftsmanship applied pragmatically: naming, small focused functions, intent-revealing comments, error handling. |
 
 ## Contributing
 
