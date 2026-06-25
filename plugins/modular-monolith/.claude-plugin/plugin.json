@@ -1,0 +1,20 @@
+{
+  "name": "modular-monolith",
+  "version": "0.1.0",
+  "description": "The modular monolith applied pragmatically: one deployable unit, strictly bounded modules with public APIs, isolated data, and TypeScript-ecosystem boundary enforcement. Composable with your own conventions.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/modular-monolith",
+  "keywords": [
+    "modular-monolith",
+    "software-architecture",
+    "module-boundaries",
+    "monolith",
+    "microservices",
+    "bounded-context",
+    "ddd"
+  ]
+}
