@@ -57,6 +57,27 @@ theater: expanding `i` to `loopIterationIndex`, or renaming a standard `e` excep
 `caughtExceptionDuringProcessing`. Names should be as long as necessary to convey intent,
 and no longer.
 
+### Verbs signal outcome and cost
+
+Beyond its subject, a method name should reveal two things:
+
+- Outcome: whether the result may be absent. `find_*` may return nothing, so model absence
+  as a value (an `Optional`, an empty collection, a Null Object, or a domain `Result`).
+  `get_*` and `require_*` promise a value or raise. Choose the prefix that matches the real
+  contract, so callers know whether they must handle absence.
+- Cost: whether the call is a cheap in-memory access or reaches for an external resource.
+  `get_*` reads as a cheap accessor with no surprising effects. `load_*`, `read_*`, and
+  `fetch_*` announce that the call touches disk, network, or another external source, so it
+  may be slow and may fail.
+
+The two axes compose, and which one a name should foreground depends on the layer. Behind a
+repository port the input/output is abstracted away, so the outcome axis leads: `find_user`
+may be absent and `get_user` guarantees a user, even though both query a database. At an
+infrastructure boundary that visibly performs input/output, the cost axis leads: a method
+that reads a file now is `load_config` or `read_config`, not `get_config`. Naming such a
+method `get_*` hides the cost the caller most needs to see, the same failure as a name whose
+comment is load-bearing.
+
 ---
 
 ## Functions
@@ -217,6 +238,21 @@ or the Null Object pattern), so no caller has to guard against raw null. Whether
 value is an error is a decision for the boundary that owns the use case, not for the lookup
 itself: it raises only when absence breaks an invariant for that flow. A repository method
 that throws on every miss turns an expected outcome into exception-driven control flow.
+
+The decision is symmetric. An expected or foreseeable absence is a value: return an
+`Optional`, an empty collection, a Null Object, or a domain `Result`. A broken invariant or
+a failed technical operation is an exception: raise it, because returning null or an error
+sentinel there lets a corrupted state spread silently and unchecked.
+
+```python
+# load_*, not get_*: this reaches for an external resource (see the Naming section).
+# A missing required key is a fatal setup error, not a normal outcome, so it raises.
+def load_config(path: str) -> Config:
+    raw = read_file(path)                 # raises if the file is unreadable
+    if "database_url" not in raw:
+        raise ConfigError(f"missing required key 'database_url' in {path}")
+    return Config(raw)
+```
 
 ### Over-application caution
 

@@ -11,7 +11,7 @@ its keep against the actual complexity of the code at hand.
 ## Heuristics
 
 - **Naming**: names use cryptic abbreviations or placeholders (`tmp`, `flg`, `d`)
-  -> use intent-revealing names that encode purpose, unit, and role
+  -> use intent-revealing names that encode purpose, unit, and role; for methods, let the verb reveal outcome and cost (`find`/`get`, `load`/`read`/`fetch`)
 - **Functions**: a function mixes concerns or takes flag arguments that split its behavior
   -> extract responsibilities so each function does one thing at one abstraction level
 - **Comments**: comments restate what the code already says, or dead code accumulates
