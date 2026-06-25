@@ -41,6 +41,12 @@
       "source": "./plugins/modular-monolith",
       "description": "The modular monolith applied pragmatically: one deployable unit, strictly bounded modules with public APIs, isolated data, and TypeScript-ecosystem boundary enforcement. Composable with your own conventions.",
       "version": "0.1.0"
+    },
+    {
+      "name": "dependency-injection",
+      "source": "./plugins/dependency-injection",
+      "description": "Dependency injection applied pragmatically: Pure DI (manual constructor injection) first, the composition root, object lifetimes, and the anti-pattern catalogue, with DI containers referenced as a justified option. Composable with your own conventions.",
+      "version": "0.1.0"
     }
   ]
 }
