@@ -18,9 +18,11 @@ Apply it as a pragmatic default, not a dogma.
 - **Communication**: call another module's public API directly by default.
   Reach for an in-process event only when you deliberately want decoupling or
   eventual consistency. Never reach into another module's internals.
-- **Data**: a schema per module. No shared tables, no cross-module foreign
-  keys or joins, no transaction spanning two modules. Cross-module data is
-  obtained through the other module's API.
+- **Data**: each module owns its data; no other module reads or writes it
+  except through that module's public API. No cross-module foreign keys,
+  joins, or transactions. Schema-per-module is the canonical enforcement (a
+  separate database is stronger; table ownership by convention is the legacy
+  fallback). The invariant is logical ownership, not the storage mechanism.
 
 ## Enforcement (TypeScript/Node)
 
@@ -59,8 +61,10 @@ content, referenced here, not imposed:
 ## Adapt to your context
 
 This skill stays generic on purpose. Layer your own conventions on top:
-define your module catalog, naming, and allowed dependencies in your own
-`CLAUDE.md` or a higher-priority skill. This skill does not impose them.
+define your module catalog, naming, allowed dependencies, and data-ownership
+model (a multi-tenant tenancy axis or a legacy storage scheme, for example) in
+your own `CLAUDE.md` or a higher-priority skill, which overrides this baseline.
+This skill does not impose them.
 
 ## Reference
 

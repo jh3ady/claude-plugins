@@ -305,26 +305,44 @@ without a saga or an outbox pattern, which adds substantial complexity.
 
 ## 5. Data isolation
 
-Each module owns its data. Schema-per-module is the canonical enforcement
-mechanism. Grzybek is explicit: "Each Module has its own data in a separate
-schema, shared data is not allowed"; "it is not possible nor desirable to
-create a transaction which spans more than one module."
+The invariant is logical data ownership, not any single storage mechanism.
+Each module owns its data: no other module reads or writes it except through
+the owning module's public API. Grzybek states the target form: "Each Module
+has its own data in a separate schema, shared data is not allowed"; "it is not
+possible nor desirable to create a transaction which spans more than one
+module."
 ([kgrzybek/modular-monolith-with-ddd](https://github.com/kgrzybek/modular-monolith-with-ddd))
 
-The rules follow from this:
+The rules that follow hold regardless of the storage mechanism:
+- One module owns each table; no other module reads or writes it directly.
 - No cross-module foreign keys.
-- No SQL joins across schema boundaries.
-- No distributed transactions spanning two modules.
+- No SQL joins across module boundaries.
+- No transaction spanning two modules.
 - Cross-module data is obtained by calling the other module's public API,
   then reading the returned data in-process.
 
-**Contested axis.** Grzybek uses one physical database with a schema per module,
-which preserves operational simplicity and allows eventual migration to
-separate databases. Newman recommends considering multiple databases from the
-start when strong isolation is required. Both positions require logical isolation;
-the choice of physical separation is a deliberate architectural decision, not
-a default. Choose based on operational maturity, team capability, and how
-seriously you weight the risk of accidental cross-schema joins.
+**Enforcement mechanisms, strongest to weakest.** Pick by isolation need and
+operational maturity, not by dogma:
+- **Database per module**: strongest isolation, highest operational cost, the
+  natural pre-extraction shape.
+- **Schema per module** (one physical database): the canonical compromise, and
+  what most references show. Cheap to run, and it can migrate to separate
+  databases later.
+- **Table ownership by convention** (a single owning module per table,
+  enforced by review and tooling): the weakest, but often the only reachable
+  step in a legacy database that cannot be re-partitioned yet. Preserve the
+  logical-ownership rule even when the physical schema is shared.
+
+**Multi-tenant note.** When the schema axis is already used for tenancy
+(schema-per-tenant), module ownership must live on a different axis: a database
+per module with a schema per tenant inside it, or table ownership by convention
+within each tenant schema. The ownership invariant is unchanged; only its
+physical expression moves.
+
+**Contested axis (sourced).** Grzybek defaults to one database with a schema
+per module; Newman recommends considering multiple databases from the start
+when strong isolation is required. Both require logical isolation; physical
+separation is a deliberate decision, not a default.
 
 ### TypeScript example: schema ownership and cross-module data via API
 
@@ -344,7 +362,7 @@ export class OrdersRepository {
 // orders-service.ts - reads customer data via the customers module's API,
 // never via a cross-schema JOIN
 
-import { CustomersApi } from "@myapp/customers";
+import type { CustomersApi } from "@myapp/customers";
 
 export class OrdersService {
   constructor(
@@ -374,6 +392,19 @@ critical (large-scale reporting, audit exports), a dedicated read model or
 a reporting module that integrates data from multiple module APIs is preferable
 to relaxing the isolation rule. Keep the write path isolated even when the
 read path aggregates.
+
+A legacy database that cannot be re-partitioned yet is a transition state, not
+a counter-example. Apply the weakest mechanism you can reach (table ownership
+by convention), retire shared tables and columns owned by more than one module
+over time (a column whose ownership is split between modules is an anti-pattern,
+not a supported variant), and treat clear ownership as the direction of travel.
+
+This section states the baseline standard. A project with a deliberate,
+constraint-driven data model (a multi-tenant tenancy axis, a mandated shared
+reference table, a legacy ownership scheme) should declare that deviation in
+its project `CLAUDE.md` or a higher-priority skill, which overrides this
+baseline. The invariant to preserve in every case is logical ownership: one
+module owns each piece of data, and others reach it through its public API.
 
 ---
 
