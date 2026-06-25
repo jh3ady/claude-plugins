@@ -127,9 +127,9 @@ force the reader to jump constantly between methods to reconstruct the algorithm
 in *Code Complete* (McConnell) does not support very short functions as uniformly beneficial.
 The real goal is a single level of abstraction per function, not a line-count target. A
 30-line function that does one clear thing at one abstraction level is better than a dozen
-3-line helpers whose relationship is obscure. Robert C. Martin himself cautions, in the
-Emergence chapter, that over-applying single responsibility to the point of creating too many
-tiny classes and methods is itself a form of dogmatism to avoid.
+3-line helpers whose relationship is obscure. Robert C. Martin himself cautions that
+over-applying single responsibility to the point of creating too many tiny classes and
+methods is itself a form of dogmatism to avoid.
 
 ---
 
@@ -195,21 +195,24 @@ on its own.
 ### Smell
 
 ```python
+# The absence contract is implicit: the signature does not say this can be empty,
+# so every caller improvises its own null guard.
 def find_user(user_id):
-    user = db.query(user_id)
-    if user is None:
-        return None  # caller must remember to check
+    return db.query(user_id)  # a user or None, but nothing in the type says so
 
-# Caller:
+# Caller handles absence ad hoc, inline, nested with the business logic:
 user = find_user(request.user_id)
-if user is not None:        # null checks scatter through the codebase
-    billing = get_billing(user)
-    if billing is not None: # and nest
+if user is not None:
+    billing = find_billing(user)
+    if billing is not None:
         process(billing)
+# nothing decides what an absent user means; the gap is silently skipped
 ```
 
-Returning null forces every caller to guard against it. An unchecked return silently
-propagates an invalid state. Nested null checks dilute the business logic.
+The problem is not that `find_user` can come back empty, that is a legitimate outcome. It is
+that the contract is implicit (the signature does not announce that absence is possible) and
+unowned: every call site reinvents a null guard, the guards nest into the business logic, and
+an absent value silently means nothing happened.
 
 ### Fix
 
