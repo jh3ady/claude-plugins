@@ -166,9 +166,10 @@ cannot reveal on its own.
 
 ## Error handling
 
-Prefer exceptions over error codes for truly exceptional conditions. Avoid returning null
-or passing null where a better design is possible. Separate error-handling logic from
-business logic so each path is legible on its own.
+Reserve exceptions for genuinely exceptional conditions, a violated invariant or a technical
+failure, and prefer them over error-code return values there. Model expected absence as a
+value rather than null. Keep the error path separate from the business logic so each reads
+on its own.
 
 ### Smell
 
@@ -192,24 +193,30 @@ propagates an invalid state. Nested null checks dilute the business logic.
 ### Fix
 
 ```python
-def find_user(user_id: str) -> User:
-    user = db.query(user_id)
-    if user is None:
-        raise UserNotFoundError(f"No user with id={user_id}")
-    return user
+# Repository: absence is a normal result, expressed as a value (not null, not an exception)
+def find_user(user_id: str) -> Optional[User]:
+    return db.query(user_id)
 
-# Caller:
+# Application boundary: it decides that, for this flow, a missing user is an error.
+# The business logic reads top to bottom; the error path stays separate.
+def charge_user(user_id: str) -> Receipt:
+    user = find_user(user_id)
+    if user is None:
+        raise UserNotFoundError(user_id)  # a violated invariant for this use case
+    return process_billing(user)
+
+# Outer boundary translates the exception once, not at every call site:
 try:
-    user = find_user(request.user_id)
-    billing = get_billing(user)
-    process(billing)
+    return charge_user(request.user_id)
 except UserNotFoundError as e:
     return not_found_response(e)
 ```
 
-For an expected absent value (a lookup that legitimately returns nothing), prefer an
-`Optional`, an empty collection, or the Null Object pattern rather than null, so the
-caller's logic remains clean without null guards.
+The repository expresses absence as a value (here `Optional`, elsewhere an empty collection
+or the Null Object pattern), so no caller has to guard against raw null. Whether a missing
+value is an error is a decision for the boundary that owns the use case, not for the lookup
+itself: it raises only when absence breaks an invariant for that flow. A repository method
+that throws on every miss turns an expected outcome into exception-driven control flow.
 
 ### Over-application caution
 
