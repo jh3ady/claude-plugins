@@ -340,15 +340,15 @@ Three rules govern the composition root:
 // main.ts  - the application entry point; the composition root
 
 import { SystemClock } from "./system-clock";
-import { ConsoleLogger } from "./console-logger";
+import { ConsoleNotifier } from "./console-notifier";
 import { ReminderService } from "./reminder-service";
 import { createServer } from "./server";
 
 function main(): void {
   // All wiring happens here; nothing else in the application knows about it.
-  const clock = new SystemClock();
-  const logger = new ConsoleLogger();
-  const reminderService = new ReminderService(clock, logger); // depends on both
+  const clock = new SystemClock();             // implements Clock
+  const notifier = new ConsoleNotifier();      // implements Notifier
+  const reminderService = new ReminderService(clock, notifier); // depends on both
 
   const server = createServer(reminderService);
   server.listen(3000);
