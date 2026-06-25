@@ -131,6 +131,57 @@ The real goal is a single level of abstraction per function, not a line-count ta
 over-applying single responsibility to the point of creating too many tiny classes and
 methods is itself a form of dogmatism to avoid.
 
+### Guard clauses flatten nested conditionals
+
+A function reads best when it dismisses its edge cases first and returns, leaving the main
+path unindented and linear. Deeply nested conditionals ("arrow code") force the reader to
+hold every enclosing condition in mind to reach the core logic, and each `else` drifts far
+from the `if` it answers.
+
+```python
+# Smell: the happy path is buried four levels deep
+def charge_order(order):
+    if order is not None:
+        if order.items:
+            if not order.is_paid:
+                if order.customer.has_valid_card:
+                    return gateway.charge(order)
+                else:
+                    raise PaymentError("no valid card")
+            else:
+                raise PaymentError("already paid")
+        else:
+            raise EmptyOrderError()
+    else:
+        raise ValueError("order is required")
+```
+
+```python
+# Fix: each precondition is handled and dismissed with an early return (guard clause)
+def charge_order(order):
+    if order is None:
+        raise ValueError("order is required")
+    if not order.items:
+        raise EmptyOrderError()
+    if order.is_paid:
+        raise PaymentError("already paid")
+    if not order.customer.has_valid_card:
+        raise PaymentError("no valid card")
+
+    return gateway.charge(order)
+```
+
+The core operation lands at the end, unindented, at a single level of abstraction. Each
+precondition stands next to the reason it fails.
+
+Over-application caution: guard clauses are a readability tool, not a mandate to scatter
+exits everywhere. The structured-programming "single exit point" tradition (Dijkstra,
+later codified in standards like MISRA) warns that many returns deep inside a long body can
+obscure control flow and complicate cleanup in languages without `defer` or RAII. The early
+return earns its keep for preconditions at the top of a function; multiple returns tangled
+through the middle of complex logic do not. Prefer guard clauses to flatten entry
+validation, and keep the main path's exits few and obvious.
+
 ---
 
 ## Comments
