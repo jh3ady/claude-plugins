@@ -35,6 +35,12 @@
       "source": "./plugins/clean-code",
       "description": "Clean code craftsmanship applied pragmatically: naming, small focused functions, intent-revealing comments, and disciplined error handling. Composable with your own conventions.",
       "version": "0.1.0"
+    },
+    {
+      "name": "modular-monolith",
+      "source": "./plugins/modular-monolith",
+      "description": "The modular monolith applied pragmatically: one deployable unit, strictly bounded modules with public APIs, isolated data, and TypeScript-ecosystem boundary enforcement. Composable with your own conventions.",
+      "version": "0.1.0"
     }
   ]
 }
