@@ -1,6 +1,6 @@
 ---
 name: dependency-injection
-description: Apply dependency injection when wiring an object's dependencies, structuring how objects are constructed, choosing between manual wiring and a DI container, or reviewing code for DI anti-patterns, even when the term is not used. Covers constructor injection, the composition root, Pure DI versus containers, object lifetimes, and the anti-pattern catalogue, with TypeScript specifics. Includes pragmatic guardrails against premature containers and over-injection.
+description: Apply dependency injection when wiring an object's dependencies, structuring how objects are constructed, choosing between manual wiring and a DI container, or reviewing code for DI anti-patterns, even when the term "dependency injection" is not used. Covers constructor injection, the composition root, Pure DI versus containers, object lifetimes, and the anti-pattern catalogue, with TypeScript specifics. Includes pragmatic guardrails against premature containers and over-injection.
 ---
 
 # Dependency injection
