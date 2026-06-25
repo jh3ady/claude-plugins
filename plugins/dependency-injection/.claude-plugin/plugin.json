@@ -1,0 +1,20 @@
+{
+  "name": "dependency-injection",
+  "version": "0.1.0",
+  "description": "Dependency injection applied pragmatically: Pure DI (manual constructor injection) first, the composition root, object lifetimes, and the anti-pattern catalogue, with DI containers referenced as a justified option. Composable with your own conventions.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/dependency-injection",
+  "keywords": [
+    "dependency-injection",
+    "inversion-of-control",
+    "composition-root",
+    "pure-di",
+    "constructor-injection",
+    "di-container",
+    "software-design"
+  ]
+}
