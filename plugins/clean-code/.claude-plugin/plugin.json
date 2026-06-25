@@ -1,0 +1,19 @@
+{
+  "name": "clean-code",
+  "version": "0.1.0",
+  "description": "Clean code craftsmanship applied pragmatically: naming, small focused functions, intent-revealing comments, and disciplined error handling. Composable with your own conventions.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/clean-code",
+  "keywords": [
+    "clean-code",
+    "naming",
+    "functions",
+    "refactoring",
+    "craftsmanship",
+    "software-design"
+  ]
+}
