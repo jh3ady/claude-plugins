@@ -23,7 +23,7 @@ when its cost is justified by the present need, not speculatively.
 represent genuinely distinct knowledge. Wait for a third instance before
 extracting a shared abstraction; by then the right shape is usually clear.
 
-**Duplication is cheaper than the wrong abstraction.** (Sandi Metz) Premature
+**Duplication is far cheaper than the wrong abstraction.** (Sandi Metz) Premature
 deduplication couples unrelated concepts and produces a parameterized tangle
 that grows harder to change than the original duplication. DRY targets
 knowledge -- a single source of truth for a meaningful decision -- not

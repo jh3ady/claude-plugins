@@ -14,6 +14,8 @@ Standards and sources:
   YAGNI and its XP context.
 - [The Wrong Abstraction - Sandi Metz (2016)](https://sandimetz.com/blog/2016/1/20/the-wrong-abstraction):
   "Duplication is far cheaper than the wrong abstraction."
+- [Simple Made Easy - Rich Hickey (InfoQ, Strange Loop 2011)](https://www.infoq.com/presentations/Simple-Made-Easy/):
+  the simple/easy distinction and why simplicity must be constructed.
 - [Yagni - Martin Fowler's bliki](https://martinfowler.com/bliki/Yagni.html):
   the four costs YAGNI avoids and when extensibility is still warranted.
 - [Rule of three - Wikipedia](https://en.wikipedia.org/wiki/Rule_of_three_%28computer_programming%29):
@@ -66,7 +68,7 @@ The problem is the same; the solution exposes its intent.
 
 "Simple" in the Kelly Johnson sense means the minimum complexity to meet the
 actual need, no more. It does not mean "naive" or "easy to write." Rich
-Hickey's distinction is useful here: easy means familiar or close at hand;
+Hickey's distinction is useful here ([Simple Made Easy, Strange Loop 2011](https://www.infoq.com/presentations/Simple-Made-Easy/)): easy means familiar or close at hand;
 simple means not compound, not entangled. Easy code can be deeply complex.
 Simple code can be hard to write.
 
