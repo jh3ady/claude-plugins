@@ -102,13 +102,13 @@ consistent level of abstraction.
 
 "Functions should be small... and smaller than that" (Martin) taken literally produces
 excessive fragmentation: a coherent flow split into many one-liners that scatter logic and
-force the reader to jump constantly between methods to reconstruct the algorithm. Research
+force the reader to jump constantly between methods to reconstruct the algorithm. Research summarized
 in *Code Complete* (McConnell) does not support very short functions as uniformly beneficial.
 The real goal is a single level of abstraction per function, not a line-count target. A
 30-line function that does one clear thing at one abstraction level is better than a dozen
-3-line helpers whose relationship is obscure. Martin himself warns in the Emergence chapter
-that creating too many tiny classes and methods through over-application of single
-responsibility is "pointless dogmatism."
+3-line helpers whose relationship is obscure. Robert C. Martin himself cautions, in the
+Emergence chapter, that over-applying single responsibility to the point of creating too many
+tiny classes and methods is itself a form of dogmatism to avoid.
 
 ---
 
@@ -139,8 +139,8 @@ accumulates as noise. TODOs without a ticket or owner rot indefinitely. The magi
 ### Fix
 
 ```python
-# VAT_MULTIPLIER: includes the 73% excise applied to spirits under Finance Law 2024.
-# Review this constant if the rate changes in the next budget cycle.
+# SPIRITS_EXCISE_MULTIPLIER: product-specific tax factor defined in the pricing policy.
+# Update this constant whenever the applicable rate changes.
 SPIRITS_EXCISE_MULTIPLIER = 1.73
 spirits_total = base_price * SPIRITS_EXCISE_MULTIPLIER
 
