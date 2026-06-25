@@ -334,10 +334,17 @@ operational maturity, not by dogma:
   logical-ownership rule even when the physical schema is shared.
 
 **Multi-tenant note.** When the schema axis is already used for tenancy
-(schema-per-tenant), module ownership must live on a different axis: a database
-per module with a schema per tenant inside it, or table ownership by convention
-within each tenant schema. The ownership invariant is unchanged; only its
-physical expression moves.
+(schema-per-tenant), the ownership axis moves down to the table level: within
+each tenant schema, every table has a single owning module. This is a clean
+realization of the invariant, not a compromise; the schema is simply spent on
+tenancy rather than on modules, so ownership is expressed one level below. A
+database per module (with a schema per tenant inside each) is a heavier
+alternative, worth it only when a particular module needs stronger physical
+isolation. Enforcement here is necessarily convention-level (one tenant schema
+holds several modules' tables, so the database will not block a cross-module
+read), which means review and tooling carry the boundary. The invariant (one
+owner per table, others through its API) is unchanged; only where ownership is
+expressed moves.
 
 **Contested axis (sourced).** Grzybek defaults to one database with a schema
 per module; Newman recommends considering multiple databases from the start
