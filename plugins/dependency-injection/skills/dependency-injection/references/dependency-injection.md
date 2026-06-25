@@ -570,6 +570,11 @@ holds mutable state or depends on a shorter-lived collaborator.
 
 ## 7. Anti-patterns
 
+The following are dependency injection anti-patterns. Constructor over-injection
+is listed last as a related code smell, not an anti-pattern: it is included here
+because it surfaces while wiring dependencies, but it is a design signal to
+refactor, not a wiring mistake.
+
 ### Service locator
 
 A service locator is a global registry from which components pull their
