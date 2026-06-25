@@ -1,0 +1,19 @@
+{
+  "name": "simplicity-principles",
+  "version": "0.1.0",
+  "description": "The simplicity cluster KISS, DRY, and YAGNI applied pragmatically: do-less heuristics, the rule of three, and the trade-offs such as duplication versus the wrong abstraction. Composable with your own conventions.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/simplicity-principles",
+  "keywords": [
+    "kiss",
+    "dry",
+    "yagni",
+    "clean-code",
+    "simplicity",
+    "software-design"
+  ]
+}
