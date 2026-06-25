@@ -506,8 +506,8 @@ export class HttpPaymentsApi implements PaymentsApi {
   }
 }
 
-// Swap the in-process implementation for the HTTP one at the composition root;
-// OrdersService is untouched:
+// Swap the in-process implementation for the HTTP one where the module is wired
+// up at application startup; OrdersService is untouched:
 // new OrdersService(new HttpPaymentsApi(process.env.PAYMENTS_SERVICE_URL))
 ```
 
