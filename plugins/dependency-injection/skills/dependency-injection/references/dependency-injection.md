@@ -193,7 +193,8 @@ There are two independent taxonomies of injection styles. They must not be merge
 into one list, because they use different terminology for overlapping concepts.
 
 **Fowler's taxonomy** (2004): Constructor injection, Setter injection, Interface
-injection.
+injection. (Interface injection, where an interface declares the setter the
+injector calls, is rare in practice and absent from Seemann's taxonomy.)
 ([Fowler, 2004](https://martinfowler.com/articles/injection.html))
 
 **Seemann's taxonomy** (book): Constructor injection, Property injection, Method
@@ -317,10 +318,7 @@ Three rules govern the composition root:
 
 import { createConnection } from "./infrastructure/database";
 import { SqlOrderRepository } from "./infrastructure/sql-order-repository";
-import { SmtpEmailGateway } from "./infrastructure/smtp-email-gateway";
-import { HandlebarsTemplateEngine } from "./infrastructure/handlebars-template-engine";
 import { OrderService } from "./domain/order-service";
-import { NotificationService } from "./domain/notification-service";
 import { OrderController } from "./api/order-controller";
 import { createServer } from "./api/server";
 
@@ -329,12 +327,8 @@ async function main(): Promise<void> {
   const db = await createConnection(process.env.DATABASE_URL!);
 
   const orderRepository = new SqlOrderRepository(db);
-  const emailGateway = new SmtpEmailGateway(process.env.SMTP_URL!);
-  const templateEngine = new HandlebarsTemplateEngine();
-
   const orderService = new OrderService(orderRepository);
-  const notificationService = new NotificationService(emailGateway, templateEngine);
-  const orderController = new OrderController(orderService, notificationService);
+  const orderController = new OrderController(orderService);
 
   const server = createServer(orderController);
   await server.listen(3000);
@@ -433,9 +427,8 @@ import { SqlUserRepository } from "./infrastructure/sql-user-repository";
 import { BcryptHasher } from "./infrastructure/bcrypt-hasher";
 import { UserService } from "./domain/user-service";
 
-const USERS_TOKEN = Symbol("UserService"); // token for illustration
-
-// Pure DI: manual wiring, no magic.
+// Pure DI: manual wiring, no magic, no tokens.
+// db is created at the entry point (see the composition root in section 4).
 const userRepository = new SqlUserRepository(db);
 const hasher = new BcryptHasher();
 const userService = new UserService(userRepository, hasher);
@@ -761,10 +754,6 @@ class Order {
     readonly customerId: string,
     readonly items: readonly OrderItem[],
   ) {}
-
-  get totalCents(): number {
-    return this.items.reduce((sum, item) => sum + item.priceCents, 0);
-  }
 }
 ```
 
@@ -781,7 +770,7 @@ class OrderService {
   async placeOrder(customerId: string, items: OrderItem[]): Promise<Order> {
     const order = new Order(crypto.randomUUID(), customerId, items); // newable created here
     await this.orderRepository.save(order);
-    await this.paymentGateway.charge(order.customerId, order.totalCents);
+    await this.paymentGateway.charge(order.customerId, items);
     return order;
   }
 }
