@@ -55,21 +55,40 @@ Injection." Fowler coordinated that naming decision; DI was not single-handedly
 invented by any one person.
 ([Fowler, 2004](https://martinfowler.com/articles/injection.html))
 
+Dependency injection only needs a collaborator to inject. It imposes no particular
+architecture: layered, hexagonal, and domain-driven designs are all compatible
+with DI, and none of them is required by it. The mechanics examples in this
+reference use plain, behavior-only services such as `Clock`, `Logger`, `Notifier`,
+and `Hasher` on purpose, so the mechanism is visible without presupposing any
+architectural pattern. A Repository and a Gateway appear later (sections 2 and 8):
+those are Fowler Patterns of Enterprise Application Architecture, shown
+illustratively as the subject of their sections, not as requirements of DI.
+
 ### TypeScript example
 
 ```typescript
-// WITHOUT DI: the class constructs its own collaborator.
-// Untestable in isolation; coupled to the concrete type.
+// WITHOUT DI: the class constructs its own collaborator (the "control freak").
+// Untestable in isolation; coupled to the concrete type; time cannot be faked.
+
+interface Clock {
+  now(): Date;
+}
+
+class SystemClock implements Clock {
+  now(): Date {
+    return new Date();
+  }
+}
 
 class OrderService {
-  private readonly repository: OrderRepository;
+  private readonly clock: Clock;
 
   constructor() {
-    this.repository = new SqlOrderRepository(); // hard-coded; cannot swap
+    this.clock = new SystemClock(); // hard-coded; cannot swap, cannot fake in tests
   }
 
-  async find(id: string): Promise<Order | null> {
-    return this.repository.findById(id);
+  placedAt(): Date {
+    return this.clock.now();
   }
 }
 ```
@@ -78,22 +97,18 @@ class OrderService {
 // WITH DI (Pure DI, constructor injection): the dependency arrives from outside.
 // The caller decides which implementation to pass; the class stays stable.
 
-interface OrderRepository {
-  findById(id: string): Promise<Order | null>;
-}
-
 class OrderService {
-  constructor(private readonly repository: OrderRepository) {}
+  constructor(private readonly clock: Clock) {}
 
-  async find(id: string): Promise<Order | null> {
-    return this.repository.findById(id);
+  placedAt(): Date {
+    return this.clock.now();
   }
 }
 
 // Wired at the composition root:
-// const service = new OrderService(new SqlOrderRepository(db));
-// In tests:
-// const service = new OrderService(new InMemoryOrderRepository());
+// const service = new OrderService(new SystemClock());
+// In tests, time is deterministic:
+// const service = new OrderService({ now: () => new Date("2026-01-01T00:00:00Z") });
 ```
 
 ### When not to apply
@@ -143,6 +158,13 @@ the same thing.
 ([Wikipedia, Dependency injection](https://en.wikipedia.org/wiki/Dependency_injection))
 
 ### TypeScript example
+
+The example below uses a Repository deliberately, because the topic here is DIP,
+the canonical example of which is a high-level policy owning a persistence
+abstraction. The domain/infrastructure split shown is the DIP concern (who owns
+the abstraction, which way the dependency points), explored in full in the
+`solid-principles` reference. It is not how DI must be structured: DI itself needs
+no layers, as the `Clock` example in section 1 shows.
 
 ```typescript
 // DI without DIP: the abstraction is owned by the infrastructure layer.
@@ -232,48 +254,49 @@ example a command handler that receives its execution context at call time.
 
 ```typescript
 // Constructor injection: required dependencies arrive at construction.
-// The class cannot be instantiated without them.
+// The class cannot be instantiated without them. Neutral collaborators: Clock, Notifier.
 
-class NotificationService {
+class ReminderService {
   constructor(
-    private readonly emailGateway: EmailGateway,  // required
-    private readonly templateEngine: TemplateEngine, // required
+    private readonly clock: Clock,        // required
+    private readonly notifier: Notifier,  // required
   ) {}
 
-  async notify(userId: string, event: DomainEvent): Promise<void> {
-    const body = this.templateEngine.render(event);
-    await this.emailGateway.send(userId, body);
+  remind(userId: string): void {
+    const at = this.clock.now();
+    this.notifier.send(userId, `Reminder issued at ${at.toISOString()}`);
   }
 }
 ```
 
 ```typescript
 // Property injection: an optional dependency with a sensible default.
-// The class works without the caller setting it; the logger is a NullLogger by default.
+// The class works without the caller setting it; the logger is a no-op by default.
 
-class OrderProcessor {
-  logger: Logger = new NullLogger(); // optional; overridable
+class TaskRunner {
+  logger: Logger = { info: () => {} }; // optional; no-op default, overridable
 
-  constructor(private readonly orderRepository: OrderRepository) {}
-
-  async process(orderId: string): Promise<void> {
-    this.logger.info(`Processing order ${orderId}`);
-    const order = await this.orderRepository.findById(orderId);
-    // ...
+  run(task: string): void {
+    this.logger.info(`Running ${task}`);
+    // ... do the work; the logger is genuinely optional
   }
 }
 
 // Caller overrides the logger when one is available:
-// const processor = new OrderProcessor(repo);
-// processor.logger = new ConsoleLogger();
+// const runner = new TaskRunner();
+// runner.logger = new ConsoleLogger();
 ```
 
 ```typescript
 // Method injection: dependency varies per call.
+// The cancellation token is supplied per invocation, not held as state.
 
-class ReportGenerator {
-  generate(data: ReportData, formatter: ReportFormatter): string {
-    return formatter.format(data); // formatter changes per invocation
+class BatchProcessor {
+  process(items: readonly string[], cancellation: CancellationToken): void {
+    for (const item of items) {
+      if (cancellation.isCancelled()) return; // per-call dependency
+      // ... handle item
+    }
   }
 }
 ```
@@ -316,25 +339,22 @@ Three rules govern the composition root:
 ```typescript
 // main.ts  - the application entry point; the composition root
 
-import { createConnection } from "./infrastructure/database";
-import { SqlOrderRepository } from "./infrastructure/sql-order-repository";
-import { OrderService } from "./domain/order-service";
-import { OrderController } from "./api/order-controller";
-import { createServer } from "./api/server";
+import { SystemClock } from "./system-clock";
+import { ConsoleLogger } from "./console-logger";
+import { ReminderService } from "./reminder-service";
+import { createServer } from "./server";
 
-async function main(): Promise<void> {
+function main(): void {
   // All wiring happens here; nothing else in the application knows about it.
-  const db = await createConnection(process.env.DATABASE_URL!);
+  const clock = new SystemClock();
+  const logger = new ConsoleLogger();
+  const reminderService = new ReminderService(clock, logger); // depends on both
 
-  const orderRepository = new SqlOrderRepository(db);
-  const orderService = new OrderService(orderRepository);
-  const orderController = new OrderController(orderService);
-
-  const server = createServer(orderController);
-  await server.listen(3000);
+  const server = createServer(reminderService);
+  server.listen(3000);
 }
 
-main().catch(console.error);
+main();
 ```
 
 No import of a DI container appears anywhere except in the composition root. All
@@ -421,46 +441,46 @@ auto-wiring.
 ```typescript
 // PURE DI: the same graph wired by hand.
 // No library import. Fully type-safe. Compile-time errors if a dependency
-// changes or is missing.
+// changes or is missing. Neutral collaborators: Clock, Hasher.
 
-import { SqlUserRepository } from "./infrastructure/sql-user-repository";
-import { BcryptHasher } from "./infrastructure/bcrypt-hasher";
-import { UserService } from "./domain/user-service";
+import { SystemClock } from "./system-clock";
+import { BcryptHasher } from "./bcrypt-hasher";
+import { SignupService } from "./signup-service";
 
 // Pure DI: manual wiring, no magic, no tokens.
-// db is created at the entry point (see the composition root in section 4).
-const userRepository = new SqlUserRepository(db);
+const clock = new SystemClock();
 const hasher = new BcryptHasher();
-const userService = new UserService(userRepository, hasher);
+const signupService = new SignupService(clock, hasher);
 ```
 
 ```typescript
 // CONTAINER SKETCH (tsyringe): the same graph, auto-wired.
-// Token is required because interfaces are erased at runtime.
+// A token is required because the Clock interface is erased at runtime;
+// a string, Symbol, abstract class, or InjectionToken stands in for it.
 // Loses compile-time feedback on misconfiguration; gains auto-registration.
 
 import "reflect-metadata";
 import { container, injectable, inject } from "tsyringe";
 
-const USER_REPO_TOKEN = "UserRepository";
+const CLOCK_TOKEN = "Clock"; // interfaces cannot be tokens; this string can
 
 @injectable()
-class SqlUserRepository implements UserRepository { /* ... */ }
+class SystemClock implements Clock { /* ... */ }
 
 @injectable()
 class BcryptHasher implements Hasher { /* ... */ }
 
 @injectable()
-class UserService {
+class SignupService {
   constructor(
-    @inject(USER_REPO_TOKEN) private readonly repo: UserRepository,
+    @inject(CLOCK_TOKEN) private readonly clock: Clock,
     private readonly hasher: BcryptHasher,
   ) {}
 }
 
 // Registration at the composition root:
-container.register(USER_REPO_TOKEN, { useClass: SqlUserRepository });
-const userService = container.resolve(UserService);
+container.register(CLOCK_TOKEN, { useClass: SystemClock });
+const signupService = container.resolve(SignupService);
 ```
 
 ### When not to apply
@@ -510,33 +530,32 @@ behavior.
 
 ```typescript
 // PROBLEM: singleton capturing a scoped dependency.
-// RequestContext is per-request (scoped). CachedOrderService is singleton.
+// RequestContext is per-request (scoped). RequestLogger is singleton.
 // Every request after the first shares the same RequestContext instance.
 
 class RequestContext {
   readonly requestId = crypto.randomUUID(); // should be unique per request
 }
 
-class CachedOrderService {
+class RequestLogger {
   // The RequestContext captured here is the one from the FIRST request.
-  // All subsequent requests see the same (wrong) requestId.
-  constructor(
-    private readonly orderRepository: OrderRepository,
-    private readonly context: RequestContext, // captive: scoped inside singleton
-  ) {}
+  // All subsequent requests log the same (wrong) requestId.
+  constructor(private readonly context: RequestContext) {} // captive: scoped inside singleton
+
+  log(message: string): void {
+    console.log(`[${this.context.requestId}] ${message}`);
+  }
 }
 ```
 
 ```typescript
 // FIX: pass the per-request dependency through method parameters,
-// or make CachedOrderService scoped as well.
+// or make RequestLogger scoped as well.
 
-class CachedOrderService {
-  constructor(private readonly orderRepository: OrderRepository) {}
-
-  async findOrder(id: string, context: RequestContext): Promise<Order | null> {
+class RequestLogger {
+  log(message: string, context: RequestContext): void {
     // RequestContext is passed per call, not held as state.
-    return this.orderRepository.findById(id);
+    console.log(`[${context.requestId}] ${message}`);
   }
 }
 ```
@@ -630,34 +649,34 @@ address the underlying SRP violation; it masks it.
 
 ```typescript
 // SERVICE LOCATOR call site: dependencies are hidden inside the method body.
-// The class signature reveals nothing about what it needs.
+// The class signature reveals nothing about what it needs (here a Clock and a Logger).
 
-class OrderController {
-  async placeOrder(request: PlaceOrderRequest): Promise<void> {
+class Greeter {
+  greet(name: string): string {
     // Dependencies fetched from a global locator; invisible to callers.
-    const orderService = serviceLocator.resolve<OrderService>("OrderService");
-    const auditLogger = serviceLocator.resolve<AuditLogger>("AuditLogger");
-    await orderService.place(request);
-    await auditLogger.log(request);
+    const clock = serviceLocator.resolve<Clock>("Clock");
+    const logger = serviceLocator.resolve<Logger>("Logger");
+    logger.info(`Greeting ${name}`);
+    return `Hello ${name}, the time is ${clock.now().toISOString()}`;
   }
 }
 ```
 
 ```typescript
 // INJECTION: dependencies declared in the constructor.
-// Callers and the container can see and supply exactly what is needed.
-// A missing registration is a compile-time error (Pure DI) or a clear
+// Callers can see and supply exactly what is needed.
+// A missing dependency is a compile-time error (Pure DI) or a clear
 // startup-time error (container).
 
-class OrderController {
+class Greeter {
   constructor(
-    private readonly orderService: OrderService,
-    private readonly auditLogger: AuditLogger,
+    private readonly clock: Clock,
+    private readonly logger: Logger,
   ) {}
 
-  async placeOrder(request: PlaceOrderRequest): Promise<void> {
-    await this.orderService.place(request);
-    await this.auditLogger.log(request);
+  greet(name: string): string {
+    this.logger.info(`Greeting ${name}`);
+    return `Hello ${name}, the time is ${this.clock.now().toISOString()}`;
   }
 }
 ```
