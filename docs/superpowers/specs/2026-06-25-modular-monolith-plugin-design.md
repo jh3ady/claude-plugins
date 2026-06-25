@@ -169,6 +169,23 @@ Content must be sourced, not written from memory.
   description, version `0.1.0`).
 - Add one row to the root `README.md` plugins table.
 
+## Future work (adjacent plugins noted, not designed here)
+
+These surfaced while authoring this plugin and are recorded so the
+decomposition is not lost. They are separate topics, not part of the
+modular monolith:
+
+- `dependency-injection` (or `dependency-management`): constructor
+  injection, inversion of control, poor man's dependency injection versus a
+  container, and the composition root (the single place where the object
+  graph is wired at application startup). The modular monolith only uses the
+  composition root incidentally, to wire module implementations, so the term
+  is kept out of this plugin's vocabulary and would belong here instead.
+
+The clean-code batch already recorded `hexagonal-architecture`, `ddd`,
+`cqrs`, and `event-sourcing` as future candidates; this plugin references
+them as complementary rather than absorbing them.
+
 ## Success criteria
 
 - One installable plugin following the existing structure and conventions.
