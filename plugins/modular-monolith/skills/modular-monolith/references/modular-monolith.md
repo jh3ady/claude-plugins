@@ -275,7 +275,7 @@ export class OrderService {
     await this.orderRepository.save(order);
     // Payments module subscribes to OrderPlaced asynchronously.
     // Trade-off: payment failure is now eventually consistent, not atomic.
-    eventBus.publish(new OrderPlaced(order.id, order.totalCents));
+    await eventBus.publish(new OrderPlaced(order.id, order.totalCents));
   }
 }
 ```
@@ -460,27 +460,35 @@ excavate individual microservices from the monolith."
 ### TypeScript example: Strangler Fig intercept at the module boundary
 
 ```typescript
-// Before extraction: OrdersService calls PaymentsApi directly in-process.
+// The payments module publishes a PaymentsPort interface (the contract) as part
+// of its public API; the in-process PaymentsApi implements it:
+//   // payments/payments-api.ts
+//   export class PaymentsApi implements PaymentsPort { ... }
 
-import { PaymentsApi } from "@myapp/payments";
+import type { PaymentsPort } from "@myapp/payments";
 
+// OrdersService depends on the PORT (an abstraction), never on the concrete class.
+// This is precisely what lets the calling code stay unchanged during extraction.
 export class OrdersService {
-  constructor(private readonly paymentsApi: PaymentsApi) {}
+  constructor(private readonly payments: PaymentsPort) {}
 
   async placeOrder(order: Order): Promise<void> {
-    await this.paymentsApi.charge({ amount: order.totalCents, customerId: order.customerId });
+    await this.payments.charge({ amount: order.totalCents, customerId: order.customerId });
   }
 }
 ```
 
 ```typescript
-// Strangler Fig step: introduce an adapter behind the same interface.
-// The calling code (OrdersService) does not change.
+// Strangler Fig step: a second implementation of the same port, talking HTTP.
+// The calling code (OrdersService) does not change, because it depends on the port.
 
-import type { ChargeRequest, ChargeResult } from "@myapp/payments";
+import type { PaymentsPort, ChargeRequest, ChargeResult } from "@myapp/payments";
 
-// The adapter satisfies the same contract as PaymentsApi.
-export class PaymentsHttpAdapter {
+// The adapter implements PaymentsPort, so it is interchangeable with PaymentsApi.
+// Depend on the port, not the concrete class: a class with a private field is not
+// structurally assignable to another, so "implements PaymentsApi" would not even
+// type-check. The shared interface is what makes the swap possible.
+export class PaymentsHttpAdapter implements PaymentsPort {
   constructor(private readonly baseUrl: string) {}
 
   async charge(request: ChargeRequest): Promise<ChargeResult> {
