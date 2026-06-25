@@ -88,8 +88,9 @@ inseparable element of modularity." (Grzybek, Primer)
 ```typescript
 // payments/index.ts  - the ONLY public entry point for the payments module
 
+export type { PaymentsApi } from "./payments-api";  // the public API (provided interface)
 export type { ChargeRequest, ChargeResult } from "./types";
-export { PaymentsApi } from "./payments-api";
+export { createPaymentsApi } from "./payments-api"; // builds the in-process implementation
 
 // Everything else is internal (NOT re-exported):
 // ./handlers/stripe-handler.ts
@@ -98,22 +99,31 @@ export { PaymentsApi } from "./payments-api";
 ```
 
 ```typescript
-// payments/payments-api.ts  - provided interface consumed by other modules
+// payments/payments-api.ts  - the provided interface and its internal implementation
 
 import { ChargeRequest, ChargeResult } from "./types";
 import { StripeHandler } from "./handlers/stripe-handler"; // internal import
 
-export class PaymentsApi {
+// The public API is an interface: the contract other modules depend on.
+export interface PaymentsApi {
+  charge(request: ChargeRequest): Promise<ChargeResult>;
+}
+
+// The implementation stays internal; StripeHandler never leaks past the barrel.
+class PaymentsService implements PaymentsApi {
   constructor(private readonly handler: StripeHandler) {}
 
   async charge(request: ChargeRequest): Promise<ChargeResult> {
     return this.handler.processCharge(request);
   }
 }
+
+export const createPaymentsApi = (handler: StripeHandler): PaymentsApi =>
+  new PaymentsService(handler);
 ```
 
-Consumers import `PaymentsApi` from `"@myapp/payments"` (the barrel), never
-from `"@myapp/payments/handlers/stripe-handler"`.
+Consumers depend on the `PaymentsApi` interface from `"@myapp/payments"` (the
+barrel), never on `"@myapp/payments/handlers/stripe-handler"`.
 
 ### When not to apply
 
@@ -248,7 +258,7 @@ Both camps agree the choice must be deliberate. Present both, choose with intent
 // OPTION A: direct synchronous call to the payments module's public API
 // Simple, explicit, easy to trace. Use this by default.
 
-import { PaymentsApi } from "@myapp/payments";
+import type { PaymentsApi } from "@myapp/payments";
 
 export class OrderService {
   constructor(private readonly paymentsApi: PaymentsApi) {}
@@ -460,17 +470,14 @@ excavate individual microservices from the monolith."
 ### TypeScript example: Strangler Fig intercept at the module boundary
 
 ```typescript
-// The payments module publishes a PaymentsPort interface (the contract) as part
-// of its public API; the in-process PaymentsApi implements it:
-//   // payments/payments-api.ts
-//   export class PaymentsApi implements PaymentsPort { ... }
+// OrdersService calls the payments module through its public API: the PaymentsApi
+// interface exported from the barrel. It depends on that interface, not on the
+// internal implementation, which is exactly what keeps it stable during extraction.
 
-import type { PaymentsPort } from "@myapp/payments";
+import type { PaymentsApi } from "@myapp/payments";
 
-// OrdersService depends on the PORT (an abstraction), never on the concrete class.
-// This is precisely what lets the calling code stay unchanged during extraction.
 export class OrdersService {
-  constructor(private readonly payments: PaymentsPort) {}
+  constructor(private readonly payments: PaymentsApi) {}
 
   async placeOrder(order: Order): Promise<void> {
     await this.payments.charge({ amount: order.totalCents, customerId: order.customerId });
@@ -479,16 +486,14 @@ export class OrdersService {
 ```
 
 ```typescript
-// Strangler Fig step: a second implementation of the same port, talking HTTP.
-// The calling code (OrdersService) does not change, because it depends on the port.
+// Strangler Fig step: a second implementation of the same public API, talking HTTP.
+// OrdersService does not change, because it already depends on the PaymentsApi
+// interface. Because the public API is an interface (not a concrete class), a new
+// implementation can satisfy it without inheriting anything internal.
 
-import type { PaymentsPort, ChargeRequest, ChargeResult } from "@myapp/payments";
+import type { PaymentsApi, ChargeRequest, ChargeResult } from "@myapp/payments";
 
-// The adapter implements PaymentsPort, so it is interchangeable with PaymentsApi.
-// Depend on the port, not the concrete class: a class with a private field is not
-// structurally assignable to another, so "implements PaymentsApi" would not even
-// type-check. The shared interface is what makes the swap possible.
-export class PaymentsHttpAdapter implements PaymentsPort {
+export class HttpPaymentsApi implements PaymentsApi {
   constructor(private readonly baseUrl: string) {}
 
   async charge(request: ChargeRequest): Promise<ChargeResult> {
@@ -501,11 +506,12 @@ export class PaymentsHttpAdapter implements PaymentsPort {
   }
 }
 
-// Wire the adapter instead of the in-process implementation:
-// new OrdersService(new PaymentsHttpAdapter(process.env.PAYMENTS_SERVICE_URL))
+// Swap the in-process implementation for the HTTP one at the composition root;
+// OrdersService is untouched:
+// new OrdersService(new HttpPaymentsApi(process.env.PAYMENTS_SERVICE_URL))
 ```
 
-The in-process `PaymentsApi` module is removed from the monolith only after
+The in-process payments implementation is removed from the monolith only after
 the external service is validated in production. The calling code is unchanged.
 
 ### When not to apply
