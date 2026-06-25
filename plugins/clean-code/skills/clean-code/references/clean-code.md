@@ -68,7 +68,7 @@ Prefer few arguments; functions with many parameters are harder to understand an
 
 ```python
 def process_user(user, db, mailer, audit_log, send_email=True, dry_run=False):
-    # validate, persist, email, audit — all in one place, 80+ lines
+    # validate, persist, email, audit: all in one place, 80+ lines
     if not dry_run:
         db.save(user)
     if send_email and not dry_run:
