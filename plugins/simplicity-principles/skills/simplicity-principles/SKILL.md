@@ -26,7 +26,7 @@ extracting a shared abstraction; by then the right shape is usually clear.
 **Duplication is far cheaper than the wrong abstraction.** (Sandi Metz) Premature
 deduplication couples unrelated concepts and produces a parameterized tangle
 that grows harder to change than the original duplication. DRY targets
-knowledge -- a single source of truth for a meaningful decision -- not
+knowledge (a single source of truth for a meaningful decision), not
 incidental textual similarity.
 
 **YAGNI defers speculative work, not obvious next steps.** When a requirement

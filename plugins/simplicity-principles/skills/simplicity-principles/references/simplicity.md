@@ -78,7 +78,7 @@ where a plain one would suffice. It does not guard against essential complexity;
 some problems are inherently complex, and an honest representation of that
 complexity is not a KISS violation.
 
-The failure mode is over-engineering -- adding machinery that the current
+The failure mode is over-engineering: adding machinery that the current
 requirement does not need, justified by anticipation. Anticipation is best
 addressed by YAGNI; KISS is about the implementation choice once the scope is
 settled.
@@ -96,7 +96,7 @@ the build system, documentation, and source code. The target is knowledge
 (semantically meaningful decisions), not text.
 
 The WET counterpart: "write everything twice" (or "waste everyone's time").
-A WET codebase defines the same concept -- a "comment" field -- across an
+A WET codebase defines the same concept (a "comment" field) across an
 HTML label, a form input name, a variable name, a function parameter, and a
 database column: five places to update when the concept changes.
 
@@ -160,7 +160,7 @@ The pattern she describes: a programmer extracts duplication and names an
 abstraction. A new requirement makes the abstraction "almost" right. Rather
 than reconsidering, the next programmer adds a parameter and a conditional.
 Each new requirement adds more conditions. Eventually the code is
-incomprehensible -- a condition-laden procedure mixing vaguely related ideas.
+incomprehensible: a condition-laden procedure mixing vaguely related ideas.
 The fastest way forward, at that point, is back: inline the abstraction into
 every caller, remove the irrelevant parts, and start fresh with current
 understanding.
@@ -237,8 +237,8 @@ Martin Fowler identifies four costs that YAGNI avoids:
 
 However, Fowler also notes: if adding flexibility does not actually increase
 the complexity of the software, there is no reason to invoke YAGNI. A small
-enhancement requiring minimal effort -- a lookup table instead of inline
-literals for a concept that is clearly going to grow -- can substantially
+enhancement requiring minimal effort (a lookup table instead of inline
+literals for a concept that is clearly going to grow) can substantially
 reduce future cost without violating the principle.
 
 Genuine, near-term, known extensibility at a real boundary can be warranted.
