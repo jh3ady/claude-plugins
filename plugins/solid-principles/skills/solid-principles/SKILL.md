@@ -26,8 +26,14 @@ load) that must be weighed against its present payoff.
 
 Do not apply a principle speculatively:
 
-- Do not introduce an interface for a class that has one implementation and is
-  unlikely to have another (DIP/ISP over-segregation).
+- The question for DIP and ISP is not how many implementations exist today. It
+  is whether a real boundary or seam justifies the abstraction now: an
+  architectural port over an external system (database, message broker,
+  third-party API), a genuine testing seam, or a contract you want to stabilize.
+  An interface with a single implementation at such a boundary is DIP done
+  correctly. What is speculative is adding indirection over an internal
+  collaborator that has no boundary role and no testing or inversion reason,
+  purely to look SOLID.
 - Do not split a class just because it has many methods; split when two genuinely
   independent reasons to change are observable (SRP class explosion).
 - Do not add an abstraction layer before a second variation exists (OCP premature

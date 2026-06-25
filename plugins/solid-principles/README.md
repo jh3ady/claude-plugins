@@ -14,8 +14,9 @@ When you write, modify, review, or refactor production code, the bundled
 skill applies:
 
 - A recognizable symptom for each SOLID principle, mapped to a focused fix.
-- Guardrails against speculative abstraction (no interface for a single
-  implementation just to satisfy a principle).
+- Guardrails against speculative abstraction: introduce an abstraction when
+  a real boundary or seam justifies it now (an architectural port, a testing
+  seam, a contract to stabilize); do not introduce one purely to look SOLID.
 - The pragmatic rule: match the level of sophistication to the actual need.
 
 ## Install

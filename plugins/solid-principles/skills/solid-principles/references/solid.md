@@ -5,7 +5,7 @@ examples, and "when not to apply" notes for each of the five SOLID principles.
 
 Standards and sources:
 - Robert C. Martin, *Design Principles and Design Patterns* (2000):
-  the paper that introduced SRP, OCP, LSP, ISP, and DIP as a unified set.
+  the paper that unified SRP, OCP, LSP, ISP, and DIP into a single framework.
 - Barbara Liskov, *Data Abstraction and Hierarchy* (1987):
   the original LSP formulation.
 - [SOLID on Wikipedia](https://en.wikipedia.org/wiki/SOLID)
@@ -243,10 +243,12 @@ class Cube implements ThreeDimensionalShape {
 ### When not to apply
 
 ISP taken too far produces interface explosion: one interface per method,
-each with a single implementation. This is speculative over-segregation. You
-pay the navigation cost of many tiny interfaces with no benefit because no
-client ever needed the separation. Split interfaces only when there are
-genuinely distinct clients that need different subsets of behavior.
+each with a single implementation, even where no client ever needed the
+separation. The deciding factor is not implementation count but client need:
+split interfaces only when there are genuinely distinct clients that use
+different subsets of behavior, or when a boundary role (testing seam,
+architectural port) justifies the separation. Over-segregation without that
+reason is speculative indirection.
 
 ---
 
@@ -305,12 +307,18 @@ class PasswordReminder {
 
 ### When not to apply
 
-DIP should not be read as "never depend on concrete classes." Introducing an
-interface for a class that has one implementation and will always have one
-implementation is speculative indirection. You pay the cognitive cost of an
-extra abstraction layer with no substitution benefit. Apply DIP when there is
-a genuine seam: multiple implementations exist or are foreseeable, or
-dependency injection is needed to isolate a unit under test.
+DIP should not be read as "never depend on concrete classes." The deciding
+question is not how many implementations exist today. It is whether there is a
+real seam with a present reason: an architectural boundary you are inverting (a
+port over an external system such as a database, message broker, or third-party
+API), a genuine testing seam, or a contract you want to stabilize. An interface
+with a single implementation at such a boundary is DIP done correctly, not
+speculation.
+
+What is speculative is adding an interface over an internal collaborator that
+has no boundary role, no second implementation in sight, and no testing or
+inversion reason, purely to look SOLID. That adds indirection with no present
+payoff.
 
 ---
 
