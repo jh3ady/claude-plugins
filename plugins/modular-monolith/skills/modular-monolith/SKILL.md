@@ -56,7 +56,8 @@ content, referenced here, not imposed:
   bounded context, but DDD is not required. See the `ddd-strategic-design` skill for bounded contexts and context mapping.
 - **Hexagonal / ports and adapters**: how to structure a module's inside,
   decided module by module.
-- **CQRS and event sourcing**: optional and orthogonal.
+- **Event sourcing and CQRS**: optional and orthogonal. See the `event-sourcing`
+  skill; CQRS is its frequent, separate companion.
 
 ## Adapt to your context
 
