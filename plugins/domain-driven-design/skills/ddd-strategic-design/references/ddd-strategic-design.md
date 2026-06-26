@@ -33,11 +33,9 @@ Standards and sources:
 The ubiquitous language is the shared, rigorous vocabulary that domain experts and developers construct together
 and then use without exception in every artefact: code, tests, documentation, and conversation. Evans introduced
 the concept in *Domain-Driven Design* (2003) as the mechanism by which the gap between a domain expert's mental
-model and a developer's implementation model collapses into a single, consistent model. Fowler restates the
-intent in his bliki:
-
-> "A Ubiquitous Language is a language structured around the domain model and used by all team members to connect all the activities of the team with the software."
-> ([Fowler, UbiquitousLanguage](https://martinfowler.com/bliki/UbiquitousLanguage.html))
+model and a developer's implementation model collapses into a single, consistent model. Fowler's bliki entry describes ubiquitous language as the term Evans uses for the practice of building up a
+common, rigorous language between developers and users
+([Fowler, UbiquitousLanguage](https://martinfowler.com/bliki/UbiquitousLanguage.html)).
 
 Three qualities define the language:
 

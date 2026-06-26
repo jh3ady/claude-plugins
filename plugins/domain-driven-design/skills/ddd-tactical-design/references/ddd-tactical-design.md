@@ -588,6 +588,7 @@ class PlaceOrderUseCase {
         const order = await this.orders.findById(command.orderId);
         if (!order) throw new Error('Order not found');
 
+        // A discount-applying use case would load the Customer and call LoyaltyDiscountService here; PlaceOrder deliberately carries no such rule.
         // The business rule "an order must have at least one line item" is enforced
         // inside order.place(), not here.
         order.place();
