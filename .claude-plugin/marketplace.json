@@ -59,6 +59,12 @@
       "source": "./plugins/domain-driven-design",
       "description": "Domain-driven design applied pragmatically, in three skills: EventStorming (collaborative domain discovery, the three formats, the orange-sticky notation), strategic design (ubiquitous language, bounded contexts, subdomains, context mapping), and tactical design (entities, value objects, aggregates, domain events, repositories, domain services, factories), with TypeScript specifics. Composable with your own conventions.",
       "version": "0.1.0"
+    },
+    {
+      "name": "event-sourcing",
+      "source": "./plugins/event-sourcing",
+      "description": "Event sourcing applied pragmatically: an append-only event store as the system of record, event-sourced aggregates rehydrated by replaying their events, snapshots, projections and read models, schema versioning and upcasting, idempotency, and the relationship to CQRS and domain-driven design. Composable with your own conventions.",
+      "version": "0.1.0"
     }
   ]
 }

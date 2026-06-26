@@ -1,0 +1,22 @@
+{
+  "name": "event-sourcing",
+  "version": "0.1.0",
+  "description": "Event sourcing applied pragmatically: an append-only event store as the system of record, event-sourced aggregates rehydrated by replaying their events, snapshots, projections and read models, schema versioning and upcasting, idempotency and ordering, compensating events, and the relationship to CQRS and domain-driven design, with TypeScript specifics. Composable with your own conventions.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/event-sourcing",
+  "keywords": [
+    "event-sourcing",
+    "event-store",
+    "event-sourced-aggregate",
+    "projection",
+    "read-model",
+    "snapshot",
+    "cqrs",
+    "software-architecture",
+    "ddd"
+  ]
+}
