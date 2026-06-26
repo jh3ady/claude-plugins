@@ -57,7 +57,7 @@
     {
       "name": "domain-driven-design",
       "source": "./plugins/domain-driven-design",
-      "description": "Domain-driven design applied pragmatically, in two skills: strategic design (ubiquitous language, bounded contexts, subdomains, context mapping) and tactical design (entities, value objects, aggregates, domain events, repositories, domain services, factories), with TypeScript specifics. Composable with your own conventions.",
+      "description": "Domain-driven design applied pragmatically, in three skills: EventStorming (collaborative domain discovery, the three formats, the orange-sticky notation), strategic design (ubiquitous language, bounded contexts, subdomains, context mapping), and tactical design (entities, value objects, aggregates, domain events, repositories, domain services, factories), with TypeScript specifics. Composable with your own conventions.",
       "version": "0.1.0"
     }
   ]

@@ -61,6 +61,7 @@ A module is a named, cohesive, low-coupling partition of the domain model whose 
 - **`dependency-injection`**: domain services and repositories declared as interfaces in the domain are injected at the composition root. See `dependency-injection` for constructor injection patterns and the over-injection smell.
 - **`clean-code` and `solid-principles`**: naming domain concepts after the ubiquitous language, keeping methods small, and applying the Single Responsibility Principle to domain services are covered there. Those skills govern the implementation quality of the building blocks this skill defines.
 - **`ddd-strategic-design`**: the sibling skill. Strategic design answers where the model boundary lies and what the ubiquitous language is; tactical design fills in the building blocks inside that boundary. Apply strategic design first.
+- **`ddd-event-storming`**: the discovery workshop that precedes modelling. Its Software Design level produces the candidate aggregates and domain events that this skill turns into entities, value objects, aggregates, and domain events in code.
 
 ## Adapt to your context
 

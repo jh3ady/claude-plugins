@@ -88,8 +88,9 @@ Match the investment to the subdomain:
 - **`hexagonal-architecture`**: the anticorruption layer lives at an adapter boundary in the hexagonal model. The
   application core of a bounded context is the domain model; hexagonal architecture is the structural pattern that
   protects it from infrastructure and from foreign models. These skills compose directly.
-- **Event storming**: a collaborative domain-discovery workshop often used before context mapping. Out of scope here;
-  planned as a future plugin.
+- **`ddd-event-storming`**: the sibling skill for the collaborative domain-discovery workshop that usually precedes
+  context mapping. Pivotal events and emergent event clusters surface the candidate bounded contexts and subdomains this
+  skill then formalises. Run an EventStorming session first when the domain is not yet well understood.
 - **CQRS and event sourcing**: tactical and infrastructure patterns that commonly appear inside bounded contexts. Out of
   scope here; planned as a future plugin.
 

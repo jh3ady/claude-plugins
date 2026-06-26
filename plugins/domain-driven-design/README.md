@@ -1,12 +1,22 @@
 # domain-driven-design
 
-A Claude Code plugin that helps apply domain-driven design pragmatically: two matched skills that work together, one for drawing the large-scale model and establishing boundaries, one for filling in the building blocks inside those boundaries. Apply them where domain complexity justifies the investment, not as a blanket mandate.
+A Claude Code plugin that helps apply domain-driven design pragmatically: three matched skills that work together, one for discovering the domain collaboratively, one for drawing the large-scale model and establishing boundaries, one for filling in the building blocks inside those boundaries. Apply them where domain complexity justifies the investment, not as a blanket mandate.
 
 It stays generic on purpose: compose it with your own team conventions, context-mapping sessions, and naming rules.
 
 ## What it does
 
-When you work with domain models, context boundaries, or rich business logic, the two bundled skills apply as a pair. Strategic design comes first; tactical design follows inside each bounded context.
+When you work with domain models, context boundaries, or rich business logic, the three bundled skills apply together. EventStorming discovers the domain; strategic design draws the boundaries; tactical design fills in the building blocks inside each bounded context.
+
+### ddd-event-storming
+
+When you run or prepare a domain-discovery workshop, explore an unfamiliar business process with domain experts, map a flow of domain events on a timeline, or hunt for bounded contexts and aggregates, this skill applies:
+
+- EventStorming (Alberto Brandolini): a collaborative workshop format for exploring complex business domains, the discovery move that precedes DDD modelling. Its purpose is learning, not documentation.
+- The three formats: Big Picture (find the boundaries), Process Modelling (understand one flow), Software Design (discover aggregates inside a bounded context).
+- The orange-sticky notation and its command-aggregate-event grammar, plus the Big Picture recipe: chaotic exploration, enforce the timeline, pivotal events, hotspots, and the explicit walkthrough.
+- How the output feeds the other two skills: pivotal events and emergent clusters become candidate bounded contexts and subdomains; the command-aggregate-event grammar surfaces candidate aggregates and domain events.
+- Guardrails: a wall of stickies is not a deliverable; it is overkill for simple or CRUD-dominant domains; outcomes depend on skilled facilitation and the right people; remote works but is a compromise.
 
 ### ddd-strategic-design
 
@@ -31,7 +41,7 @@ When you are modelling domain building blocks, choosing between entities and val
 - Factories: encapsulate complex construction of aggregates, entities, or value objects; add one only when a simple constructor does not suffice (YAGNI).
 - The anemic domain model anti-pattern: entities as data bags with all business rules in services bear the cost of a domain model without the benefit of behaviour close to the data it governs.
 
-CQRS, event sourcing, and event storming are out of scope; each is planned as a future plugin.
+CQRS and event sourcing are out of scope; each is planned as a future plugin.
 
 ## Install
 
