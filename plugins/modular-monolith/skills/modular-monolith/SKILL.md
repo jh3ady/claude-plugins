@@ -53,7 +53,7 @@ The modular monolith is the container. These are choices about each module's
 content, referenced here, not imposed:
 
 - **DDD bounded contexts**: where to draw boundaries. A module can be a
-  bounded context, but DDD is not required.
+  bounded context, but DDD is not required. See the `ddd-strategic-design` skill for bounded contexts and context mapping.
 - **Hexagonal / ports and adapters**: how to structure a module's inside,
   decided module by module.
 - **CQRS and event sourcing**: optional and orthogonal.

@@ -245,7 +245,7 @@ not by default."
 
 Never reach into another module's internals on either path. An anti-corruption
 layer is a reasonable addition on a synchronous boundary when the calling
-module should not mirror the domain concepts of the called module.
+module should not mirror the domain concepts of the called module; for its full treatment as a Domain-Driven Design context-mapping pattern, see the `ddd-strategic-design` skill.
 ([Grzybek, Integration Styles](https://www.kamilgrzybek.com/blog/posts/modular-monolith-integration-styles))
 
 **Contested axis.** Grzybek's reference implementation mandates async events
@@ -663,6 +663,6 @@ fewer, coarser modules. Let a module earn its independence."
 Per Grzybek: "One [module] may have a more complicated domain, the other may
 only implement CRUD operations. The application architecture for these modules
 will be different." Do not apply heavy DDD tactical patterns to simple CRUD
-modules. Match the sophistication of each module to its actual complexity.
+modules. The `ddd-tactical-design` skill makes the same point. Match the sophistication of each module to its actual complexity.
 
 Match the level of enforcement to the actual need.
