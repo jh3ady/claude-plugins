@@ -158,9 +158,11 @@ that it was undone, which is itself part of the history.
   skill for the structural wiring.
 - **`dependency-injection`**: the event store and projection dependencies are
   declared as interfaces and injected at the composition root.
-- **CQRS**: the command/query split that event sourcing pairs with. It is a
-  distinct pattern, referenced here but not taught, and planned as its own
-  future plugin.
+- **`cqrs`**: the command/query split that event sourcing pairs with. The
+  relationship is asymmetric: event sourcing effectively implies CQRS (the
+  event store is the write model, projections are the read model), but CQRS
+  does not require event sourcing. Consult that skill for the command/query
+  split in its own right; this skill covers the event-sourcing half.
 
 ## Adapt to your context
 

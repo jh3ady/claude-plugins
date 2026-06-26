@@ -43,9 +43,9 @@ applies:
   become the events you store.
 - `hexagonal-architecture`: the event store sits behind a secondary (driven)
   port; projections are driven adapters.
-- CQRS (Command Query Responsibility Segregation) pairs naturally with event
-  sourcing and is referenced here, but it is a distinct pattern and planned as
-  its own future plugin.
+- `cqrs`: Command Query Responsibility Segregation pairs naturally with event
+  sourcing, but it is a distinct pattern. The relationship is asymmetric: event
+  sourcing effectively implies CQRS, while CQRS does not require event sourcing.
 
 ## Install
 

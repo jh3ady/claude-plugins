@@ -461,9 +461,9 @@ The pairing is common but neither pattern requires the other. You can apply CQRS
 with a conventional current-state write model and no events, and you can
 event-source a write model without a separate read side if replay-based reads are
 fast enough. This skill covers the event-sourcing half and references the read
-side as projections; CQRS in its own right (command and query buses, read-model
-design, the consistency trade-offs) is a distinct pattern planned as its own
-future plugin.
+side as projections; CQRS in its own right (the command/query split, command and
+query handlers, read-model design, the levels of separation, and the consistency
+trade-offs) is covered by the `cqrs` skill.
 
 ## 10. Schema evolution and versioning
 
