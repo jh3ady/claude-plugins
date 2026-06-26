@@ -82,30 +82,31 @@ structurally distinct from one another and from bare strings, so that passing an
 type CustomerId = string & { readonly _brand: 'CustomerId' };
 
 class Customer {
-  constructor(
-    readonly id: CustomerId,
-    private name: string,
-    private loyaltyTier: 'STANDARD' | 'GOLD'
-  ) {}
+    constructor(
+        readonly id: CustomerId,
+        private name: string,
+        private loyaltyTier: 'STANDARD' | 'GOLD'
+    ) {
+    }
 
-  get tier(): 'STANDARD' | 'GOLD' {
-    return this.loyaltyTier;
-  }
+    get tier(): 'STANDARD' | 'GOLD' {
+        return this.loyaltyTier;
+    }
 
-  rename(newName: string): void {
-    if (!newName.trim()) throw new Error('Name cannot be blank');
-    this.name = newName;
-  }
+    rename(newName: string): void {
+        if (!newName.trim()) throw new Error('Name cannot be blank');
+        this.name = newName;
+    }
 
-  upgrade(): void {
-    this.loyaltyTier = 'GOLD';
-  }
+    upgrade(): void {
+        this.loyaltyTier = 'GOLD';
+    }
 
-  // Identity equality: two Customer instances are the same entity if and only if
-  // their identifiers match. Attribute values are irrelevant to equality.
-  equals(other: Customer): boolean {
-    return this.id === other.id;
-  }
+    // Identity equality: two Customer instances are the same entity if and only if
+    // their identifiers match. Attribute values are irrelevant to equality.
+    equals(other: Customer): boolean {
+        return this.id === other.id;
+    }
 }
 ```
 
@@ -128,11 +129,11 @@ meaningful identity beyond those attributes: two `Money` instances representing 
 euros are interchangeable. The client code does not care which specific instance it
 holds; it cares only about the value represented.
 
-Fowler consolidates the community definition:
-
-> "Value objects are things in the domain, described only by their properties, with
-> no conceptual identity. They are usually small objects, like money or a date range."
-> (Fowler, [ValueObject](https://martinfowler.com/bliki/ValueObject.html))
+Fowler consolidates the community definition: value objects are objects whose equality
+is determined by the value of their properties rather than by any conceptual identity;
+even compound structures such as money amounts and date ranges qualify as value objects
+when they carry no independent identity
+(Fowler, [ValueObject](https://martinfowler.com/bliki/ValueObject.html)).
 
 Three properties define a value object:
 
@@ -159,29 +160,29 @@ expressive and concise.
 
 ```typescript
 class Money {
-  constructor(
-    readonly amount: number,
-    readonly currency: string
-  ) {
-    if (amount < 0) throw new Error('Amount cannot be negative');
-    if (!currency.trim()) throw new Error('Currency cannot be blank');
-  }
-
-  add(other: Money): Money {
-    if (other.currency !== this.currency) {
-      throw new Error(`Currency mismatch: ${this.currency} vs ${other.currency}`);
+    constructor(
+        readonly amount: number,
+        readonly currency: string
+    ) {
+        if (amount < 0) throw new Error('Amount cannot be negative');
+        if (!currency.trim()) throw new Error('Currency cannot be blank');
     }
-    return new Money(this.amount + other.amount, this.currency);
-  }
 
-  multiply(factor: number): Money {
-    if (factor < 0) throw new Error('Factor cannot be negative');
-    return new Money(this.amount * factor, this.currency);
-  }
+    add(other: Money): Money {
+        if (other.currency !== this.currency) {
+            throw new Error(`Currency mismatch: ${this.currency} vs ${other.currency}`);
+        }
+        return new Money(this.amount + other.amount, this.currency);
+    }
 
-  equals(other: Money): boolean {
-    return this.amount === other.amount && this.currency === other.currency;
-  }
+    multiply(factor: number): Money {
+        if (factor < 0) throw new Error('Factor cannot be negative');
+        return new Money(this.amount * factor, this.currency);
+    }
+
+    equals(other: Money): boolean {
+        return this.amount === other.amount && this.currency === other.currency;
+    }
 }
 
 // Usage:
@@ -220,13 +221,11 @@ a large, interconnected object graph is practically impossible: the consistency 
 are unclear, the locking scope is ambiguous, and concurrent access causes contention
 (Evans, Domain-Driven Design (2003)). An aggregate answers the question "what set of
 objects must be consistent at the end of a transaction?" with a deliberate,
-domain-driven answer. Fowler's bliki entry gives the core rule concisely:
-
-> "A DDD aggregate is a cluster of domain objects that can be treated as a single
-> unit. [...] Each aggregate has a root and a boundary. The boundary defines what is
-> inside the aggregate. The root is a single, specific entity contained in the
-> aggregate."
-> (Fowler, [DDD_Aggregate](https://martinfowler.com/bliki/DDD_Aggregate.html))
+domain-driven answer. Fowler's bliki entry gives the core rule concisely: an aggregate
+is a cluster of domain objects treated as a single unit, with one component designated
+as the aggregate root; all references from outside the aggregate pass through the root,
+which is responsible for ensuring the integrity of the aggregate as a whole
+(Fowler, [DDD_Aggregate](https://martinfowler.com/bliki/DDD_Aggregate.html)).
 
 ### Vernon's four rules
 
@@ -274,80 +273,94 @@ The `Order` aggregate below demonstrates all four rules in a single bounded cont
   discussion.
 
 ```typescript
-type OrderId    = string & { readonly _brand: 'OrderId'    };
+type OrderId = string & { readonly _brand: 'OrderId' };
 type OrderLineId = string & { readonly _brand: 'OrderLineId' };
-type ProductId  = string & { readonly _brand: 'ProductId'  };
+type ProductId = string & { readonly _brand: 'ProductId' };
 
 // DomainEvent is the base marker interface for all domain events; see section 4.
-interface DomainEvent { readonly type: string; }
+interface DomainEvent {
+    readonly type: string;
+}
+
+// OrderPlaced is declared here so Order.place() can construct it type-safely.
+// Section 4 introduces domain events as a first-class building block and
+// annotates this interface in full.
+interface OrderPlaced extends DomainEvent {
+    readonly type: 'OrderPlaced';
+    readonly orderId: OrderId;
+    readonly customerId: CustomerId;
+    readonly placedAt: Date;
+}
 
 // OrderLine is a child entity within the Order aggregate boundary.
 // External code cannot access or mutate OrderLine instances directly.
 class OrderLine {
-  constructor(
-    readonly id: OrderLineId,
-    readonly productId: ProductId,
-    readonly quantity: number,
-    readonly unitPrice: Money      // Money defined in section 2
-  ) {
-    if (quantity < 1) throw new Error('Quantity must be at least 1');
-  }
+    constructor(
+        readonly id: OrderLineId,
+        readonly productId: ProductId,
+        readonly quantity: number,
+        readonly unitPrice: Money      // Money defined in section 2
+    ) {
+        if (quantity < 1) throw new Error('Quantity must be at least 1');
+    }
 
-  get total(): Money {
-    return this.unitPrice.multiply(this.quantity);
-  }
+    get total(): Money {
+        return this.unitPrice.multiply(this.quantity);
+    }
 
-  // Entity equality: by identity, not by attributes.
-  equals(other: OrderLine): boolean {
-    return this.id === other.id;
-  }
+    // Entity equality: by identity, not by attributes.
+    equals(other: OrderLine): boolean {
+        return this.id === other.id;
+    }
 }
 
 // Order is the aggregate root and the sole entry point for state changes within
 // the order boundary.
 class Order {
-  private readonly _lines: OrderLine[] = [];
-  private readonly _events: DomainEvent[] = [];
+    private readonly _lines: OrderLine[] = [];
+    private readonly _events: DomainEvent[] = [];
 
-  constructor(
-    readonly id: OrderId,
-    readonly customerId: CustomerId   // CustomerId defined in section 1; identity only
-  ) {}
-
-  addLine(line: OrderLine): void {
-    // Invariant: no two line items may reference the same product within one order.
-    if (this._lines.some(l => l.productId === line.productId)) {
-      throw new Error(`Product ${line.productId} already exists in this order`);
+    constructor(
+        readonly id: OrderId,
+        readonly customerId: CustomerId   // CustomerId defined in section 1; identity only
+    ) {
     }
-    this._lines.push(line);
-  }
 
-  place(): void {
-    // Invariant: an order must contain at least one line item before placement.
-    if (this._lines.length === 0) {
-      throw new Error('Cannot place an order with no line items');
+    addLine(line: OrderLine): void {
+        // Invariant: no two line items may reference the same product within one order.
+        if (this._lines.some(l => l.productId === line.productId)) {
+            throw new Error(`Product ${line.productId} already exists in this order`);
+        }
+        this._lines.push(line);
     }
-    // Emit a domain event; cross-aggregate side-effects happen in a separate
-    // transaction driven by an event handler, not here (Vernon's rule 4).
-    this._events.push({
-      type: 'OrderPlaced',
-      orderId: this.id,
-      customerId: this.customerId,
-      placedAt: new Date()
-    });
-  }
 
-  get total(): Money {
-    // Simplified: assumes all line items share the same currency.
-    return this._lines.reduce((sum, l) => sum.add(l.total), new Money(0, 'EUR'));
-  }
+    place(): void {
+        // Invariant: an order must contain at least one line item before placement.
+        if (this._lines.length === 0) {
+            throw new Error('Cannot place an order with no line items');
+        }
+        // Emit a domain event; cross-aggregate side-effects happen in a separate
+        // transaction driven by an event handler, not here (Vernon's rule 4).
+        const event: OrderPlaced = {
+            type: 'OrderPlaced',
+            orderId: this.id,
+            customerId: this.customerId,
+            placedAt: new Date()
+        };
+        this._events.push(event);
+    }
 
-  // Extract and clear pending events for dispatch by the application layer.
-  pullEvents(): DomainEvent[] {
-    const events = [...this._events];
-    this._events.length = 0;
-    return events;
-  }
+    get total(): Money {
+        // Simplified: assumes all line items share the same currency.
+        return this._lines.reduce((sum, l) => sum.add(l.total), new Money(0, 'EUR'));
+    }
+
+    // Extract and clear pending events for dispatch by the application layer.
+    pullEvents(): DomainEvent[] {
+        const events = [...this._events];
+        this._events.length = 0;
+        return events;
+    }
 }
 ```
 
@@ -386,17 +399,18 @@ aggregate emits events as plain value objects; it does not publish to a bus.
 
 ### TypeScript example
 
-`OrderPlaced` extends the `DomainEvent` base interface defined in section 3 and
-typed to the event's specific fields:
+`OrderPlaced` is declared in section 3 alongside the `Order` aggregate so that
+`Order.place()` can construct it type-safely. It is restated here with full
+annotation as the worked example for this section:
 
 ```typescript
 // OrderPlaced is emitted by Order.place() and collected via Order.pullEvents().
 // All fields are readonly: a domain event is a record of the past; it cannot change.
 interface OrderPlaced extends DomainEvent {
-  readonly type: 'OrderPlaced';
-  readonly orderId: OrderId;       // OrderId defined in section 3
-  readonly customerId: CustomerId; // CustomerId defined in section 1
-  readonly placedAt: Date;
+    readonly type: 'OrderPlaced';
+    readonly orderId: OrderId;       // OrderId defined in section 3
+    readonly customerId: CustomerId; // CustomerId defined in section 1
+    readonly placedAt: Date;
 }
 ```
 
@@ -475,10 +489,13 @@ complementary and should not be merged.
 // (backed by a database, an ORM, or an in-memory store) is chosen at the
 // composition root and injected into application services.
 interface OrderRepository {
-  findById(id: OrderId): Promise<Order | null>;
-  findByCustomer(customerId: CustomerId): Promise<Order[]>;
-  findUnpaid(): Promise<Order[]>;
-  save(order: Order): Promise<void>;
+    findById(id: OrderId): Promise<Order | null>;
+
+    findByCustomer(customerId: CustomerId): Promise<Order[]>;
+
+    findUnpaid(): Promise<Order[]>;
+
+    save(order: Order): Promise<void>;
 }
 
 // Usage in application code (see also section 6):
@@ -540,10 +557,10 @@ application service and it should not have been.
 // tier (from the Customer aggregate, defined in section 1).
 // It is stateless and holds no infrastructure dependency.
 class LoyaltyDiscountService {
-  computeDiscount(order: Order, customer: Customer): Money {
-    const rate = customer.tier === 'GOLD' ? 0.15 : 0;
-    return order.total.multiply(rate);  // Money defined in section 2
-  }
+    computeDiscount(order: Order, customer: Customer): Money {
+        const rate = customer.tier === 'GOLD' ? 0.15 : 0;
+        return order.total.multiply(rate);  // Money defined in section 2
+    }
 }
 ```
 
@@ -552,30 +569,35 @@ class LoyaltyDiscountService {
 // PlaceOrderUseCase orchestrates the PlaceOrder use case: load, delegate to the
 // domain, save, publish events. No business rule lives here.
 
-interface PlaceOrderCommand { readonly orderId: OrderId; }
+interface PlaceOrderCommand {
+    readonly orderId: OrderId;
+}
 
-interface EventBus { publish(event: DomainEvent): Promise<void>; }
+interface EventBus {
+    publish(event: DomainEvent): Promise<void>;
+}
 
 class PlaceOrderUseCase {
-  constructor(
-    private readonly orders: OrderRepository,        // secondary port; see section 5
-    private readonly eventBus: EventBus
-  ) {}
-
-  async execute(command: PlaceOrderCommand): Promise<void> {
-    const order = await this.orders.findById(command.orderId);
-    if (!order) throw new Error('Order not found');
-
-    // The business rule "an order must have at least one line item" is enforced
-    // inside order.place(), not here.
-    order.place();
-
-    await this.orders.save(order);
-
-    for (const event of order.pullEvents()) {
-      await this.eventBus.publish(event);
+    constructor(
+        private readonly orders: OrderRepository,        // secondary port; see section 5
+        private readonly eventBus: EventBus
+    ) {
     }
-  }
+
+    async execute(command: PlaceOrderCommand): Promise<void> {
+        const order = await this.orders.findById(command.orderId);
+        if (!order) throw new Error('Order not found');
+
+        // The business rule "an order must have at least one line item" is enforced
+        // inside order.place(), not here.
+        order.place();
+
+        await this.orders.save(order);
+
+        for (const event of order.pullEvents()) {
+            await this.eventBus.publish(event);
+        }
+    }
 }
 ```
 
@@ -624,9 +646,9 @@ Two distinctions to hold clearly:
 
 ```typescript
 interface CartItem {
-  productId: ProductId;  // ProductId defined in section 3
-  quantity: number;
-  unitPrice: Money;      // Money defined in section 2
+    productId: ProductId;  // ProductId defined in section 3
+    quantity: number;
+    unitPrice: Money;      // Money defined in section 2
 }
 
 // OrderFactory.create assembles a valid Order from a set of cart items in a
@@ -634,25 +656,25 @@ interface CartItem {
 // own addLine guard (which enforces the no-duplicate-product invariant), and
 // returns an order that is valid by construction.
 class OrderFactory {
-  static create(customerId: CustomerId, items: CartItem[]): Order {
-    if (items.length === 0) {
-      throw new Error('Cannot create an order from an empty cart');
+    static create(customerId: CustomerId, items: CartItem[]): Order {
+        if (items.length === 0) {
+            throw new Error('Cannot create an order from an empty cart');
+        }
+
+        const orderId = crypto.randomUUID() as OrderId;
+        const order = new Order(orderId, customerId);
+
+        for (const item of items) {
+            const lineId = crypto.randomUUID() as OrderLineId;
+            order.addLine(
+                new OrderLine(lineId, item.productId, item.quantity, item.unitPrice)
+            );
+        }
+
+        // The returned order is in a valid, assembled state.
+        // No caller has to remember to add lines or sequence construction steps.
+        return order;
     }
-
-    const orderId = crypto.randomUUID() as OrderId;
-    const order = new Order(orderId, customerId);
-
-    for (const item of items) {
-      const lineId = crypto.randomUUID() as OrderLineId;
-      order.addLine(
-        new OrderLine(lineId, item.productId, item.quantity, item.unitPrice)
-      );
-    }
-
-    // The returned order is in a valid, assembled state.
-    // No caller has to remember to add lines or sequence construction steps.
-    return order;
-  }
 }
 ```
 
@@ -698,6 +720,40 @@ references to objects in another module. Use identifiers for cross-module refere
 the same principle Vernon recommends for cross-aggregate reference. This makes each
 module's consistency boundary explicit and makes the context map within the bounded
 context readable.
+
+### TypeScript example
+
+```typescript
+// ordering/index.ts -- public surface of the ordering module.
+//
+// Internal structure:
+//   ordering/
+//     Order.ts           (aggregate root; section 3)
+//     OrderLine.ts       (child entity; section 3)
+//     events/
+//       OrderPlaced.ts   (domain event; section 4)
+//     OrderRepository.ts (secondary port; section 5)
+//
+// All exported names belong to the ubiquitous language of the ordering subdomain.
+// Consumers import from this barrel and never reach into the internal folder structure.
+
+export type { OrderId, OrderLineId } from './Order';
+export { Order } from './Order';
+export { OrderLine } from './OrderLine';
+export type { OrderPlaced } from './events/OrderPlaced';
+export type { OrderRepository } from './OrderRepository';
+
+// Example consumer (in a sibling module such as fulfilment):
+//   import { Order, OrderRepository } from '../ordering';
+//
+// Internal reorganisation (renaming a file, extracting a subdirectory) does not
+// break external importers as long as the barrel re-exports remain stable.
+```
+
+The barrel pattern is a direct expression of the module guideline: one named export
+surface per domain concept grouping. A consumer importing `{ Order, OrderRepository }`
+from `'../ordering'` is coupling to the module boundary, not to a file path. Changing
+the internal structure does not break external code.
 
 ### When not to apply
 
@@ -781,7 +837,7 @@ the domain expert describes in a single sentence with no exceptions.
 - Eric Evans, *Domain-Driven Design: Tackling Complexity in the Heart of Software*,
   Addison-Wesley, 2003.
 - Eric Evans, *Domain-Driven Design Reference: Definitions and Pattern Summaries*,
-  2015.
+    2015.
   [https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf](https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf)
 - Vaughn Vernon, *Implementing Domain-Driven Design*, Addison-Wesley, 2013.
 - Vaughn Vernon, *Effective Aggregate Design* (three-part article series), DDD
