@@ -47,6 +47,12 @@
       "source": "./plugins/dependency-injection",
       "description": "Dependency injection applied pragmatically: Pure DI (manual constructor injection) first, the composition root, object lifetimes, and the anti-pattern catalogue, with DI containers referenced as a justified option. Composable with your own conventions.",
       "version": "0.1.0"
+    },
+    {
+      "name": "hexagonal-architecture",
+      "source": "./plugins/hexagonal-architecture",
+      "description": "Hexagonal architecture (ports and adapters) applied pragmatically: the dependency rule, primary and secondary ports and adapters, the application core, composition-root wiring, and its relationship to Onion and Clean Architecture, with TypeScript specifics. Composable with your own conventions.",
+      "version": "0.1.0"
     }
   ]
 }
