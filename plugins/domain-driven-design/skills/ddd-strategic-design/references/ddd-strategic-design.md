@@ -31,12 +31,13 @@ Standards and sources:
 ## 1. Ubiquitous language
 
 The ubiquitous language is the shared, rigorous vocabulary that domain experts and developers construct together
-and then use without exception in every artifact: code, tests, documentation, and conversation. Evans introduced
+and then use without exception in every artefact: code, tests, documentation, and conversation. Evans introduced
 the concept in *Domain-Driven Design* (2003) as the mechanism by which the gap between a domain expert's mental
 model and a developer's implementation model collapses into a single, consistent model. Fowler restates the
-intent in his bliki: the ubiquitous language is a language structured around the domain model and used by all
-team members to connect all the activities of the team with the software
-([Fowler, UbiquitousLanguage](https://martinfowler.com/bliki/UbiquitousLanguage.html)).
+intent in his bliki:
+
+> "A Ubiquitous Language is a language structured around the domain model and used by all team members to connect all the activities of the team with the software."
+> ([Fowler, UbiquitousLanguage](https://martinfowler.com/bliki/UbiquitousLanguage.html))
 
 Three qualities define the language:
 
@@ -223,7 +224,7 @@ A context map does not need to be a formal diagram. A textual sketch captures th
 ```
 [Billing Context]         --OHS/PL-->       [Customer Portal Context]
 [Customer Portal Context] --ACL-->          [Legacy CRM (Big Ball of Mud)]
-[Billing Context]         --Conformist-->   [Tax Authority API]
+[Tax Authority API]       --Conformist-->   [Billing Context]
 [Billing Context]     <--Partnership-->     [Notifications Context]
 ```
 
