@@ -91,8 +91,9 @@ Match the investment to the subdomain:
 - **`ddd-event-storming`**: the sibling skill for the collaborative domain-discovery workshop that usually precedes
   context mapping. Pivotal events and emergent event clusters surface the candidate bounded contexts and subdomains this
   skill then formalises. Run an EventStorming session first when the domain is not yet well understood.
-- **CQRS and event sourcing**: tactical and infrastructure patterns that commonly appear inside bounded contexts. Out of
-  scope here; planned as a future plugin.
+- **`event-sourcing`**: a persistence pattern that commonly appears inside bounded contexts, where an event-sourced
+  aggregate is persisted as its own domain events. Covered by the separate `event-sourcing` skill, not here. CQRS, its
+  frequent companion, remains out of scope and planned as a future plugin.
 
 ## Adapt to your context
 

@@ -461,8 +461,11 @@ concerns. Domain events are a tactical building block in the domain layer: an
 aggregate emits them to signal state changes. CQRS separates the write model from the
 read model. Event sourcing persists the aggregate's history as a sequence of events
 rather than as a current-state snapshot. Either pattern may use domain events, but
-neither is required to use them, and domain events do not require either. Both CQRS
-and event sourcing are planned as future plugins; they are out of scope here.
+neither is required to use them, and domain events do not require either. Event
+sourcing is covered by the separate `event-sourcing` skill, where an event-sourced
+aggregate is the tactical aggregate defined here persisted as its own domain events;
+consult it for the event store, rehydration, snapshots, and projections. CQRS is out
+of scope here and planned as a future plugin.
 
 ### When not to apply
 

@@ -30,7 +30,7 @@ Vernon's four rules for aggregate design (Effective Aggregate Design, 2011):
 
 A domain event represents something that happened in the domain that domain experts care about and that other parts of the system may need to react to. It is named in the past tense and in the ubiquitous language (for example, `OrderPlaced` or `PaymentRefunded`). Domain events are a first-class tactical building block, not infrastructure plumbing.
 
-Note: CQRS (Command Query Responsibility Segregation) and event sourcing are separate patterns that frequently appear alongside domain events, but they are distinct concerns. Both are out of scope here and planned as a future plugin.
+Note: CQRS (Command Query Responsibility Segregation) and event sourcing are separate patterns that frequently appear alongside domain events, but they are distinct concerns. Event sourcing is covered by the separate `event-sourcing` skill, where an event-sourced aggregate is the tactical aggregate persisted as its own domain events. CQRS is out of scope here and planned as a future plugin.
 
 ## Repository
 
