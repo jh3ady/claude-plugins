@@ -464,8 +464,9 @@ rather than as a current-state snapshot. Either pattern may use domain events, b
 neither is required to use them, and domain events do not require either. Event
 sourcing is covered by the separate `event-sourcing` skill, where an event-sourced
 aggregate is the tactical aggregate defined here persisted as its own domain events;
-consult it for the event store, rehydration, snapshots, and projections. CQRS is out
-of scope here and planned as a future plugin.
+consult it for the event store, rehydration, snapshots, and projections. CQRS is
+covered by the separate `cqrs` skill, where the tactical aggregate defined here is
+the write model and queries are served by a separate read model.
 
 ### When not to apply
 

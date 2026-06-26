@@ -41,7 +41,7 @@ When you are modelling domain building blocks, choosing between entities and val
 - Factories: encapsulate complex construction of aggregates, entities, or value objects; add one only when a simple constructor does not suffice (YAGNI).
 - The anemic domain model anti-pattern: entities as data bags with all business rules in services bear the cost of a domain model without the benefit of behaviour close to the data it governs.
 
-Event sourcing is out of scope here and lives in its own `event-sourcing` plugin, which composes with these skills through the event-sourced aggregate. CQRS is also out of scope and planned as a future plugin.
+Event sourcing is out of scope here and lives in its own `event-sourcing` plugin, which composes with these skills through the event-sourced aggregate. CQRS likewise lives in its own `cqrs` plugin, where the tactical aggregate is the write model.
 
 ## Install
 

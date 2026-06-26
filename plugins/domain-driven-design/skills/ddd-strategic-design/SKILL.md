@@ -93,7 +93,7 @@ Match the investment to the subdomain:
   skill then formalises. Run an EventStorming session first when the domain is not yet well understood.
 - **`event-sourcing`**: a persistence pattern that commonly appears inside bounded contexts, where an event-sourced
   aggregate is persisted as its own domain events. Covered by the separate `event-sourcing` skill, not here. CQRS, its
-  frequent companion, remains out of scope and planned as a future plugin.
+  frequent companion, is covered by the separate `cqrs` skill.
 
 ## Adapt to your context
 
