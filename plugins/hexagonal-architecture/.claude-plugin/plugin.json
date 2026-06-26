@@ -1,0 +1,20 @@
+{
+  "name": "hexagonal-architecture",
+  "version": "0.1.0",
+  "description": "Hexagonal architecture (ports and adapters) applied pragmatically: the dependency rule, primary and secondary ports and adapters, the application core, composition-root wiring, and its relationship to Onion and Clean Architecture, with TypeScript specifics. Composable with your own conventions.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/hexagonal-architecture",
+  "keywords": [
+    "hexagonal-architecture",
+    "ports-and-adapters",
+    "software-architecture",
+    "clean-architecture",
+    "onion-architecture",
+    "dependency-inversion",
+    "ddd"
+  ]
+}
