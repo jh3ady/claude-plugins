@@ -1,0 +1,22 @@
+{
+  "name": "cqrs",
+  "version": "0.1.0",
+  "description": "Command Query Responsibility Segregation applied pragmatically: the command/query split promoted to the model level, command and query handlers, the write model versus read models and projections, the levels of separation from a shared store to separate stores, the consistency trade-off, and the relationship to CQS, event sourcing, and domain-driven design, with TypeScript specifics. Composable with your own conventions.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/cqrs",
+  "keywords": [
+    "cqrs",
+    "command-query-separation",
+    "command-handler",
+    "query-handler",
+    "read-model",
+    "write-model",
+    "projection",
+    "software-architecture",
+    "ddd"
+  ]
+}

@@ -38,7 +38,9 @@ You can also declare the marketplace in your `settings.json`:
 | [`modular-monolith`](plugins/modular-monolith) | One deployable unit, strictly bounded modules with public APIs, isolated data, and TypeScript-ecosystem boundary enforcement. |
 | [`dependency-injection`](plugins/dependency-injection) | Pure DI (manual constructor injection) first, the composition root, object lifetimes, and the anti-pattern catalogue, with DI containers as a justified option. |
 | [`hexagonal-architecture`](plugins/hexagonal-architecture) | Ports and adapters applied pragmatically: the dependency rule, primary and secondary ports and adapters, the application core, composition-root wiring, and the relationship to Onion and Clean Architecture. |
-| [`domain-driven-design`](plugins/domain-driven-design) | DDD applied pragmatically in two skills: strategic design (ubiquitous language, bounded contexts, subdomains, context mapping) and tactical design (entities, value objects, aggregates, domain events, repositories, services, factories). |
+| [`domain-driven-design`](plugins/domain-driven-design) | DDD applied pragmatically in three skills: EventStorming (collaborative domain discovery), strategic design (ubiquitous language, bounded contexts, subdomains, context mapping), and tactical design (entities, value objects, aggregates, domain events, repositories, services, factories). |
+| [`event-sourcing`](plugins/event-sourcing) | An append-only event store as the system of record, event-sourced aggregates rehydrated by replaying events, snapshots, projections and read models, schema versioning and upcasting, and the relationship to CQRS. |
+| [`cqrs`](plugins/cqrs) | The command/query split promoted to the model level, command and query handlers, the write model versus read models and projections, the levels of separation from a shared store to separate stores, and the consistency trade-off. |
 
 ## Contributing
 

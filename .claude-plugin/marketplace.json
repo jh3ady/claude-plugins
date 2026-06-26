@@ -65,6 +65,12 @@
       "source": "./plugins/event-sourcing",
       "description": "Event sourcing applied pragmatically: an append-only event store as the system of record, event-sourced aggregates rehydrated by replaying their events, snapshots, projections and read models, schema versioning and upcasting, idempotency, and the relationship to CQRS and domain-driven design. Composable with your own conventions.",
       "version": "0.1.0"
+    },
+    {
+      "name": "cqrs",
+      "source": "./plugins/cqrs",
+      "description": "Command Query Responsibility Segregation applied pragmatically: the command/query split promoted to the model level, command and query handlers, the write model versus read models and projections, the levels of separation from a shared store to separate stores, the consistency trade-off, and the relationship to CQS, event sourcing, and domain-driven design. Composable with your own conventions.",
+      "version": "0.1.0"
     }
   ]
 }
