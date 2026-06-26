@@ -267,7 +267,7 @@ Two consequences follow:
   the seam where anti-corruption translation belongs when a foreign model is
   involved, without assuming every adapter is one. The full anti-corruption
   layer and the rest of Domain-Driven Design's context-mapping vocabulary are
-  outside this skill's scope.
+  covered by the `ddd-strategic-design` skill, outside this skill's scope.
 
 ### When not to apply
 

@@ -50,8 +50,7 @@ system, or another bounded context), translate that model into the domain's
 terms at the boundary so it never leaks past the port. This is where a
 Domain-Driven Design anti-corruption layer comes into play. The two are not
 synonyms, though: an adapter over your own model is a technology boundary, not
-an anti-corruption layer, and the pattern's full treatment is DDD territory, not
-this skill's.
+an anti-corruption layer, and the pattern's full treatment is DDD territory, covered by the `ddd-strategic-design` skill, not this one.
 
 ## Wiring and testing
 
