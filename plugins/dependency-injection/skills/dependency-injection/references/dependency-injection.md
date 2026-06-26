@@ -747,6 +747,8 @@ The rules: "Newables must not depend on injectables" and "Injectables must not
 hold newables as state."
 ([Hevery, 2008](https://testing.googleblog.com/2008/10/to-new-or-not-to-new.html))
 
+Entity and value object are domain-modelling terms used here only to classify what not to inject; the `ddd-tactical-design` skill defines them in depth.
+
 A concrete example: `Order` is a newable; `OrderRepository` is an injectable.
 `OrderRepository` must not hold a reference to a specific `Order` instance as
 a field. `Order` must not depend on `OrderRepository` to load itself.
@@ -769,7 +771,7 @@ serves a real boundary, not how many implementations exist today.
 ### TypeScript example: injectables versus newables and the composition root
 
 ```typescript
-// Order is a NEWABLE: a value object created at the point of use.
+// Order is a NEWABLE: an entity created at the point of use.
 // It carries data; it does not depend on services.
 
 class Order {
