@@ -364,6 +364,40 @@ class Order {
 }
 ```
 
+### Contrast: a tempting large aggregate
+
+The hardest part of rule 2 is resisting the instinct to group by association. A
+common mistake models `Customer` as an aggregate that holds the full collection of
+that customer's orders:
+
+```typescript
+// Anti-pattern: a large aggregate grouped by association, not by invariant.
+class Customer {
+    private readonly _orders: Order[] = [];   // every order this customer ever placed
+
+    placeOrder(order: Order): void {
+        this._orders.push(order);
+    }
+}
+```
+
+This reads naturally ("a customer has orders"), but it groups by a relationship
+rather than by an invariant, and two consequences follow. Loading one customer drags
+in their entire order history, and two clerks editing two different orders for the
+same customer now contend on the same `Customer` root, because the transaction spans
+the whole aggregate. No business rule requires a customer and all of their orders to
+be consistent within a single transaction, so "a customer has orders" is a
+relationship, not a true invariant (rule 1).
+
+The correct split keeps each aggregate small. `Order` is its own aggregate and refers
+to the customer by identity only (`customerId: CustomerId`, rule 3); `Customer` is a
+separate aggregate. What stays inside the `Order` boundary is `OrderLine`, because
+there a genuine invariant binds them: the order total is the sum of its lines, and an
+order must have at least one line. `OrderLine` belongs with `Order` because an
+invariant links them; `Customer` does not, because nothing links them
+transactionally. Keep the boundary as small as the true invariants allow, and grow it
+only when a real invariant forces a larger one.
+
 ### When not to apply
 
 Not every cluster of related objects should be an aggregate. If two objects simply
