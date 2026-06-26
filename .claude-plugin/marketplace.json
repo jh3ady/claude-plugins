@@ -53,6 +53,12 @@
       "source": "./plugins/hexagonal-architecture",
       "description": "Hexagonal architecture (ports and adapters) applied pragmatically: the dependency rule, primary and secondary ports and adapters, the application core, composition-root wiring, and its relationship to Onion and Clean Architecture, with TypeScript specifics. Composable with your own conventions.",
       "version": "0.1.0"
+    },
+    {
+      "name": "domain-driven-design",
+      "source": "./plugins/domain-driven-design",
+      "description": "Domain-driven design applied pragmatically, in two skills: strategic design (ubiquitous language, bounded contexts, subdomains, context mapping) and tactical design (entities, value objects, aggregates, domain events, repositories, domain services, factories), with TypeScript specifics. Composable with your own conventions.",
+      "version": "0.1.0"
     }
   ]
 }

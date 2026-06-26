@@ -37,6 +37,8 @@ You can also declare the marketplace in your `settings.json`:
 | [`clean-code`](plugins/clean-code) | Clean code craftsmanship applied pragmatically: naming, small focused functions, intent-revealing comments, error handling. |
 | [`modular-monolith`](plugins/modular-monolith) | One deployable unit, strictly bounded modules with public APIs, isolated data, and TypeScript-ecosystem boundary enforcement. |
 | [`dependency-injection`](plugins/dependency-injection) | Pure DI (manual constructor injection) first, the composition root, object lifetimes, and the anti-pattern catalogue, with DI containers as a justified option. |
+| [`hexagonal-architecture`](plugins/hexagonal-architecture) | Ports and adapters applied pragmatically: the dependency rule, primary and secondary ports and adapters, the application core, composition-root wiring, and the relationship to Onion and Clean Architecture. |
+| [`domain-driven-design`](plugins/domain-driven-design) | DDD applied pragmatically in two skills: strategic design (ubiquitous language, bounded contexts, subdomains, context mapping) and tactical design (entities, value objects, aggregates, domain events, repositories, services, factories). |
 
 ## Contributing
 
