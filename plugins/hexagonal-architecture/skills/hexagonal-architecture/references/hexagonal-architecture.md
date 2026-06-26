@@ -525,16 +525,16 @@ a large class of applications. The DEV "real world" analysis gives an explicit
 skip list
 ([Hexagonal Architecture in the Real World](https://dev.to/elpic/hexagonal-architecture-in-the-real-world-trade-offs-pitfalls-and-when-not-to-use-it-4a2p)):
 
-> "Skip it (or defer it) if: You're building CRUD — data in, data out, minimal
-> logic; The domain is still being discovered; Every port has exactly one
-> adapter and no second is planned; You're wrapping a framework with strong data
-> layer opinions; The team is small and junior — onboarding time matters more
-> than purity; This is a prototype or MVP with a likely rewrite horizon."
+Skip or defer the pattern when you are building CRUD (data in, data out, with
+minimal logic), when the domain is still being discovered, when every port has
+exactly one adapter and no second is planned, when you are wrapping a framework with
+strong data-layer opinions, when the team is small and junior so onboarding time
+matters more than purity, or when the code is a prototype or MVP with a likely
+rewrite horizon.
 
-The underlying question is whether there is a domain worth protecting:
-
-> "If your domain model is just dataclasses with no methods — data in, data out,
-> nothing in between — there's no domain worth protecting."
+The underlying question is whether there is a domain worth protecting: if the domain
+model is just data classes with no methods, data in and data out with nothing in
+between, there is no domain worth protecting.
 
 Rentea adds the cost framing and a caution about how these patterns are sold
 ([Overengineering in Onion/Hexagonal Architectures](https://victorrentea.ro/blog/overengineering-in-onion-hexagonal-architectures/)):
