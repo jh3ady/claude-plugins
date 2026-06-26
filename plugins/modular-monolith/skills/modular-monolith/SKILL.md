@@ -57,7 +57,7 @@ content, referenced here, not imposed:
 - **Hexagonal / ports and adapters**: how to structure a module's inside,
   decided module by module.
 - **Event sourcing and CQRS**: optional and orthogonal. See the `event-sourcing`
-  skill; CQRS is its frequent, separate companion.
+  and `cqrs` skills; the two are frequent, separate companions.
 
 ## Adapt to your context
 
