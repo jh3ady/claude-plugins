@@ -1,0 +1,22 @@
+{
+  "name": "domain-driven-design",
+  "version": "0.1.0",
+  "description": "Domain-driven design applied pragmatically, in two skills: strategic design (ubiquitous language, bounded contexts, subdomains, context mapping) and tactical design (entities, value objects, aggregates, domain events, repositories, domain services, factories), with TypeScript specifics. Composable with your own conventions.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/domain-driven-design",
+  "keywords": [
+    "domain-driven-design",
+    "ddd",
+    "strategic-design",
+    "tactical-design",
+    "bounded-context",
+    "ubiquitous-language",
+    "aggregate",
+    "value-object",
+    "software-architecture"
+  ]
+}
