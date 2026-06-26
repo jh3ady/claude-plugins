@@ -1,5 +1,10 @@
 # Modular monolith plugin Implementation Plan
 
+> **Addendum (2026-06-26):** Event sourcing, referenced in the steps below as a
+> future candidate plugin, has since been realised as the standalone
+> `event-sourcing` plugin. CQRS remains a future candidate. The text below is
+> preserved as the point-in-time record of the original plan.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add a `modular-monolith` plugin to the `jh3ady-claude-plugins` marketplace, mirroring the existing engineering-principle plugins (lean `SKILL.md` plus a sourced `references/` document with TypeScript examples).

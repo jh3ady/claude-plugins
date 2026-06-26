@@ -1,5 +1,10 @@
 # Clean code and software principles plugins: design
 
+> **Addendum (2026-06-26):** Event sourcing, listed below as a future-work
+> candidate plugin, has since been realised as the standalone `event-sourcing`
+> plugin. CQRS remains a future candidate. The text below is preserved as the
+> point-in-time record of the original decision.
+
 - Date: 2026-06-25
 - Status: approved (design), pending spec review
 - Author: Jean-Denis VIDOT

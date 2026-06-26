@@ -1,5 +1,10 @@
 # Domain-driven design plugin: design
 
+> **Addendum (2026-06-26):** Event sourcing, flagged below as a future plugin,
+> has since been realised as the standalone `event-sourcing` plugin. CQRS
+> remains a future plugin. The text below is preserved as the point-in-time
+> record of the original decision.
+
 - Date: 2026-06-26
 - Status: approved (design), pending spec review
 - Author: Jean-Denis VIDOT
