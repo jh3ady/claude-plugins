@@ -168,8 +168,10 @@ For technique mechanics, see `references/get-a-method-under-test.md`.
   must not alter observable behaviour. The tests you write afterwards verify that
   it did not.
 - **Refactor once green, not before.** Breaking a dependency to get tests in is
-  step three of the change algorithm. Do not attempt to redesign the class at
-  the same time; that is step five, protected by the tests you wrote in step four.
+  step three (break dependencies) of the five-step change algorithm in
+  `legacy-code-changes`. Do not attempt to redesign the class at the same time;
+  that is step five (make changes and refactor), protected by the tests you write
+  in step four.
 
 ## Relationship to other skills
 
