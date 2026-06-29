@@ -1,0 +1,20 @@
+{
+  "name": "screaming-architecture",
+  "version": "0.1.0",
+  "description": "Screaming Architecture applied pragmatically: a top-level structure that announces the business domain and its use cases rather than the framework, package-by-feature over package-by-layer, vertical slices, and composition with hexagonal, clean, and domain-driven design. Composable with your own conventions.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/screaming-architecture",
+  "keywords": [
+    "screaming-architecture",
+    "package-by-feature",
+    "vertical-slice-architecture",
+    "software-architecture",
+    "clean-architecture",
+    "use-case-driven",
+    "folder-structure"
+  ]
+}

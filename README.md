@@ -41,6 +41,7 @@ You can also declare the marketplace in your `settings.json`:
 | [`domain-driven-design`](plugins/domain-driven-design) | DDD applied pragmatically in three skills: EventStorming (collaborative domain discovery), strategic design (ubiquitous language, bounded contexts, subdomains, context mapping), and tactical design (entities, value objects, aggregates, domain events, repositories, services, factories). |
 | [`event-sourcing`](plugins/event-sourcing) | An append-only event store as the system of record, event-sourced aggregates rehydrated by replaying events, snapshots, projections and read models, schema versioning and upcasting, and the relationship to CQRS. |
 | [`cqrs`](plugins/cqrs) | The command/query split promoted to the model level, command and query handlers, the write model versus read models and projections, the levels of separation from a shared store to separate stores, and the consistency trade-off. |
+| [`screaming-architecture`](plugins/screaming-architecture) | A top-level structure that announces the business domain and its use cases rather than the framework: package-by-feature over package-by-layer, vertical slices, and composition with hexagonal, clean, and domain-driven design. |
 
 ## Contributing
 
