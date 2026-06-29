@@ -59,8 +59,13 @@ In scope:
   sketching, pinch points); sensing and separation; the "I do not have much
   time" strategies; "I cannot get this class into a test harness" framing.
 - `legacy-dependency-breaking`: the dependency-breaking techniques, grouped by
-  intent rather than as a flat list of all twenty-four. Each technique: when to
-  use it, the mechanism, a TypeScript example, and its cost or risk.
+  intent rather than as a flat list of all twenty-four. The catalogue is
+  complete and actionable: every technique is detailed enough to apply without
+  the book (intent, mechanism, TypeScript example, cost or risk). Techniques
+  that are language-specific or not relevant to TypeScript (link-seam,
+  preprocessing, and C-style tricks such as Link Substitution, Definition
+  Completion, or Replace Function with Function Pointer) are named with a short
+  note rather than given full TypeScript mechanics.
 
 Referenced as complementary, never absorbed:
 
@@ -82,9 +87,12 @@ Referenced as complementary, never absorbed:
 
 Explicitly out of scope:
 
-- A general refactoring catalogue (Fowler's *Refactoring*). Only the
-  dependency-breaking subset Feathers defines is covered; broader refactorings
-  are referenced, not reproduced.
+- A general refactoring catalogue (Fowler's *Refactoring*): refactorings that
+  are not about breaking dependencies or opening seams (Move Method, Replace
+  Conditional with Polymorphism, and the like) are referenced, not reproduced.
+  This exclusion never removes the mechanics of Feathers' dependency-breaking
+  techniques themselves: each of those stays fully detailed in the catalogue so
+  it can be applied without the book.
 - Language-specific or tool-specific test-harness setup (runners, assertion
   libraries, coverage, CI). Consistent with the `test-driven-development`
   plugin's stated non-goals.
@@ -111,8 +119,15 @@ Explicitly out of scope:
   Parameterize Constructor, Introduce Instance Delegator, Extract and Override
   Factory Method); get a method under test (Subclass and Override Method,
   Extract and Override Call, Extract and Override Getter, Parameterize Method,
-  Break Out Method Object, Adapt Parameter). The full list lives in the
-  reference; the SKILL.md teaches the grouping and the most-used techniques.
+  Break Out Method Object, Adapt Parameter). The SKILL.md teaches the grouping
+  and the most-used techniques; the references hold the complete, actionable
+  catalogue so any technique can be applied without the book.
+- **Catalogue reference split by intent (three files).** The
+  `legacy-dependency-breaking` skill carries three reference files, one per
+  intent group, mirroring the SKILL.md grouping so only the relevant group
+  loads. This is a deliberate departure from the family's one-reference-per-skill
+  norm, justified by the catalogue's size; the `legacy-code-changes` skill keeps
+  a single reference. Every technique lands in exactly one intent file.
 - **Lean `SKILL.md` per skill.** Each core stays short: definitions, the core
   practices, pragmatic guardrails, and references-out. Depth, the full
   technique catalogue, examples, and sources live in `references/`.
@@ -141,7 +156,10 @@ plugins/legacy-code/
       references/legacy-code-changes.md          # detailed method, TypeScript examples, sources
     legacy-dependency-breaking/
       SKILL.md                    # lean core
-      references/legacy-dependency-breaking.md    # full technique catalogue, TypeScript examples, sources
+      references/
+        add-without-touching.md         # Sprout Method/Class, Wrap Method/Class
+        get-a-class-into-a-harness.md   # Extract Interface, Parameterize Constructor, Introduce Instance Delegator, Extract and Override Factory Method, ...
+        get-a-method-under-test.md      # Subclass and Override Method, Extract and Override Call/Getter, Parameterize Method, Break Out Method Object, Adapt Parameter, ...
 ```
 
 Writing conventions for all generated files: English, no em-dashes, words
@@ -209,8 +227,20 @@ written in full (standard acronyms such as TDD, SOLID, DI, API are fine).
 ### `references/*.md` (depth, TypeScript examples, sources)
 
 Each reference carries TypeScript examples and "when not to apply" notes.
-`legacy-dependency-breaking/references/` holds the full technique catalogue (all
-twenty-four named, the grouped ones detailed with mechanism, example, and cost).
+
+- `legacy-code-changes/references/legacy-code-changes.md`: one file, the method
+  in depth (the algorithm, the seam taxonomy, characterization testing, effect
+  sketching and pinch points).
+- `legacy-dependency-breaking/references/`: three files, one per intent group
+  (`add-without-touching.md`, `get-a-class-into-a-harness.md`,
+  `get-a-method-under-test.md`). Together they form the complete, actionable
+  catalogue: every technique appears in exactly one file. Techniques relevant to
+  TypeScript are detailed with intent, mechanism, a TypeScript example, and
+  cost or risk, so they can be applied without the book. Language-specific or
+  non-TypeScript techniques are named with a short note (what they are, why they
+  do not apply here) rather than full mechanics, so the catalogue stays faithful
+  to Feathers without padding the files with irrelevant tricks.
+
 Sources attributed to "Feathers, *Working Effectively with Legacy Code* (2004)"
 without invented page numbers; cross-referenced concepts attributed to their
 own authors (Fowler for refactoring, Beck for TDD).
@@ -254,6 +284,9 @@ Content must be sourced, not written from memory.
 - One installable plugin following the existing structure and conventions,
   bundling two focused skills.
 - Lean skills with depth in `references/`.
+- The dependency-breaking catalogue is complete and actionable: every
+  TypeScript-relevant technique can be applied from the references alone, without
+  the book; non-applicable techniques are named with a short note.
 - Content grounded in Feathers' book and reviewed for accuracy, with the
   pragmatic guardrails applied.
 - Pragmatism and composability framing present; adjacent plugins (TDD, clean
