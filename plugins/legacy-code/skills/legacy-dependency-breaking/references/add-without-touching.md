@@ -79,7 +79,11 @@ class OrderProcessor {
     // legacy EDI integration. Untested; do not edit.
   }
 }
+```
 
+After applying Sprout Method:
+
+```typescript
 // After: two new calls added to submit(); nothing else in the method changed.
 class OrderProcessor {
   submit(order: Order): void {
@@ -191,6 +195,12 @@ call the new method on. The solution is to put the new logic in an entirely new
 class that carries none of those dependencies, write full TDD tests for it
 independently, and add a small number of lines to the host class that construct and
 use the new class.
+
+Sprout Class is also the right choice when the new behaviour has enough complexity
+or state to warrant its own type, even if the host class could be instantiated with
+stubs. When the new logic is substantial enough to be a coherent concept in its own
+right, giving it a dedicated class makes that concept explicit and keeps the host
+class from accumulating responsibilities.
 
 ### Mechanism
 
@@ -337,10 +347,12 @@ untouched except for the three new lines.
 ### When to prefer Sprout Class over the others
 
 Use Sprout Class over Sprout Method when the host class cannot be instantiated in a
-test at all. If you can get an instance (even with stubs), the simpler Sprout Method
-is preferable. Use Sprout Class over Wrap Class when the new logic is a genuinely
-new, independent concern running alongside the existing flow rather than an
-interception of the existing operation's inputs or outputs.
+test at all, or when the new behaviour is complex or stateful enough to warrant its
+own type. If you can get an instance (even with stubs) and the new logic is small
+and simple, the simpler Sprout Method is preferable. Use Sprout Class over Wrap
+Class when the new logic is a genuinely new, independent concern running alongside
+the existing flow rather than an interception of the existing operation's inputs or
+outputs.
 
 ---
 
@@ -413,7 +425,13 @@ class PaymentService {
 **Form 1: rename-and-wrap.**
 
 ```typescript
+interface AuditLog {
+  record(entry: string): void;
+}
+
 class PaymentService {
+  constructor(private readonly auditLog: AuditLog) {}
+
   // Renamed: original body moved here, unchanged.
   private chargeCore(amount: number, cardToken: string): PaymentResult {
     // ~100 lines: unchanged.
@@ -427,27 +445,32 @@ class PaymentService {
     return result;
   }
 
-  // The new tested behaviour: depends only on its own parameters.
-  auditRecord(amount: number, result: PaymentResult): string {
+  // The new tested behaviour: writes the audit entry to the injected sink.
+  auditRecord(amount: number, result: PaymentResult): void {
     const status = result.success ? "ok" : "fail";
-    return `charged ${amount} [${status}] txn=${result.transactionId}`;
+    this.auditLog.record(`charged ${amount} [${status}] txn=${result.transactionId}`);
   }
 }
 
+// Fake AuditLog captures recorded entries for assertion.
+class FakeAuditLog implements AuditLog {
+  readonly entries: string[] = [];
+  record(entry: string): void { this.entries.push(entry); }
+}
+
 // Tests target auditRecord in isolation; charge() and chargeCore() are not called.
-// PaymentService has no constructor parameters here, so no stub is needed.
-test("auditRecord describes a successful charge", () => {
-  const service = new PaymentService();
-  expect(
-    service.auditRecord(150, { success: true, transactionId: "txn-1" }),
-  ).toBe("charged 150 [ok] txn=txn-1");
+test("auditRecord writes a successful-charge entry to the audit log", () => {
+  const log = new FakeAuditLog();
+  const service = new PaymentService(log);
+  service.auditRecord(150, { success: true, transactionId: "txn-1" });
+  expect(log.entries).toEqual(["charged 150 [ok] txn=txn-1"]);
 });
 
-test("auditRecord describes a failed charge", () => {
-  const service = new PaymentService();
-  expect(
-    service.auditRecord(150, { success: false, transactionId: "txn-2" }),
-  ).toBe("charged 150 [fail] txn=txn-2");
+test("auditRecord writes a failed-charge entry to the audit log", () => {
+  const log = new FakeAuditLog();
+  const service = new PaymentService(log);
+  service.auditRecord(150, { success: false, transactionId: "txn-2" });
+  expect(log.entries).toEqual(["charged 150 [fail] txn=txn-2"]);
 });
 ```
 
@@ -456,8 +479,10 @@ satisfies an interface (for example, `PaymentGateway`).
 
 ```typescript
 // charge() is kept exactly as-is; all call sites that need audit move to
-// chargeWithAudit().
+// chargeWithAudit(). AuditLog is the same interface introduced in Form 1.
 class PaymentService {
+  constructor(private readonly auditLog: AuditLog) {}
+
   charge(amount: number, cardToken: string): PaymentResult {
     // ~100 lines: unchanged.
     return { success: true, transactionId: "txn-abc" };
@@ -469,9 +494,9 @@ class PaymentService {
     return result;
   }
 
-  auditRecord(amount: number, result: PaymentResult): string {
+  auditRecord(amount: number, result: PaymentResult): void {
     const status = result.success ? "ok" : "fail";
-    return `charged ${amount} [${status}] txn=${result.transactionId}`;
+    this.auditLog.record(`charged ${amount} [${status}] txn=${result.transactionId}`);
   }
 }
 ```
