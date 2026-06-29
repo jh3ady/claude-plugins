@@ -77,6 +77,12 @@
       "source": "./plugins/screaming-architecture",
       "description": "Screaming Architecture applied pragmatically: a top-level structure that announces the business domain and its use cases rather than the framework, package-by-feature over package-by-layer, package-by-component, vertical slices, and composition with hexagonal, clean, and domain-driven design. Composable with your own conventions.",
       "version": "0.1.0"
+    },
+    {
+      "name": "test-driven-development",
+      "source": "./plugins/test-driven-development",
+      "description": "Test-driven development applied pragmatically in the classical (Detroit) style: the iron law of a failing test first, red-green-refactor, testing behaviour rather than implementation (the unit is a behaviour or module, not a class), the test-double ladder that prefers real objects and in-memory implementations over stubs and mocks, state verification over interaction verification, keeping in-memory implementations faithful through contract tests, and the inner-loop scope of TDD, with TypeScript specifics. Composable with your own conventions.",
+      "version": "0.1.0"
     }
   ]
 }
