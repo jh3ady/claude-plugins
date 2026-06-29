@@ -42,6 +42,8 @@ You can also declare the marketplace in your `settings.json`:
 | [`event-sourcing`](plugins/event-sourcing) | An append-only event store as the system of record, event-sourced aggregates rehydrated by replaying events, snapshots, projections and read models, schema versioning and upcasting, and the relationship to CQRS. |
 | [`cqrs`](plugins/cqrs) | The command/query split promoted to the model level, command and query handlers, the write model versus read models and projections, the levels of separation from a shared store to separate stores, and the consistency trade-off. |
 | [`screaming-architecture`](plugins/screaming-architecture) | A top-level structure that announces the business domain and its use cases rather than the framework: package-by-feature over package-by-layer, vertical slices, and composition with hexagonal, clean, and domain-driven design. |
+| [`test-driven-development`](plugins/test-driven-development) | TDD in the classical (Detroit) style: a failing test first, red-green-refactor, testing behaviour not implementation, the test-double ladder preferring real objects and in-memory implementations over mocks, and contract tests. |
+| [`legacy-code`](plugins/legacy-code) | Working effectively with legacy code (Feathers) in two skills: the method (code without tests, the Legacy Code Change Algorithm, seams, characterization tests, reasoning about effects) and the dependency-breaking catalogue (Sprout, Wrap, Extract Interface, Subclass and Override, and the rest). |
 
 ## Contributing
 
