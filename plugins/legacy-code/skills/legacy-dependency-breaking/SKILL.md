@@ -98,7 +98,8 @@ The most commonly needed techniques:
   return a lighter substitute.
 - **Supersede Instance Variable.** Add a setter (package-visible) for a
   dependency that is currently assigned in the constructor. Lets the test
-  replace the value after construction.
+  replace the value after construction. Use only as a last resort; prefer
+  Parameterize Constructor when the constructor can accept a parameter.
 - **Pull Up Feature.** If a class inherits from a problematic base, pull the
   feature you want to test into a separate superclass that does not carry the
   dependency.
