@@ -156,7 +156,19 @@ test("total sums all order amounts", () => {
 });
 ```
 
-Then a failing test for the intended change (the discount):
+Then a failing test for the intended change (the discount). To make the test
+file compile before step 5 adds the real implementation, add a minimal stub to
+`InvoiceCalculator` so the failure is an assertion failure rather than a type
+error:
+
+```typescript
+// Minimal stub: makes the file compile. Returns the unmodified total (425),
+// not the discounted value (382), so the test below fails on the assertion
+// as intended; the bar stays red until step 5.
+totalForPremium(customerId: string): number {
+  return this.total(customerId);
+}
+```
 
 ```typescript
 test("total applies 10 % discount for premium customers", () => {
@@ -378,7 +390,7 @@ sufficient.
 ### Pinch points
 
 A **pinch point** is a narrow place in the effect chain where many upstream
-effects funnel through a small interface (Feathers 2004, Chapter 15). A pinch
+effects funnel through a small interface (Feathers 2004, Chapter 11). A pinch
 point is a high-leverage place to write tests: one test there covers a wide arc
 of behaviour without requiring a test for each individual path that feeds into
 it.
@@ -530,7 +542,7 @@ reach for the simpler tool.
   effect sketching, pinch points, sensing versus separation, and Sprout and
   Wrap. Chapter 2 for the algorithm; Chapter 3 for sensing and separation;
   Chapter 4 for seams; Chapter 6 for Sprout and Wrap; Chapter 11 for effect
-  sketching; Chapter 13 for characterization tests; Chapter 15 for pinch points.
+  sketching and pinch points; Chapter 13 for characterization tests.
   Paraphrased throughout; no page numbers cited.
 - Kent Beck, *Test-Driven Development: By Example* (Addison-Wesley, 2002): the
   canonical reference for TDD's red-green-refactor loop and for what
