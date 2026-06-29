@@ -22,8 +22,10 @@ the class and the dependency so the test can substitute something lightweight
 4. [Introduce Static Setter](#4-introduce-static-setter)
 5. [Extract and Override Factory Method](#5-extract-and-override-factory-method)
 6. [Supersede Instance Variable](#6-supersede-instance-variable)
-7 and 8. [Pull Up Feature and Push Down Dependency](#7-and-8-pull-up-feature-and-push-down-dependency)
-9 and 10. [Replace Global Reference with Getter and Encapsulate Global References](#9-and-10-replace-global-reference-with-getter-and-encapsulate-global-references)
+7. [Pull Up Feature](#7-and-8-pull-up-feature-and-push-down-dependency)
+8. [Push Down Dependency](#7-and-8-pull-up-feature-and-push-down-dependency)
+9. [Replace Global Reference with Getter](#9-and-10-replace-global-reference-with-getter-and-encapsulate-global-references)
+10. [Encapsulate Global References](#9-and-10-replace-global-reference-with-getter-and-encapsulate-global-references)
 11. [TypeScript guidance and the path to clean injection](#11-typescript-guidance-and-the-path-to-clean-injection)
 12. [Sources](#12-sources)
 

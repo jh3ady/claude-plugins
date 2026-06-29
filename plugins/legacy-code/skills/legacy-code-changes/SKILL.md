@@ -1,7 +1,7 @@
 ---
 name: legacy-code-changes
 description:
-  Apply Feathers' method for changing legacy code safely when working with existing untested code: identifying where to make a change in unfamiliar code, breaking the change dilemma (you need tests to change safely, but the code resists testing), writing characterization tests to pin actual behaviour before touching it, finding seams and enabling points where you can alter behaviour without editing in that place, reasoning about how a change propagates through effect sketching, locating pinch points where many effects narrow to a small testable surface, and distinguishing sensing problems (you cannot observe what the code computes) from separation problems (you cannot get the code into a harness at all). Use it whenever you hear "legacy code", "no tests around this", "afraid to change this", or "I need to add a test before refactoring", even when Feathers is not named. For the catalogue of dependency-breaking techniques the algorithm's third step calls for, use the sibling skill `legacy-dependency-breaking`.
+  This skill should be used when working with existing untested code and applying Feathers' method for changing it safely: identifying where to make a change in unfamiliar code, breaking the change dilemma (you need tests to change safely, but the code resists testing), writing characterization tests to pin actual behaviour before touching it, finding seams and enabling points where you can alter behaviour without editing in that place, reasoning about how a change propagates through effect sketching, locating pinch points where many effects narrow to a small testable surface, and distinguishing sensing problems (you cannot observe what the code computes) from separation problems (you cannot get the code into a harness at all). Use it whenever the situation involves untested code that has to change, however it is phrased: "legacy code", "no tests around this", "afraid to change this", "where do I start with this change", "this code is too risky to touch", "I need to understand what this does before I change it", "edit and pray", or "I need to add a test before refactoring", even when Feathers is not named. For the catalogue of dependency-breaking techniques the algorithm's third step calls for, use the sibling skill `legacy-dependency-breaking`.
 ---
 
 # Legacy Code Changes
@@ -99,9 +99,7 @@ The two lowest-risk moves are **Sprout** and **Wrap**: sprout a new method or cl
 isolation; wrap the existing method to intercept calls, attaching your tested logic before or after. Both allow you to
 write tests for your new code without needing to get the existing code under test first.
 
-For the full catalogue of techniques (Sprout Method, Sprout Class, Wrap Method, Wrap Class, Extract Interface, Subclass
-and Override Method, Parameterize Constructor, Extract and Override Factory Method, and the rest), see the sibling skill
-`legacy-dependency-breaking`.
+For the full technique catalogue, see the sibling skill `legacy-dependency-breaking`.
 
 ## Guardrails
 
@@ -112,6 +110,9 @@ and Override Method, Parameterize Constructor, Extract and Override Factory Meth
   anomaly separately and fix it through the algorithm with its own dedicated tests.
 - **Do not apply the algorithm to already-tested code.** If a slice is already under test and is straightforward CRUD,
   the full five-step ceremony adds friction without benefit. Reserve it for the untested code that actually needs it.
+- **Do not characterize code you are about to delete, or behaviour you are not touching.** Write tests for what you are
+  changing and what is adjacent to it; let the rest be. Pinning behaviour you will remove, or that the change cannot
+  reach, is wasted ceremony.
 - **Keep dependency-breaking changes mechanical and minimal.** Their sole purpose is to create a seam. They should not
   change observable behaviour; verify that with the tests you write in step four.
 - **Do not skip the refactor step.** Getting the code under test is not the end goal. The safety net exists so you can
