@@ -51,7 +51,7 @@ Before changing a line of code, reason about how that change can propagate. **Ef
 
 **Pinch points** are narrow places in the effect chain where many effects funnel through a small interface (Feathers 2004, Chapter 12). A pinch point is a good place to write tests: one test there covers a wide arc of the behaviour behind it.
 
-Two reasons to break a dependency (Feathers 2004, Chapter 9):
+Two reasons to break a dependency (Feathers 2004, Chapter 3):
 
 - **Sensing:** you cannot access the values the code computes. The code does the work but you have no way to observe the result in a test.
 - **Separation:** you cannot get the code into a test harness at all. The class instantiates something heavy, calls out to a database, or requires global state you cannot replicate.
