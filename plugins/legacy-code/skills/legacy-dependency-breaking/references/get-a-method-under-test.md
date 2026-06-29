@@ -382,8 +382,8 @@ constructor case; only the site of the `new` expression differs.
 
 ### Intent
 
-When a method resolves a dependency internally -- by calling `new`, looking up a
-singleton, or reading an internal default -- you add a parameter for that
+When a method resolves a dependency internally (by calling `new`, looking up a
+singleton, or reading an internal default), you add a parameter for that
 dependency so a test can pass a substitute directly. An overload signature
 preserves the original call form for production callers (Feathers, *Working
 Effectively with Legacy Code*, 2004, Chapter 25).
@@ -451,7 +451,7 @@ test("confirm includes the timestamp from the provided clock in the output", () 
 ### Cost and risk
 
 - **Method signature grows.** Even with an overload, the method now accepts an
-  optional parameter. In a published API this is a versioning consideration.
+  additional parameter with a production default. In a published API this is a versioning consideration.
 - **No subclassing required.** This is a cleaner seam than Subclass and Override
   Method when the dependency is a value the method creates rather than a method
   it calls. The production class remains uninherited.
@@ -465,9 +465,9 @@ test("confirm includes the timestamp from the provided clock in the output", () 
 
 ### Intent
 
-When a method is too long and tangled for a narrow seam -- it creates multiple
+When a method is too long and tangled for a narrow seam (it creates multiple
 dependencies internally, uses many locals, and is difficult to test because of
-the combined weight of all those concerns -- you move the entire method into its
+the combined weight of all those concerns), you move the entire method into its
 own class. The new class receives the method's collaborators through its
 constructor, making them injectable and the method's logic independently
 testable (Feathers, *Working Effectively with Legacy Code*, 2004, Chapter 25).

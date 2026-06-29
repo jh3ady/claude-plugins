@@ -76,7 +76,7 @@ construction: a heavy initialiser that opens a database connection, calls a
 remote service, starts a thread, reads from a singleton, or requires global
 state you cannot replicate in a test. The fix is to break the dependency via an
 interface, a parameter, or an override so the class can be constructed without
-triggering the side effect (Feathers 2004, Chapters 9 and 10).
+triggering the side effect (Feathers 2004, Chapter 9).
 
 The most commonly needed techniques:
 
@@ -91,12 +91,12 @@ The most commonly needed techniques:
   so the call can be overridden in a subclass or replaced by an injected
   collaborator.
 - **Introduce Static Setter.** When a singleton is genuinely difficult to
-  replace with injection, add a package-visible setter that allows the test to
+  replace with injection, add a test-only (marked `@internal`) setter that allows the test to
   substitute the instance. Use only as a last resort; injection is preferable.
 - **Extract and Override Factory Method.** Move object creation from the
   constructor into a factory method, then override it in a test subclass to
   return a lighter substitute.
-- **Supersede Instance Variable.** Add a setter (package-visible) for a
+- **Supersede Instance Variable.** Add a setter (test-only) for a
   dependency that is currently assigned in the constructor. Lets the test
   replace the value after construction. Use only as a last resort; prefer
   Parameterize Constructor when the constructor can accept a parameter.
@@ -117,7 +117,7 @@ For technique mechanics, see `references/get-a-class-into-a-harness.md`.
 When you can construct the class but cannot exercise the method you care about
 without triggering a hidden dependency, the dependency is buried inside the
 method body rather than in construction. Open an object seam by making the
-dependency substitutable (Feathers 2004, Chapters 9 and 10).
+dependency substitutable (Feathers 2004, Chapter 10).
 
 The most commonly needed techniques:
 

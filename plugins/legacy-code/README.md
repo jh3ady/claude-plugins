@@ -23,9 +23,9 @@ When you are working with existing untested code and need to decide where to mak
 
 When you know you face a sensing or separation problem and need to choose a specific technique, or when you need to add new behaviour without touching existing untested code, this skill is the catalogue that step three of the change algorithm calls for. The techniques are grouped by intent:
 
-- **Add behaviour without touching existing code:** Sprout Method, Sprout Class, Wrap Method, and Wrap Class. The lowest-risk moves when the surrounding code resists testing and you must add new behaviour now, writing the new code in isolation and testing it independently without modifying the existing tangled code.
-- **Get a class into a test harness:** Extract Interface, Parameterize Constructor, Introduce Instance Delegator, Introduce Static Setter, Extract and Override Factory Method, Supersede Instance Variable, Pull Up Feature, Push Down Dependency, Replace Global Reference with Getter, and Encapsulate Global References. These break construction-time dependencies so the class can be instantiated in a test.
-- **Get a method under test:** Subclass and Override Method, Extract and Override Call, Extract and Override Getter, Parameterize Method, Break Out Method Object, Adapt Parameter, and Primitivize Parameter. These open object seams inside a method body when the class can be constructed but a hidden dependency inside the method blocks testing or observation.
+- Add behaviour without touching existing code: Sprout Method, Sprout Class, Wrap Method, and Wrap Class. The lowest-risk moves when the surrounding code resists testing and you must add new behaviour now, writing the new code in isolation and testing it independently without modifying the existing tangled code.
+- Get a class into a test harness: Extract Interface, Parameterize Constructor, Introduce Instance Delegator, Introduce Static Setter, Extract and Override Factory Method, Supersede Instance Variable, Pull Up Feature, Push Down Dependency, Replace Global Reference with Getter, and Encapsulate Global References. These break construction-time dependencies so the class can be instantiated in a test.
+- Get a method under test: Subclass and Override Method, Extract and Override Call, Extract and Override Getter, Parameterize Method, Break Out Method Object, Adapt Parameter, and Primitivize Parameter. These open object seams inside a method body when the class can be constructed but a hidden dependency inside the method blocks testing or observation.
 
 ## Relationship to other plugins
 

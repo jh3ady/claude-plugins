@@ -107,7 +107,7 @@ class InvoiceCalculator {
 }
 ```
 
-**Step 1 (identify change point).** The requirement is to apply a 10 % loyalty
+**Step 1 (identify change point).** The requirement is to apply a 10% loyalty
 discount for customers flagged as premium. The change point is the `total`
 method.
 
@@ -171,7 +171,7 @@ totalForPremium(customerId: string): number {
 ```
 
 ```typescript
-test("total applies 10 % discount for premium customers", () => {
+test("total applies 10% discount for premium customers", () => {
   const calculator = new InvoiceCalculator(new StubOrderStore([100, 250, 75]));
   expect(calculator.totalForPremium("cust-1")).toBe(382); // 425 * 0.9, floored
 });
@@ -316,11 +316,11 @@ test("applyDiscount with an unknown code returns the original price", () => {
 // Test passes. The characterization is locked in.
 
 // Step 3: lock in all paths you will touch.
-test("SUMMER code applies a 10 % floor discount", () => {
+test("SUMMER code applies a 10% floor discount", () => {
   expect(applyDiscount(99, "SUMMER")).toBe(89); // Math.floor(99 * 0.9) = 89
 });
 
-test("VIP code applies a 20 % floor discount", () => {
+test("VIP code applies a 20% floor discount", () => {
   expect(applyDiscount(99, "VIP")).toBe(79); // Math.floor(99 * 0.8) = 79
 });
 ```

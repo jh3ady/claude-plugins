@@ -395,7 +395,7 @@ makes Parameterize Constructor or Extract Interface applicable instead.
 
 When a singleton is constructed eagerly and its instance is accessible only
 through a static accessor, tests cannot replace it with a substitute. Adding a
-package-visible static setter lets a test inject a fake before the code under
+test-only static setter lets a test inject a fake before the code under
 test runs. The setter introduces deliberate mutability into what is otherwise
 treated as fixed global state.
 
@@ -475,14 +475,16 @@ class ServiceLocator {
 
   /**
    * @internal Last resort: test use only.
-   * Always call resetForTest() in afterEach to prevent test pollution.
+   * Save the existing instance via getNotifications() before calling this,
+   * then restore it with resetForTest(original) in afterEach.
    */
   static setNotificationsForTest(notifier: Notifier): void {
     ServiceLocator.notifications = notifier;
   }
 
-  static resetForTest(): void {
-    ServiceLocator.notifications = new NotificationService();
+  /** @internal Restores the previously saved original instance. */
+  static resetForTest(original: Notifier): void {
+    ServiceLocator.notifications = original;
   }
 }
 
@@ -501,6 +503,7 @@ class FakeNotifier implements Notifier {
 }
 
 test("fulfill sends a dispatch notification to the affected user", () => {
+  const original = ServiceLocator.getNotifications(); // save before substituting; no new construction in teardown
   const notifier = new FakeNotifier();
   ServiceLocator.setNotificationsForTest(notifier);
   try {
@@ -510,7 +513,7 @@ test("fulfill sends a dispatch notification to the affected user", () => {
       { userId: "user-7", message: "Order ORD-55 dispatched" },
     ]);
   } finally {
-    ServiceLocator.resetForTest(); // always restore; never leave the fake in place
+    ServiceLocator.resetForTest(original); // restore the saved original; never leave the fake in place
   }
 });
 ```
@@ -687,7 +690,7 @@ prefer it: it is a simpler seam that does not require subclassing.
 When a class assigns a dependency to an instance variable in its constructor
 and you cannot change the constructor to accept a parameter (for example,
 because there are too many call sites to update, or the constructor is called
-by a framework), you add a package-visible setter method that allows a test to
+by a framework), you add a test-only setter method that allows a test to
 replace the value after construction. The test constructs the class normally,
 then immediately calls the supersede method with a fake, before exercising any
 behaviour.
