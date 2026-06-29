@@ -83,6 +83,12 @@
       "source": "./plugins/test-driven-development",
       "description": "Test-driven development applied pragmatically in the classical (Detroit) style: the iron law of a failing test first, red-green-refactor, testing behaviour rather than implementation (the unit is a behaviour or module, not a class), the test-double ladder that prefers real objects and in-memory implementations over stubs and mocks, state verification over interaction verification, keeping in-memory implementations faithful through contract tests, and the inner-loop scope of TDD, with TypeScript specifics. Composable with your own conventions.",
       "version": "0.1.0"
+    },
+    {
+      "name": "legacy-code",
+      "source": "./plugins/legacy-code",
+      "description": "Working effectively with legacy code (Michael Feathers) applied pragmatically, in two skills: the method (legacy code is code without tests, the Legacy Code Change Algorithm, seams and enabling points, characterization tests, reasoning about effects) and the dependency-breaking catalogue (Sprout, Wrap, Extract Interface, Subclass and Override, Parameterize Constructor, Extract and Override Factory, and the rest), with TypeScript specifics. Composable with your own conventions.",
+      "version": "0.1.0"
     }
   ]
 }
