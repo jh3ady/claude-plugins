@@ -29,7 +29,17 @@ separation failures. The class does not co-operate with the test harness.
 
 Identifying which problem you face first directs you to the right group of
 techniques. Many techniques address one problem more directly than the other,
-though some help with both.
+though some help with both. Three questions route you to a group:
+
+- **Can I construct the class at all?** If construction triggers the side effect,
+  you face separation at construction time: see *Get a class into a test harness*.
+- **Can I exercise the method I care about?** If you can build the object but a
+  hidden dependency inside the method blocks you, or hides the result you need to
+  observe, you face separation or sensing at method scope: see *Get a method under
+  test*.
+- **Do I just need to add behaviour now, without touching the untested code?**
+  That is not a sensing or separation problem but a risk-management move: see *Add
+  behaviour without touching existing code*.
 
 ## Add behaviour without touching existing code
 
