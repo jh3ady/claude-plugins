@@ -1,0 +1,23 @@
+{
+  "name": "legacy-code",
+  "version": "0.1.0",
+  "description": "Working effectively with legacy code (Michael Feathers) applied pragmatically, in two skills: the method (legacy code is code without tests, the Legacy Code Change Algorithm, seams and enabling points, characterization tests, reasoning about effects) and the dependency-breaking catalogue (Sprout, Wrap, Extract Interface, Subclass and Override, Parameterize Constructor, Extract and Override Factory, and the rest), with TypeScript specifics. Composable with your own conventions.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/legacy-code",
+  "keywords": [
+    "legacy-code",
+    "michael-feathers",
+    "characterization-tests",
+    "seams",
+    "dependency-breaking",
+    "sprout-method",
+    "wrap-method",
+    "extract-interface",
+    "refactoring",
+    "software-craftsmanship"
+  ]
+}
