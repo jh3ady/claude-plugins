@@ -60,6 +60,49 @@ The cycle is three small steps, repeated:
 Then the next failing test for the next behaviour. Keep the test output pristine
 along the way: a wall of warnings hides the one failure that matters.
 
+## Getting to green: fake it, triangulate, or just type it
+
+Kent Beck's *Test-Driven Development: By Example* names three main strategies
+for making a red test pass, chosen by how sure you are of the implementation:
+
+- **Obvious Implementation.** When you know the answer and can type it quickly,
+  write the real code. Beck calls this "second gear" and warns that the moment an
+  unexpected red bar appears, you should downshift to a smaller step.
+- **Fake It.** When you do not yet know how to implement it, return a constant
+  that satisfies the assertion, watch the bar go green, then replace the
+  constant with real logic, usually under pressure from a second test. The
+  hardcoded constant duplicates the literal in the test, and removing that
+  duplication in the refactor step is what drives out the real implementation.
+- **Triangulate.** When the right abstraction is genuinely unclear, refuse to
+  generalise until a second, differing example forces it. Two concrete cases
+  triangulate towards the general form. It is the most conservative and the
+  slowest; reach for it only when faking and refactoring do not make the design
+  obvious.
+
+You oscillate between these: obvious implementations while confident, then
+downshift to faking and triangulating the instant you are surprised. This is
+what Beck means by "TDD is not about taking teeny-tiny steps, it is about being
+able to take teeny-tiny steps". The value is the option to shrink the step when
+in trouble, not an obligation to always crawl.
+
+Beck's green-bar **Fake It** (a hardcoded constant in the production code) is
+unrelated to the test-double **fake** (an in-memory implementation, in the
+ladder below). Same word, different thing: one is how you grow the
+implementation, the other is what stands in for a slow dependency.
+
+## Work from a test list
+
+Hold the work in a list, not in your head. The red-green-refactor cycle above
+runs once per test; the test list is the outer loop that feeds it. Beck's "Canon
+TDD" frames that loop as: write a list of the test scenarios you want to cover;
+turn exactly one into a concrete, runnable test; change the code to make it and
+all previous tests pass, adding scenarios to the list as you discover them
+rather than chasing them now; optionally refactor (whenever getting to green
+left duplication or a design worth improving); repeat until the list is empty.
+The list is your working memory and your "are we done?" signal: done is an empty
+list. When a tangential idea appears mid-cycle, park it on the list and stay on
+the test you are on.
+
 ## Test behaviour, not implementation
 
 The most consequential rule in this style, and the heart of Ian Cooper's "TDD,
@@ -209,7 +252,7 @@ tests, and acceptance tests live in an outer loop and are out of scope here. The
 test pyramid is the reason to keep them a minority: broad, slow tests are
 "brittle, expensive to write, and time consuming to run", so the bulk of your
 tests should be the fast behaviour tests this loop produces. (The testing-trophy
-view rebalances toward integration; both agree the end-to-end tier stays small.
+view rebalances towards integration; both agree the end-to-end tier stays small.
 Classical sociable tests, which touch several real collaborators, already sit
 comfortably between the two.)
 

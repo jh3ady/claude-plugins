@@ -14,7 +14,10 @@ trade-off analyses, and the worked examples, with sources.
 6. [The two meanings of "unit"](#6-the-two-meanings-of-unit)
 7. [Testing behaviour, not implementation](#7-testing-behaviour-not-implementation)
 8. [Scope: the pyramid, the trophy, and the inner loop](#8-scope-the-pyramid-the-trophy-and-the-inner-loop)
-9. [Sources](#9-sources)
+9. [Beck's two rules and the green-bar strategies](#9-becks-two-rules-and-the-green-bar-strategies)
+10. [The test list and Canon TDD](#10-the-test-list-and-canon-tdd)
+11. [Beck's pattern catalogue](#11-becks-pattern-catalogue)
+12. [Sources](#12-sources)
 
 ---
 
@@ -169,7 +172,7 @@ should write and maintain a fake", so the two evolve together. Fidelity is
 judged "from the perspective of the test": a fake may legitimately skip a rare
 behaviour the contract makes no promise about.
 
-A sketch in TypeScript, with the contract suite parameterized over the
+A sketch in TypeScript, with the contract suite parameterised over the
 implementation under test:
 
 ```typescript
@@ -233,8 +236,8 @@ parity.
 confusion.
 
 **Reading A: the unit is the code under test (a class or method).** This is the
-common informal reading, and it pushes people toward one test class per
-production class and toward mocking every collaborator to isolate "the unit".
+common informal reading, and it pushes people towards one test class per
+production class and towards mocking every collaborator to isolate "the unit".
 
 **Reading B: the unit is the test's isolation.** This is Kent Beck's original
 meaning. "Unit" describes the test, not the target: unit tests are independent
@@ -285,7 +288,7 @@ verification style are one coherent position, not separate preferences.
 TDD is an **inner loop**: red-green-refactor at the level of behaviours and
 modules. It is not the whole test strategy, and this skill does not try to be.
 
-The **test pyramid** (Mike Cohn, popularized by Fowler) is the standard
+The **test pyramid** (Mike Cohn, popularised by Fowler) is the standard
 argument for keeping the slow tests a minority: "you should have many more
 low-level Unit Tests than high level Broad Stack Tests running through a GUI",
 because end-to-end UI tests are "brittle, expensive to write, and time
@@ -294,7 +297,7 @@ tests are fast, reliable, and cheap to modify, then lower-level tests aren't
 needed", so the shape serves the goal (fast feedback, cheap change), it is not
 an end in itself.
 
-The **testing trophy** (Kent C. Dodds) rebalances the middle toward integration
+The **testing trophy** (Kent C. Dodds) rebalances the middle towards integration
 tests, on the reasoning that "the more your tests resemble the way your software
 is used, the more confidence they can give you", and that the aim is return on
 investment where "'return' is 'confidence' and 'investment' is 'time'". Its
@@ -310,7 +313,157 @@ loop and are out of scope here; they are the minority tier in either model.
 
 ---
 
-## 9. Sources
+## 9. Beck's two rules and the green-bar strategies
+
+Kent Beck's *Test-Driven Development: By Example* (2002) is the founding text of
+the discipline. It opens not with the famous cycle but with **two rules** that
+generate it:
+
+1. "Write new code only if an automated test has failed."
+2. "Eliminate duplication."
+
+Red-green-refactor is derived behaviour, not an axiom: the two rules come first,
+and the three-beat rhythm (write a failing test; make it pass as quickly as
+possible; remove the duplication that getting to green created) falls out of
+them. Beck's notion of **duplication is broader than ordinary refactoring**: it
+explicitly includes duplication *between the test and the production code*, such
+as a hardcoded constant in the implementation that merely echoes the literal in
+the assertion. Removing that duplication is what forces the code to generalise,
+and that is where Beck locates the emergence of design.
+
+### Getting to green
+
+Beck names strategies for making a red bar green. The first three sit on a
+confidence spectrum, from the boldest to the most cautious:
+
+- **Obvious Implementation**: "Type in the real implementation." Use it when you
+  know the answer and can type it quickly. Beck calls this "second gear" and
+  warns you to be ready to downshift the moment a result surprises you: at the
+  first unexpected red bar, drop to a smaller step.
+- **Fake It**: "Return a constant and gradually replace constants with variables
+  until you have the real code." Get to green immediately by hardcoding the
+  expected value, then let a second test pressure you into replacing the constant
+  with real logic. The benefit is psychological (a green bar is a known-good
+  base) and scope control (you build exactly what is demanded).
+- **Triangulate**: "Abstract only when you have two or more examples." The most
+  conservative strategy: refuse to generalise an implementation until a second,
+  differing test forces the abstraction out of you. The two concrete cases
+  triangulate towards the general form. Beck treats it as relatively heavyweight,
+  for when the right design is genuinely unclear.
+- **One to Many**: a fourth, orthogonal strategy about scaling rather than
+  confidence: implement an operation for a single object first, get it green,
+  then generalise it to a collection.
+
+Beck's selection rule keys on confidence: if you know what to type and can do it
+quickly, use Obvious Implementation; if you do not know what to type, Fake It; if
+the right design still is not clear, Triangulate. In practice you oscillate,
+running obvious implementations while confident and downshifting to faking and
+triangulating the instant a result surprises you.
+
+### Step size is a dial, not a dogma
+
+The small steps are an ability, not an obligation. Beck frames step size as a
+steering process: take bigger steps when the small ones feel restrictive, take
+smaller steps when you feel unsure, adjusting "a little this way, a little that
+way". A frequently quoted formulation of his captures the point: "TDD is not
+about taking teeny-tiny steps, it is about being able to take teeny-tiny steps"
+when you need to.
+
+### Beck's "Fake It" is not a test-double "fake"
+
+Two unrelated ideas share the word. Beck's green-bar **Fake It** (2002) is a
+*production-code* strategy: hardcode a constant in the system under test, then
+generalise. Gerard Meszaros's **Fake** (2007, see section 2) is a *test
+collaborator*: a working but shortcut implementation, the in-memory
+implementation of this skill. Beck's book predates Meszaros's taxonomy and does
+not use "Test Double", "Stub", or "Fake" in Meszaros's sense; it does have a
+looser **Mock Object** pattern meaning simply a stand-in returning canned
+answers. Keep the two senses of "fake" apart.
+
+---
+
+## 10. The test list and Canon TDD
+
+Beck's **Test List** pattern says to begin by writing a list of the tests you
+expect to need, and is emphatic that you **list them, you do not write them**.
+You then take one item at a time, turn it into a concrete runnable test, make it
+and all earlier tests pass, and cross it off. New cases discovered mid-flow are
+**added to the list, not chased immediately** (the **Another Test** pattern: park
+the tangent and stay on task). The list is both your working memory and your
+completion signal: you are done when it is empty.
+
+Beck's own 2023 restatement, "Canon TDD", gives the loop in five steps:
+
+1. "Write a list of the test scenarios you want to cover."
+2. "Turn exactly one item on the list into an actual, concrete, runnable test."
+3. "Change the code to make the test (& all previous tests) pass (adding items to
+   the list as you discover them)."
+4. "Optionally refactor to improve the implementation design."
+5. "Until the list is empty, go back to #2."
+
+He names the failures the discipline guards against: turning the whole list into
+tests at once, folding refactoring into the make-it-pass step, and writing tests
+with no real assertions.
+
+---
+
+## 11. Beck's pattern catalogue
+
+Part III of the book is a catalogue of patterns. The ones most worth knowing,
+grouped as Beck groups them:
+
+**Test-writing patterns.** *Test* (treat testing as something you own, driven by
+the wish to control defects), *Isolated Test* (tests must not affect one another,
+so one failure means one problem), *Test List* and *Test First* (see above),
+*Assert First* (write the assertion first and work backward to the setup), *Test
+Data* and *Evident Data* (use clear, realistic data and make the
+expected-versus-actual relationship visible rather than hiding it behind magic
+numbers).
+
+**Red-bar patterns** (when and where to write the next test). *One Step Test*
+(pick the next test that teaches you something and that you can implement),
+*Starter Test* (begin with a trivially small test to get into the loop),
+*Explanation Test* and *Learning Test* (use tests to communicate a design and to
+probe a third-party API), *Another Test* (park tangents on the list), *Regression
+Test* (reproduce a reported defect with the smallest failing test), *Break* and
+*Do Over* (when stuck, step away or discard and restart).
+
+**Testing patterns.** *Child Test* (a test too big to pass at once: break off a
+smaller one, green it, return to the parent), *Mock Object* (replace an expensive
+collaborator with a stand-in returning canned answers), *Self Shunt* (let the
+test case itself act as the collaborator), *Log String* (have a collaborator
+append to a string so you can assert the sequence of calls), *Crash Test Dummy*
+(inject a collaborator that throws on demand to test error handling), *Broken
+Test* (working solo, leave the last test failing so you know where to resume) and
+*Clean Check-in* (working in a team, leave every test passing). The book also
+catalogues the structural patterns of an xUnit framework (Assertion, Fixture,
+Test Method, Exception Test, All Tests) and a chapter each on the design patterns
+and refactorings that recur under TDD.
+
+A note on dated idioms: *Mock Object* and *Self Shunt* are 2002 framings. Beck's
+loose "Mock Object" is today's broader "test double", and this skill's classical
+stance prefers real objects and in-memory implementations over interaction mocks
+(sections 2 and 3). *Self Shunt* maps, in a modern codebase, to passing a small
+inline object that implements the collaborator's interface, rather than making
+the test class itself the collaborator.
+
+### The two worked examples
+
+The book teaches through two end-to-end examples. **Money** (Part I, in Java)
+builds multi-currency arithmetic, growing a value object for amounts and a bank
+for exchange rates; it shows the full rhythm, including the moment where a
+hardcoded `return` is driven into a real `times` by a second test. **xUnit**
+(Part II, in Python) writes a testing framework using the framework as it is
+built, demonstrating TDD on infrastructure code. Both are idiomatic to their
+languages: in TypeScript, prefer structural value equality and composition over
+the Java subclassing Beck himself refactors away, and the Vitest or Jest
+`beforeEach`/`afterEach` lifecycle over the Python `setUp`/`tearDown` classes.
+The language-neutral spine, the two rules, red-green-refactor, the test list, the
+green-bar strategy ladder, and steerable step size, is what transfers.
+
+---
+
+## 12. Sources
 
 - Martin Fowler, "Mocks Aren't Stubs":
   https://martinfowler.com/articles/mocksArentStubs.html
@@ -332,3 +485,8 @@ loop and are out of scope here; they are the minority tier in either model.
   https://abseil.io/resources/swe-book/html/ch13.html
 - Gerard Meszaros, *xUnit Test Patterns: Refactoring Test Code*, for the
   canonical test-double taxonomy (definitions reproduced via Fowler above).
+- Kent Beck, *Test-Driven Development: By Example* (Addison-Wesley, 2002), for
+  the two rules, red-green-refactor, the green-bar strategies, the test list, and
+  the pattern catalogue.
+- Kent Beck, "Canon TDD":
+  https://newsletter.kentbeck.com/p/canon-tdd
