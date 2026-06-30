@@ -272,8 +272,9 @@ reason; treat it as a last resort.
 // Preferred: a module-level constant.
 // config.ts
 export const config = Object.freeze({
-  apiUrl:  process.env["API_URL"]  ?? "https://api.example.com",
-  timeout: Number(process.env["TIMEOUT"] ?? 5000),
+  apiUrl:      process.env["API_URL"]      ?? "https://api.example.com",
+  timeout:     Number(process.env["TIMEOUT"] ?? 5000),
+  databaseUrl: process.env["DATABASE_URL"] ?? "postgres://localhost/app",
 });
 
 // Any module that needs it imports explicitly:
@@ -285,6 +286,7 @@ export const config = Object.freeze({
 // Also acceptable: a single instance created at the composition root and
 // injected into every consumer that needs it.
 // main.ts (composition root)
+import { config } from "./config";
 import { DatabasePool } from "./database-pool";
 import { UserRepository } from "./user-repository";
 import { UserService } from "./user-service";
