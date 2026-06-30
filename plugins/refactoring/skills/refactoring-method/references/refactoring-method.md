@@ -162,7 +162,7 @@ step in the sequence below must leave this test green.
 
 ## 3. Step-by-step refactoring sequence
 
-### Step 1: Extract Function -- amountFor
+### Step 1: Extract Function: amountFor
 
 The switch statement calculates the amount for one performance. It is a
 well-bounded piece of logic with a clear name: `amountFor`. Extracting it to its
@@ -218,7 +218,7 @@ applied as part of the extraction. Fowler renames immediately after extracting
 because the new function's variables deserve names that describe their role in
 the extracted context, not in the original one.
 
-### Step 2: Extract Function -- playFor and Inline Variable
+### Step 2: Extract Function: playFor and Inline Variable
 
 The `play` local variable inside the loop is a temporary that can be derived on
 demand. Extract a function to look up the play, then inline the variable. This
@@ -240,7 +240,7 @@ is a distraction from correctness. Measure before optimising.
 
 Run the test. Still green.
 
-### Step 3: Extract Function -- volumeCreditsFor
+### Step 3: Extract Function: volumeCreditsFor
 
 The credits calculation inside the loop is a second well-bounded concern.
 
@@ -258,7 +258,7 @@ Replace the two lines inside the loop with `volumeCreditsFor(perf, plays)`.
 
 Run the test. Still green.
 
-### Step 4: Replace Temp with Query -- totalVolumeCredits
+### Step 4: Replace Temp with Query: totalVolumeCredits
 
 The accumulator `volumeCredits` in the loop body can be replaced by a query
 function that computes the total after the loop. This removes a mutable variable
@@ -286,7 +286,7 @@ accumulator temporaries are gone.
 
 Run the test. Still green.
 
-### Step 5: Split Phase -- separate calculation from rendering
+### Step 5: Split Phase: separate calculation from rendering
 
 The final structural move is to separate the concern of enriching the data
 (calculating amounts and credits per performance) from the concern of rendering
@@ -490,17 +490,17 @@ before it is worth generalising. This keeps premature abstraction in check.
   categories; Chapter 3 (Beck and Fowler) for the bad-smells catalogue
   referenced by the sibling skill `code-smells`.
 - Martin Fowler, "Workflows of Refactoring" (essay),
-  https://martinfowler.com/articles/workflowsOfRefactoring/ -- the canonical
+  https://martinfowler.com/articles/workflowsOfRefactoring/, the canonical
   taxonomy of refactoring workflows (preparatory, comprehension, litter-pickup,
   TDD, planned, long-term) that Chapter 2 of the book summarises.
 - Martin Fowler, "Design Stamina Hypothesis" (bliki),
-  https://martinfowler.com/bliki/DesignStaminaHypothesis.html -- the full
+  https://martinfowler.com/bliki/DesignStaminaHypothesis.html, the full
   argument for why good design sustains productivity over time, including the
   design payoff line concept.
 - Martin Fowler, "An Example of Preparatory Refactoring" (article),
-  https://martinfowler.com/articles/preparatory-refactoring-example.html --
+  https://martinfowler.com/articles/preparatory-refactoring-example.html,
   a concrete illustration of refactoring before adding a feature.
 - Emily Bache, "Theatrical Players Refactoring Kata" (GitHub),
-  https://github.com/emilybache/Theatrical-Players-Refactoring-Kata --
+  https://github.com/emilybache/Theatrical-Players-Refactoring-Kata,
   the chapter 1 example ported to many languages, including TypeScript, useful
   for hands-on practice.

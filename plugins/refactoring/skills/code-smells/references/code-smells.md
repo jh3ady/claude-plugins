@@ -351,7 +351,6 @@ names may be misleading.
 | Switch Statements      | Repeated Switches |
 | Lazy Class             | Lazy Element      |
 | Inappropriate Intimacy | Insider Trading   |
-| Duplicate Code         | Duplicated Code   |
 
 New smells introduced in the 2nd edition (not present in the 1st):
 Mysterious Name, Global Data, Mutable Data, Loops.
