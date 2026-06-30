@@ -1,0 +1,23 @@
+{
+  "name": "refactoring",
+  "version": "0.1.0",
+  "description": "Refactoring (Martin Fowler, 2nd edition, with Kent Beck) applied pragmatically, in three skills: the method (the definition, the two hats, why and when to refactor, mechanics in small steps, and self-testing code as a prerequisite), the code smells (the chapter 3 catalogue of bad smells, each pointing to the refactorings that resolve it), and the refactoring catalogue (the full set of moves grouped by category, with condensed mechanics and TypeScript examples). Composable with your own conventions.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/refactoring",
+  "keywords": [
+    "refactoring",
+    "martin-fowler",
+    "kent-beck",
+    "code-smells",
+    "extract-function",
+    "refactoring-catalog",
+    "two-hats",
+    "self-testing-code",
+    "software-craftsmanship",
+    "clean-code"
+  ]
+}

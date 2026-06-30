@@ -89,6 +89,12 @@
       "source": "./plugins/legacy-code",
       "description": "Working effectively with legacy code (Michael Feathers) applied pragmatically, in two skills: the method (legacy code is code without tests, the Legacy Code Change Algorithm, seams and enabling points, characterization tests, reasoning about effects) and the dependency-breaking catalogue (Sprout, Wrap, Extract Interface, Subclass and Override, Parameterize Constructor, Extract and Override Factory, and the rest), with TypeScript specifics. Composable with your own conventions.",
       "version": "0.1.0"
+    },
+    {
+      "name": "refactoring",
+      "source": "./plugins/refactoring",
+      "description": "Refactoring (Martin Fowler, 2nd edition, with Kent Beck) applied pragmatically, in three skills: the method (the definition, the two hats, why and when to refactor, mechanics in small steps, and self-testing code as a prerequisite), the code smells (the chapter 3 catalogue of bad smells, each pointing to the refactorings that resolve it), and the refactoring catalogue (the full set of moves grouped by category, with condensed mechanics and TypeScript examples). Composable with your own conventions.",
+      "version": "0.1.0"
     }
   ]
 }
