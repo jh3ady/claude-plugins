@@ -448,7 +448,7 @@ class Employee {
       case "engineer": return 8_000;
       case "manager":  return 10_000;
       case "salesman": return 7_000;
-      default:         return 6_000;
+      default:         return 6_000; // unreachable: the private constructor admits only the three known types above
     }
   }
 }

@@ -225,8 +225,8 @@ call the method.
 3. If the superclass is abstract and other code refers to the method through
    the superclass type, add an abstract declaration so the type system is
    satisfied. Otherwise, leave the superclass clean.
-4. Update any references in the subclass to refer to `this` rather than the
-   former superclass field.
+4. If the method references a field that is specific to this subclass, apply
+   Push Down Field to move that field alongside the method.
 5. Run the tests.
 
 **Inverse:** Pull Up Method.
@@ -362,11 +362,13 @@ function createEmployee(name: string, type: string): Employee {
 // Call site: createEmployee("Alice", "engineer")
 ```
 
-For every `(name, type)` combination previously valid, `createEmployee` returns
-an instance whose `type()` and `bonusMultiplier()` match the original values.
-The `default` case in the original `switch` returned `1.0`, so `UnknownEmployee`
-preserves that behaviour: no new exceptions are thrown where the before-code
-returned a value.
+For every `(name, type)` combination, `createEmployee` returns an instance
+whose `bonusMultiplier()` matches the original value. Note that for an
+unrecognised type, `type()` returns `"unknown"` rather than the original string;
+the type-code field is an artifact that subsequent refactorings remove, so this
+deviation is intentional. The `default` case in the original `bonusMultiplier`
+switch returned `1.0`, and `UnknownEmployee.bonusMultiplier()` returns `1.0`,
+so no new exceptions are thrown where the before-code returned a value.
 
 ---
 
