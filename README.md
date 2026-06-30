@@ -44,6 +44,7 @@ You can also declare the marketplace in your `settings.json`:
 | [`screaming-architecture`](plugins/screaming-architecture) | A top-level structure that announces the business domain and its use cases rather than the framework: package-by-feature over package-by-layer, vertical slices, and composition with hexagonal, clean, and domain-driven design. |
 | [`test-driven-development`](plugins/test-driven-development) | TDD in the classical (Detroit) style: a failing test first, red-green-refactor, testing behaviour not implementation, the test-double ladder preferring real objects and in-memory implementations over mocks, and contract tests. |
 | [`legacy-code`](plugins/legacy-code) | Working effectively with legacy code (Feathers) in two skills: the method (code without tests, the Legacy Code Change Algorithm, seams, characterization tests, reasoning about effects) and the dependency-breaking catalogue (Sprout, Wrap, Extract Interface, Subclass and Override, and the rest). |
+| [`refactoring`](plugins/refactoring) | Refactoring (Fowler, 2nd ed., with Beck) in three skills: the method (definition, the two hats, when and why to refactor, small-step mechanics, self-testing code as prerequisite), the code smells (the chapter 3 catalogue, each pointing to its refactorings), and the catalogue (the full set of moves grouped by category, with condensed mechanics and TypeScript examples). |
 
 ## Contributing
 
