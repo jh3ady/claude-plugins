@@ -197,12 +197,12 @@ is misleading or too generic; a parameter passed as a raw string or number
 where a named type would communicate intent; callers passing the same cluster
 of arguments repeatedly; or a parameter that is no longer used.
 
-**Mechanics (simple case -- rename or single-parameter change).**
+**Mechanics (simple case: rename or single-parameter change).**
 1. Change the declaration.
 2. Update all call sites.
 3. Run the tests.
 
-**Mechanics (migration -- for a change that must be rolled out gradually).**
+**Mechanics (migration: for a change that must be rolled out gradually).**
 1. If needed, refactor the function body to make the desired new signature
    easier to achieve.
 2. Introduce a new function with the desired signature. Its body delegates to

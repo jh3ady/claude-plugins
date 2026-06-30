@@ -28,10 +28,10 @@ When you recognise a structural problem in code and need to name it and identify
 
 ### refactoring-catalog
 
-When you know which move to apply and need its condensed mechanics or a TypeScript example, this skill applies:
+When you know which move to apply and need its condensed mechanics or a TypeScript example, this skill applies. Every chapter carries condensed mechanics and TypeScript examples:
 
-- A first set of refactorings (Chapter 6): the everyday moves Fowler reaches for most often, including Extract Function, Inline Function, Extract Variable, Introduce Parameter Object, Combine Functions into Class, and Split Phase; with full mechanics and TypeScript examples.
-- Encapsulation (Chapter 7): moves that tighten access boundaries, including Encapsulate Record, Replace Primitive with Object, Extract Class, and Hide Delegate; with full mechanics and TypeScript examples.
+- A first set of refactorings (Chapter 6): the everyday moves Fowler reaches for most often, including Extract Function, Inline Function, Extract Variable, Introduce Parameter Object, Combine Functions into Class, and Split Phase.
+- Encapsulation (Chapter 7): moves that tighten access boundaries, including Encapsulate Record, Replace Primitive with Object, Extract Class, and Hide Delegate.
 - Moving features (Chapter 8): moves that relocate code to where it belongs, including Move Function, Move Field, Split Loop, and Replace Loop with Pipeline.
 - Organizing data (Chapter 9): moves that improve how data is named, scoped, and represented, including Split Variable, Replace Derived Variable with Query, and Change Reference to Value.
 - Simplifying conditional logic (Chapter 10): moves that make branches easier to read, including Decompose Conditional, Replace Nested Conditional with Guard Clauses, and Replace Conditional with Polymorphism.

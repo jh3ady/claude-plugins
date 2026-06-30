@@ -5,20 +5,19 @@ description:
   apply in a situation, however the need is expressed: "extract this",
   "inline this", "split this function", "replace this conditional",
   "pull this up", "rename this variable", "encapsulate this field",
-  "hide this delegate", or any similar instruction on existing code
-  structure, even when Fowler is not named. It covers the complete named
-  catalogue from Fowler's Refactoring (2nd ed., 2018, with Kent Beck),
-  grouped by the book's seven chapter categories: a first set of
-  refactorings; encapsulation; moving features; organizing data;
-  simplifying conditional logic; refactoring APIs; and dealing with
-  inheritance. Each entry names the move, states its intent, identifies its
-  inverse where one exists, and provides condensed mechanics. Use alongside
-  the sibling skills refactoring-method (the overall method) and code-smells
-  (the diagnostic signals that point to specific moves). Composable with
-  your own conventions.
+  "hide this delegate", "move this function", "move this field",
+  "push this down to the subclass", or any similar instruction on existing
+  code structure, even when Fowler is not named. It covers Fowler's
+  complete named catalogue (2nd ed., 2018, with Kent Beck) across seven
+  chapters: a first set of refactorings; encapsulation; moving features;
+  organizing data; simplifying conditional logic; refactoring APIs; and
+  dealing with inheritance. Use alongside the sibling skills
+  refactoring-method (the overall method) and code-smells (the diagnostic
+  signals that point to specific moves). Composable with your own
+  conventions.
 ---
 
-# Refactoring catalog
+# Refactoring catalogue
 
 This skill is the named-moves toolbox for Fowler's *Refactoring* (2nd ed.,
 2018, with Kent Beck). Each move has a precise name, a condensed mechanic,
@@ -78,7 +77,7 @@ Moves that relocate code to the module or class where it most naturally belongs
 - **Replace Loop with Pipeline**: replaces an imperative loop with a sequence of pipeline operations (filter, map, reduce).
 - **Remove Dead Code**: deletes code that can never be reached.
 
-Full mechanics in `references/03-moving-features.md` (added in a later task).
+Full mechanics and TypeScript examples in `references/03-moving-features.md`.
 
 ## Organizing data (chapter 9)
 
@@ -91,7 +90,7 @@ Moves that improve how data is named, scoped, and represented (Fowler,
 - **Change Reference to Value**: makes a shared object behave as an immutable value, replaced on change instead of mutated in place.
 - **Change Value to Reference**: turns multiple independent copies of a conceptual entity into a single shared reference so all uses see the same state.
 
-Full mechanics in `references/04-organizing-data.md` (added in a later task).
+Full mechanics and TypeScript examples in `references/04-organizing-data.md`.
 
 ## Simplifying conditional logic (chapter 10)
 
@@ -105,7 +104,7 @@ Moves that make conditional branches easier to read and extend (Fowler,
 - **Introduce Special Case**: introduces a special-case object to absorb common handling for a specific value (the Null Object pattern and its variants).
 - **Introduce Assertion**: adds a code assertion to make a hidden assumption explicit and verifiable.
 
-Full mechanics in `references/05-simplifying-conditional-logic.md` (added in a later task).
+Full mechanics and TypeScript examples in `references/05-simplifying-conditional-logic.md`.
 
 ## Refactoring APIs (chapter 11)
 
@@ -123,7 +122,7 @@ Moves that make functions easier and safer to call (Fowler, *Refactoring*,
 - **Replace Function with Command**: wraps a function in a command object to allow undo, parameterisation, or step-wise execution.
 - **Replace Command with Function**: collapses a command object back into a plain function when the extra capability is not needed.
 
-Full mechanics in `references/06-refactoring-apis.md` (added in a later task).
+Full mechanics and TypeScript examples in `references/06-refactoring-apis.md`.
 
 ## Dealing with inheritance (chapter 12)
 
@@ -142,7 +141,7 @@ Chapter 12).
 - **Replace Subclass with Delegate**: replaces an inheritance relationship with a delegate field when the subclass varies behaviour rather than type.
 - **Replace Superclass with Delegate**: replaces inheritance with a delegate field when the superclass is not a true type relationship for the subclass.
 
-Full mechanics in `references/07-inheritance.md` (added in a later task).
+Full mechanics and TypeScript examples in `references/07-inheritance.md`.
 
 ## How to read a catalogue entry
 

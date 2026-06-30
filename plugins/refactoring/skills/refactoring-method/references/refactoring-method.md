@@ -24,6 +24,7 @@ The tests are not a nice-to-have; they are the mechanism by which each small ste
 is verified safe.
 
 The discipline is:
+
 1. Run the full test suite; all tests pass (green bar before you start).
 2. Make one small structural change.
 3. Run the test suite again. If it is still green, the step was safe.
@@ -55,18 +56,18 @@ earned.
 type PlayType = "tragedy" | "comedy";
 
 interface Play {
-  name: string;
-  type: PlayType;
+    name: string;
+    type: PlayType;
 }
 
 interface Performance {
-  playId: string;
-  audience: number;
+    playId: string;
+    audience: number;
 }
 
 interface Invoice {
-  customer: string;
-  performances: Performance[];
+    customer: string;
+    performances: Performance[];
 }
 ```
 
@@ -80,38 +81,38 @@ formatting the output all in one place.
 // Starting point: a single function mixing three concerns.
 // Based on Fowler, Refactoring, 2nd ed., 2018, Chapter 1.
 function statement(invoice: Invoice, plays: Map<string, Play>): string {
-  let totalAmount = 0;
-  let volumeCredits = 0;
-  let result = `Statement for ${invoice.customer}\n`;
+    let totalAmount = 0;
+    let volumeCredits = 0;
+    let result = `Statement for ${invoice.customer}\n`;
 
-  for (const perf of invoice.performances) {
-    const play = plays.get(perf.playId)!;
-    let thisAmount = 0;
+    for (const perf of invoice.performances) {
+        const play = plays.get(perf.playId)!;
+        let thisAmount = 0;
 
-    switch (play.type) {
-      case "tragedy":
-        thisAmount = 40000;
-        if (perf.audience > 30) thisAmount += 1000 * (perf.audience - 30);
-        break;
-      case "comedy":
-        thisAmount = 30000;
-        if (perf.audience > 20) thisAmount += 10000 + 500 * (perf.audience - 20);
-        thisAmount += 300 * perf.audience;
-        break;
-      default:
-        throw new Error(`unknown type: ${play.type}`);
+        switch (play.type) {
+            case "tragedy":
+                thisAmount = 40000;
+                if (perf.audience > 30) thisAmount += 1000 * (perf.audience - 30);
+                break;
+            case "comedy":
+                thisAmount = 30000;
+                if (perf.audience > 20) thisAmount += 10000 + 500 * (perf.audience - 20);
+                thisAmount += 300 * perf.audience;
+                break;
+            default:
+                throw new Error(`unknown type: ${play.type}`);
+        }
+
+        volumeCredits += Math.max(perf.audience - 30, 0);
+        if (play.type === "comedy") volumeCredits += Math.floor(perf.audience / 5);
+
+        result += `  ${play.name}: ${(thisAmount / 100).toFixed(2)} (${perf.audience} seats)\n`;
+        totalAmount += thisAmount;
     }
 
-    volumeCredits += Math.max(perf.audience - 30, 0);
-    if (play.type === "comedy") volumeCredits += Math.floor(perf.audience / 5);
-
-    result += `  ${play.name}: ${(thisAmount / 100).toFixed(2)} (${perf.audience} seats)\n`;
-    totalAmount += thisAmount;
-  }
-
-  result += `Amount owed is ${(totalAmount / 100).toFixed(2)}\n`;
-  result += `You earned ${volumeCredits} credits\n`;
-  return result;
+    result += `Amount owed is ${(totalAmount / 100).toFixed(2)}\n`;
+    result += `You earned ${volumeCredits} credits\n`;
+    return result;
 }
 ```
 
@@ -125,32 +126,32 @@ Before touching anything, lock in the current behaviour.
 
 ```typescript
 // test/statement.test.ts
-import { statement } from "../src/statement";
+import {statement} from "../src/statement";
 
 const plays: Map<string, Play> = new Map([
-  ["hamlet", { name: "Hamlet", type: "tragedy" }],
-  ["asYouLikeIt", { name: "As You Like It", type: "comedy" }],
-  ["othello", { name: "Othello", type: "tragedy" }],
+    ["hamlet", {name: "Hamlet", type: "tragedy"}],
+    ["asYouLikeIt", {name: "As You Like It", type: "comedy"}],
+    ["othello", {name: "Othello", type: "tragedy"}],
 ]);
 
 const invoice: Invoice = {
-  customer: "BigCo",
-  performances: [
-    { playId: "hamlet", audience: 55 },
-    { playId: "asYouLikeIt", audience: 35 },
-    { playId: "othello", audience: 40 },
-  ],
+    customer: "BigCo",
+    performances: [
+        {playId: "hamlet", audience: 55},
+        {playId: "asYouLikeIt", audience: 35},
+        {playId: "othello", audience: 40},
+    ],
 };
 
 test("statement produces the correct plain text output", () => {
-  expect(statement(invoice, plays)).toBe(
-    "Statement for BigCo\n" +
-    "  Hamlet: 650.00 (55 seats)\n" +
-    "  As You Like It: 580.00 (35 seats)\n" +
-    "  Othello: 500.00 (40 seats)\n" +
-    "Amount owed is 1730.00\n" +
-    "You earned 47 credits\n",
-  );
+    expect(statement(invoice, plays)).toBe(
+        "Statement for BigCo\n" +
+        "  Hamlet: 650.00 (55 seats)\n" +
+        "  As You Like It: 580.00 (35 seats)\n" +
+        "  Othello: 500.00 (40 seats)\n" +
+        "Amount owed is 1730.00\n" +
+        "You earned 47 credits\n",
+    );
 });
 ```
 
@@ -169,43 +170,43 @@ own function is the first move (Fowler, *Refactoring*, 2nd ed., 2018, Chapter 1)
 
 ```typescript
 function amountFor(performance: Performance, play: Play): number {
-  let result = 0;
-  switch (play.type) {
-    case "tragedy":
-      result = 40000;
-      if (performance.audience > 30) result += 1000 * (performance.audience - 30);
-      break;
-    case "comedy":
-      result = 30000;
-      if (performance.audience > 20) result += 10000 + 500 * (performance.audience - 20);
-      result += 300 * performance.audience;
-      break;
-    default:
-      throw new Error(`unknown type: ${play.type}`);
-  }
-  return result;
+    let result = 0;
+    switch (play.type) {
+        case "tragedy":
+            result = 40000;
+            if (performance.audience > 30) result += 1000 * (performance.audience - 30);
+            break;
+        case "comedy":
+            result = 30000;
+            if (performance.audience > 20) result += 10000 + 500 * (performance.audience - 20);
+            result += 300 * performance.audience;
+            break;
+        default:
+            throw new Error(`unknown type: ${play.type}`);
+    }
+    return result;
 }
 
 function statement(invoice: Invoice, plays: Map<string, Play>): string {
-  let totalAmount = 0;
-  let volumeCredits = 0;
-  let result = `Statement for ${invoice.customer}\n`;
+    let totalAmount = 0;
+    let volumeCredits = 0;
+    let result = `Statement for ${invoice.customer}\n`;
 
-  for (const perf of invoice.performances) {
-    const play = plays.get(perf.playId)!;
-    // thisAmount replaced by a direct call to the extracted function
-    const thisAmount = amountFor(perf, play);
+    for (const perf of invoice.performances) {
+        const play = plays.get(perf.playId)!;
+        // thisAmount replaced by a direct call to the extracted function
+        const thisAmount = amountFor(perf, play);
 
-    volumeCredits += Math.max(perf.audience - 30, 0);
-    if (play.type === "comedy") volumeCredits += Math.floor(perf.audience / 5);
+        volumeCredits += Math.max(perf.audience - 30, 0);
+        if (play.type === "comedy") volumeCredits += Math.floor(perf.audience / 5);
 
-    result += `  ${play.name}: ${(thisAmount / 100).toFixed(2)} (${perf.audience} seats)\n`;
-    totalAmount += thisAmount;
-  }
+        result += `  ${play.name}: ${(thisAmount / 100).toFixed(2)} (${perf.audience} seats)\n`;
+        totalAmount += thisAmount;
+    }
 
-  result += `Amount owed is ${(totalAmount / 100).toFixed(2)}\n`;
-  result += `You earned ${volumeCredits} credits\n`;
-  return result;
+    result += `Amount owed is ${(totalAmount / 100).toFixed(2)}\n`;
+    result += `You earned ${volumeCredits} credits\n`;
+    return result;
 }
 ```
 
@@ -225,7 +226,7 @@ removes a mutable temporary that had to be kept in sync with `perf`.
 
 ```typescript
 function playFor(performance: Performance, plays: Map<string, Play>): Play {
-  return plays.get(performance.playId)!;
+    return plays.get(performance.playId)!;
 }
 
 // In the loop, replace `const play = plays.get(perf.playId)!` with inline calls.
@@ -245,11 +246,11 @@ The credits calculation inside the loop is a second well-bounded concern.
 
 ```typescript
 function volumeCreditsFor(performance: Performance, plays: Map<string, Play>): number {
-  let result = Math.max(performance.audience - 30, 0);
-  if (playFor(performance, plays).type === "comedy") {
-    result += Math.floor(performance.audience / 5);
-  }
-  return result;
+    let result = Math.max(performance.audience - 30, 0);
+    if (playFor(performance, plays).type === "comedy") {
+        result += Math.floor(performance.audience / 5);
+    }
+    return result;
 }
 ```
 
@@ -265,18 +266,18 @@ from the main function and makes the final-state meaning explicit.
 
 ```typescript
 function totalVolumeCredits(invoice: Invoice, plays: Map<string, Play>): number {
-  return invoice.performances.reduce(
-    (total, perf) => total + volumeCreditsFor(perf, plays),
-    0,
-  );
+    return invoice.performances.reduce(
+        (total, perf) => total + volumeCreditsFor(perf, plays),
+        0,
+    );
 }
 
 // totalAmount gets the same treatment:
 function totalAmount(invoice: Invoice, plays: Map<string, Play>): number {
-  return invoice.performances.reduce(
-    (total, perf) => total + amountFor(perf, playFor(perf, plays)),
-    0,
-  );
+    return invoice.performances.reduce(
+        (total, perf) => total + amountFor(perf, playFor(perf, plays)),
+        0,
+    );
 }
 ```
 
@@ -294,52 +295,52 @@ it as text. Fowler introduces an intermediate data structure
 
 ```typescript
 interface StatementData {
-  customer: string;
-  performances: EnrichedPerformance[];
-  totalAmount: number;
-  totalVolumeCredits: number;
+    customer: string;
+    performances: EnrichedPerformance[];
+    totalAmount: number;
+    totalVolumeCredits: number;
 }
 
 interface EnrichedPerformance extends Performance {
-  play: Play;
-  amount: number;
-  volumeCredits: number;
+    play: Play;
+    amount: number;
+    volumeCredits: number;
 }
 
 function createStatementData(
-  invoice: Invoice,
-  plays: Map<string, Play>,
+    invoice: Invoice,
+    plays: Map<string, Play>,
 ): StatementData {
-  const enrichedPerformances = invoice.performances.map((perf) => {
-    const play = playFor(perf, plays);
-    return {
-      ...perf,
-      play,
-      amount: amountFor(perf, play),
-      volumeCredits: volumeCreditsFor(perf, plays),
-    };
-  });
+    const enrichedPerformances = invoice.performances.map((perf) => {
+        const play = playFor(perf, plays);
+        return {
+            ...perf,
+            play,
+            amount: amountFor(perf, play),
+            volumeCredits: volumeCreditsFor(perf, plays),
+        };
+    });
 
-  return {
-    customer: invoice.customer,
-    performances: enrichedPerformances,
-    totalAmount: enrichedPerformances.reduce((t, p) => t + p.amount, 0),
-    totalVolumeCredits: enrichedPerformances.reduce((t, p) => t + p.volumeCredits, 0),
-  };
+    return {
+        customer: invoice.customer,
+        performances: enrichedPerformances,
+        totalAmount: enrichedPerformances.reduce((t, p) => t + p.amount, 0),
+        totalVolumeCredits: enrichedPerformances.reduce((t, p) => t + p.volumeCredits, 0),
+    };
 }
 
 function renderPlainText(data: StatementData): string {
-  let result = `Statement for ${data.customer}\n`;
-  for (const perf of data.performances) {
-    result += `  ${perf.play.name}: ${(perf.amount / 100).toFixed(2)} (${perf.audience} seats)\n`;
-  }
-  result += `Amount owed is ${(data.totalAmount / 100).toFixed(2)}\n`;
-  result += `You earned ${data.totalVolumeCredits} credits\n`;
-  return result;
+    let result = `Statement for ${data.customer}\n`;
+    for (const perf of data.performances) {
+        result += `  ${perf.play.name}: ${(perf.amount / 100).toFixed(2)} (${perf.audience} seats)\n`;
+    }
+    result += `Amount owed is ${(data.totalAmount / 100).toFixed(2)}\n`;
+    result += `You earned ${data.totalVolumeCredits} credits\n`;
+    return result;
 }
 
 function statement(invoice: Invoice, plays: Map<string, Play>): string {
-  return renderPlainText(createStatementData(invoice, plays));
+    return renderPlainText(createStatementData(invoice, plays));
 }
 ```
 
@@ -351,18 +352,18 @@ duplication.
 
 ```typescript
 function renderHtml(data: StatementData): string {
-  let result = `<h1>Statement for ${data.customer}</h1>\n<table>\n`;
-  for (const perf of data.performances) {
-    result += `  <tr><td>${perf.play.name}</td><td>${(perf.amount / 100).toFixed(2)}</td></tr>\n`;
-  }
-  result += `</table>\n`;
-  result += `<p>Amount owed is <em>${(data.totalAmount / 100).toFixed(2)}</em></p>\n`;
-  result += `<p>You earned <em>${data.totalVolumeCredits}</em> credits</p>\n`;
-  return result;
+    let result = `<h1>Statement for ${data.customer}</h1>\n<table>\n`;
+    for (const perf of data.performances) {
+        result += `  <tr><td>${perf.play.name}</td><td>${(perf.amount / 100).toFixed(2)}</td></tr>\n`;
+    }
+    result += `</table>\n`;
+    result += `<p>Amount owed is <em>${(data.totalAmount / 100).toFixed(2)}</em></p>\n`;
+    result += `<p>You earned <em>${data.totalVolumeCredits}</em> credits</p>\n`;
+    return result;
 }
 
 function htmlStatement(invoice: Invoice, plays: Map<string, Play>): string {
-  return renderHtml(createStatementData(invoice, plays));
+    return renderHtml(createStatementData(invoice, plays));
 }
 ```
 
@@ -379,13 +380,15 @@ at a time, never both simultaneously.
 ### The adding-function hat
 
 Under this hat you are changing what the code does:
-- You write new tests for the new behaviour.
-- Existing tests stay green; you write new tests for the new behaviour, which start failing until you implement the feature.
+
+- Existing tests stay green throughout; you add new tests for the intended behaviour, which fail until the feature is
+  implemented.
 - You are enlarging the surface of the system.
 
 ### The refactoring hat
 
 Under this hat you are changing how the code expresses what it already does:
+
 - You write no new tests (the existing tests already cover the behaviour).
 - Every existing test must pass after every step.
 - You are shrinking the surface required to understand the code.
@@ -401,6 +404,7 @@ points to the most recent single action, which is immediately reversible.
 ### Practical hat-switching
 
 In practice, hats change frequently within a session. A common sequence:
+
 1. Refactoring hat: clean up the area you are about to work in so the new
    feature is easy to add (preparatory refactoring).
 2. Adding-function hat: write the new test, then the new code.

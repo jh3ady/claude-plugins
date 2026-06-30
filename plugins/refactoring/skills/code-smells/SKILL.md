@@ -1,15 +1,17 @@
 ---
 name: code-smells
 description:
-  This skill should be used when recognising the bad smells of Chapter 3
-  (Beck and Fowler, Refactoring, 2nd ed., 2018) and mapping each to the
-  refactorings that resolve it. Use it whenever the situation involves a
-  structural suspicion about code, however it is phrased: "this smells",
+  This skill should be used when a piece of code has a structural problem
+  and you need to name what is wrong and which refactoring fixes it,
+  recognising the bad smells catalogued by Beck and Fowler (Refactoring,
+  2nd ed., 2018). Use it whenever the situation involves a structural
+  suspicion about code, however it is phrased: "this smells",
   "duplicated code", "this function is too long", "too many parameters",
   "this class does everything", "feature envy", "magic values everywhere",
-  "hard to change without breaking things", "this is messy", or any variant
-  that signals a code quality concern, even when Fowler is not named.
-  Composable with your own conventions.
+  "hard to change without breaking things", "this is messy",
+  "every change breaks something else", "this class knows too much about
+  another", or any variant that signals a code quality concern, even when
+  Fowler is not named. Composable with your own conventions.
 ---
 
 # Code smells
@@ -23,11 +25,11 @@ These groupings are an organising aid; they are not Fowler's own structure.
 
 ## Bloaters
 
-Code that has grown too large to understand comfortably.
+Code that has become hard to understand, through size or obscurity.
 
 - **Mysterious Name.** A name (function, variable, field, or class) that
-  does not reveal what it does or holds. Remedies: Rename Function,
-  Rename Variable, Rename Field.
+  does not reveal what it does or holds. Remedies: Change Function
+  Declaration (Rename Function), Rename Variable, Rename Field.
 - **Long Function.** A function long enough that its full logic is hard to
   hold in one reading. Remedies: Extract Function, Replace Temp with Query,
   Decompose Conditional, Replace Conditional with Polymorphism, Split Loop.
@@ -44,7 +46,8 @@ Code that has grown too large to understand comfortably.
 - **Primitive Obsession.** Using primitive values (strings, numbers, booleans)
   where a small domain object would enforce constraints and communicate intent.
   Remedies: Replace Primitive with Object, Replace Type Code with Subclasses,
-  Introduce Parameter Object, Replace Conditional with Polymorphism.
+  Introduce Parameter Object, Replace Conditional with Polymorphism,
+  Combine Functions into Class.
 
 ## Object-orientation abusers
 
@@ -93,9 +96,8 @@ Code that adds no value and should be removed or simplified.
   justify the indirection. Remedies: Inline Function, Inline Class,
   Collapse Hierarchy.
 - **Speculative Generality.** Abstractions added for anticipated future needs
-  that have never materialised (Fowler, *Refactoring*, 2nd ed., 2018,
-  Chapter 3). Remedies: Collapse Hierarchy, Inline Function, Inline Class,
-  Change Function Declaration, Remove Dead Code.
+  that have never materialised. Remedies: Collapse Hierarchy, Inline
+  Function, Inline Class, Change Function Declaration, Remove Dead Code.
 - **Loops.** A loop that performs a transformation or filter where a pipeline
   expresses intent more directly. Remedy: Replace Loop with Pipeline.
 - **Data Class.** A class with only fields and accessors and no real

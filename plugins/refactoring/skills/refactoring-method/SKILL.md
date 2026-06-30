@@ -11,7 +11,8 @@ description:
   phrased: "clean this up", "improve this design", "refactor this", "this code
   is messy", "this is hard to read", "I want to make this easier to change",
   "can we simplify this", or "this needs a rework", even when Fowler is not
-  named. Composable with your own conventions.
+  named. Use alongside `code-smells` for diagnosis and `refactoring-catalog`
+  for move mechanics. Composable with your own conventions.
 ---
 
 # Refactoring Method
@@ -45,8 +46,8 @@ new behaviour: you write new tests for the intended behaviour, which start
 failing until you implement the feature, while existing tests stay green. When **refactoring** you are changing only structure: no new
 tests, and every existing test must stay green after every step.
 
-You can wear only one hat at a time. Switching hats is fine and frequent, but
-you must know which hat you are wearing at each moment. Mixing the two in a
+You can wear only one hat at a time. Switching hats is fine and frequent.
+Know which hat you are wearing at each moment. Mixing the two in a
 single step conceals the source of any test failure: you cannot tell whether
 a regression came from the structural change or from the new behaviour. The
 resolution is to undo everything and restart with a clear separation.
@@ -104,6 +105,17 @@ moves cannot make a dent. Keep sessions bounded: a clear scope, a time limit,
 and a specific target state. A team doing opportunistic refactoring consistently
 rarely needs large planned sessions.
 
+### Long-term refactoring
+
+Large architectural changes, such as moving a subsystem across a boundary or
+splitting an overgrown module, take weeks or months to complete. The key
+constraint throughout is that the code must remain deployable at every point
+during the transition. Branch by Abstraction provides the technique: grow a
+new structure in parallel with the old, use a flag to control which is live,
+and remove the old once the new is stable (Fowler, *Refactoring*, 2nd ed.,
+2018, Chapter 2). For the full treatment of this and the other
+when-to-refactor categories, see `references/refactoring-method.md`.
+
 ## The test net as prerequisite
 
 Refactoring without tests is guesswork. The test suite is the mechanism by
@@ -129,8 +141,7 @@ Move in the smallest step the transformation allows
 Reversibility is the point. Any failing test points to the one small change
 just made, not to an accumulation of unrelated edits.
 
-A typical sequence of moves, illustrated in `references/refactoring-method.md`
-on Fowler's theatrical-players example from Chapter 1:
+A typical sequence of moves:
 
 1. **Extract Function** or **Extract Variable** to pull out a well-named piece.
 2. **Rename** (variable, function, parameter) for clarity.
