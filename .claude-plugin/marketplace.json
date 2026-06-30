@@ -95,6 +95,12 @@
       "source": "./plugins/refactoring",
       "description": "Refactoring (Martin Fowler, 2nd edition, with Kent Beck) applied pragmatically, in three skills: the method (the definition, the two hats, why and when to refactor, mechanics in small steps, and self-testing code as a prerequisite), the code smells (the chapter 3 catalogue of bad smells, each pointing to the refactorings that resolve it), and the refactoring catalogue (the full set of moves grouped by category, with condensed mechanics and TypeScript examples). Composable with your own conventions.",
       "version": "0.1.0"
+    },
+    {
+      "name": "design-patterns",
+      "source": "./plugins/design-patterns",
+      "description": "Design patterns applied pragmatically, judgment first: the 23 Gang of Four patterns plus modern idioms (Null Object, Result/Either, Specification, functional patterns), framed by when to reach for a pattern, when to refuse it (the rule of three, no speculative abstraction), the minimal TypeScript form, and ownership by level of abstraction so the generic mechanism lives here while its specialised application lives in hexagonal, CQRS, and DDD. Composable with your own conventions.",
+      "version": "0.1.0"
     }
   ]
 }
