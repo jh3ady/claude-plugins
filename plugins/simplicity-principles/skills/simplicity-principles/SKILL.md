@@ -1,6 +1,6 @@
 ---
 name: simplicity-principles
-description: Apply the simplicity principles KISS, DRY, and YAGNI when writing, modifying, reviewing, or refactoring production code, even when they are not explicitly mentioned. Includes the rule of three and the trade-off between duplication and the wrong abstraction.
+description: This skill should be used when writing, modifying, reviewing, or refactoring production code, applying the simplicity principles KISS, DRY, and YAGNI, even when they are not explicitly mentioned. Includes the rule of three and the trade-off between duplication and the wrong abstraction.
 ---
 
 # Simplicity principles

@@ -1,6 +1,6 @@
 ---
 name: solid-principles
-description: Apply the five SOLID principles (SRP, OCP, LSP, ISP, DIP) when writing, modifying, reviewing, or refactoring production code, even when SOLID is not explicitly mentioned. Includes pragmatic guardrails against over-engineering and speculative abstraction.
+description: This skill should be used when writing, modifying, reviewing, or refactoring production code, applying the five SOLID principles (SRP, OCP, LSP, ISP, DIP), even when SOLID is not explicitly mentioned. Includes pragmatic guardrails against over-engineering and speculative abstraction.
 ---
 
 # SOLID principles

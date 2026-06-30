@@ -1,6 +1,6 @@
 ---
 name: commit-conventions
-description: Apply the gitmoji + Conventional Commits standard to commit messages (subject-based scopes and the Git 50/72 length rule). Use this whenever writing or amending a commit message, or preparing or splitting a commit, even when conventions are not explicitly mentioned.
+description: This skill should be used whenever writing or amending a commit message, or preparing or splitting a commit, even when conventions are not explicitly mentioned, applying the gitmoji + Conventional Commits standard to commit messages (subject-based scopes and the Git 50/72 length rule).
 ---
 
 # Commit conventions

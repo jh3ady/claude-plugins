@@ -1,6 +1,6 @@
 ---
 name: clean-code
-description: Apply clean code craftsmanship (naming, small focused functions, intent-revealing comments, error handling) when writing, modifying, reviewing, or refactoring production code, even when clean code is not explicitly mentioned. Pragmatic, not dogmatic fragmentation.
+description: This skill should be used when writing, modifying, reviewing, or refactoring production code, even when clean code is not explicitly mentioned, applying clean code craftsmanship (naming, small focused functions, intent-revealing comments, error handling). Pragmatic, not dogmatic fragmentation.
 ---
 
 # Clean code

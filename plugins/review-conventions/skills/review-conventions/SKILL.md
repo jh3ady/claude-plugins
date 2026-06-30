@@ -1,6 +1,6 @@
 ---
 name: review-conventions
-description: Apply the Conventional Comments standard to code review comments. Use this whenever reviewing or commenting on a pull request or merge request, leaving review feedback, or phrasing a code-review comment, even when conventions are not explicitly mentioned.
+description: This skill should be used whenever reviewing or commenting on a pull request or merge request, leaving review feedback, or phrasing a code-review comment, even when conventions are not explicitly mentioned, applying the Conventional Comments standard to code review comments.
 ---
 
 # Review conventions
