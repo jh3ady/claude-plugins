@@ -121,6 +121,8 @@ class GPSTrack {
 `TrackPoint` values. `GPSTrack` no longer holds or exposes the intermediate
 calculation. `totalDistance()` returns the same number before and after the
 move for any `points` array; the only change is where the computation lives.
+Note: promoting `TrackPoint` from an `interface` to a `class` is a prerequisite
+step that hosts the moved method; it is not part of Move Function itself.
 
 ---
 

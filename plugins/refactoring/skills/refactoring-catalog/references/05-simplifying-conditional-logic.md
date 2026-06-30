@@ -266,6 +266,10 @@ class NorwegianBlueParrot extends Bird {
   }
 }
 
+class UnknownBird extends Bird {
+  plumage(): string { return "unknown"; }
+}
+
 function createBird(data: BirdData): Bird {
   switch (data.type) {
     case "EuropeanSwallow":
@@ -275,16 +279,17 @@ function createBird(data: BirdData): Bird {
     case "NorwegianBlueParrot":
       return new NorwegianBlueParrot(data.voltage);
     default:
-      throw new Error(`Unknown bird type: ${data.type}`);
+      return new UnknownBird();
   }
 }
 
 // Call site: createBird(data).plumage()
 ```
 
-For any valid `BirdData`, `createBird(data).plumage()` returns the same string
-as the original `plumage(data)`. The switch now exists only in `createBird`
-and only for construction; all type-specific logic lives in the subclasses.
+For every `BirdData`, `createBird(data).plumage()` returns the same string as
+the original `plumage(data)`, including `"unknown"` for an unrecognised type.
+The switch now exists only in `createBird` and only for construction; all
+type-specific logic lives in the subclasses.
 
 ---
 
