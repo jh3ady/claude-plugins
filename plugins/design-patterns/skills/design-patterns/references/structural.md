@@ -492,7 +492,7 @@ class CachingDataStoreProxy implements DataStore {
 ```typescript
 // JavaScript Proxy: a language-level alternative for dynamic interception
 // without a shared interface, suited to logging or validation shells.
-function withLogging<T extends object>(target: T): T {
+function loggingProxy<T extends object>(target: T): T {
   return new Proxy(target, {
     get(obj, prop) {
       const value = Reflect.get(obj, prop) as unknown;

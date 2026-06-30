@@ -107,12 +107,12 @@ function createRenameCommand(target: { name: string }, newName: string): Command
 }
 
 // Usage: store the command in a queue for deferred execution.
-const document = { name: "Report v1" };
+const doc = { name: "Report v1" };
 const commandQueue: Command[] = [];
 
-const cmd = createRenameCommand(document, "Report v2");
+const cmd = createRenameCommand(doc, "Report v2");
 commandQueue.push(cmd); // stored for later
-cmd();                  // executes: document.name is now "Report v2"
+cmd();                  // executes: doc.name is now "Report v2"
 ```
 
 ```typescript
@@ -354,7 +354,7 @@ class ValidationComponent {
 
 const mediator = new EventMediator();
 const form       = new FormComponent(mediator);
-const validation = new ValidationComponent(mediator);
+const validation = new ValidationComponent(mediator); // constructed for its subscription side effect
 
 form.submit({ username: "alice" }); // ValidationComponent reacts via mediator
 ```
@@ -751,8 +751,9 @@ element objects are large classes that cannot easily be converted to a union.
 
 ```typescript
 // Preferred: a discriminated union with an exhaustive switch.
-// TypeScript narrows the type in each branch; adding a new variant to Shape
-// without updating the switch produces a compile error (unreachable return).
+// TypeScript narrows the type in each branch; the never guard in the default
+// branch produces a compile error if a new Shape variant is added without
+// updating the switch.
 type Shape =
   | { kind: "circle";    radius: number }
   | { kind: "rectangle"; width: number; height: number }
@@ -763,6 +764,7 @@ function area(shape: Shape): number {
     case "circle":    return Math.PI * shape.radius ** 2;
     case "rectangle": return shape.width * shape.height;
     case "triangle":  return 0.5 * shape.base * shape.height;
+    default: { const _exhaustive: never = shape; return _exhaustive; }
   }
 }
 
@@ -770,7 +772,8 @@ function perimeter(shape: Shape): number {
   switch (shape.kind) {
     case "circle":    return 2 * Math.PI * shape.radius;
     case "rectangle": return 2 * (shape.width + shape.height);
-    case "triangle":  return shape.base + shape.height + Math.hypot(shape.base, shape.height);
+    case "triangle":  return shape.base + shape.height + Math.hypot(shape.base, shape.height); // assumes a right triangle
+    default: { const _exhaustive: never = shape; return _exhaustive; }
   }
 }
 ```
