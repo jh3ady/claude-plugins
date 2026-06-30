@@ -37,12 +37,12 @@ not change. If behaviour changes, the move is not a refactoring; it is a bug
 fix or a feature addition. The definition keeps the word precise and the
 practice safe.
 
-## The Two Hats
+## The two hats
 
 Kent Beck's metaphor divides development time into two modes
-(Fowler, 2nd ed., 2018, Chapter 2). When **adding function** you are writing
-new behaviour: new tests, new code, and existing tests may break as you wire
-in new paths. When **refactoring** you are changing only structure: no new
+(Fowler, *Refactoring*, 2nd ed., 2018, Chapter 2). When **adding function** you are writing
+new behaviour: you write new tests for the intended behaviour, which start
+failing until you implement the feature, while existing tests stay green. When **refactoring** you are changing only structure: no new
 tests, and every existing test must stay green after every step.
 
 You can wear only one hat at a time. Switching hats is fine and frequent, but
@@ -51,9 +51,9 @@ single step conceals the source of any test failure: you cannot tell whether
 a regression came from the structural change or from the new behaviour. The
 resolution is to undo everything and restart with a clear separation.
 
-## Why Refactor
+## Why refactor
 
-Refactoring pays off in four ways (Fowler, 2nd ed., 2018, Chapter 2):
+Refactoring pays off in four ways (Fowler, *Refactoring*, 2nd ed., 2018, Chapter 2):
 
 1. **Design.** Code designed once drifts without maintenance. Refactoring keeps
    the design aligned with the current problem.
@@ -68,22 +68,22 @@ Refactoring pays off in four ways (Fowler, 2nd ed., 2018, Chapter 2):
 The **Design Stamina Hypothesis** captures the long-term case: neglecting design
 trades long-term productivity for a short-term burst. Projects that invest in
 good design sustain higher velocity for longer. The payoff line is typically
-reached within weeks, not months (Fowler, 2nd ed., 2018, Chapter 2; see also
+reached within weeks, not months (Fowler, *Refactoring*, 2nd ed., 2018, Chapter 2; see also
 https://martinfowler.com/bliki/DesignStaminaHypothesis.html).
 
-## When to Refactor
+## When to refactor
 
 ### The rule of three (Don Roberts)
 
 The first time you do something, just do it. The second time, do it again but
-notice the duplication. The third time, refactor (Fowler, 2nd ed., 2018,
+notice the duplication. The third time, refactor (Fowler, *Refactoring*, 2nd ed., 2018,
 Chapter 2). The rule keeps premature abstraction in check while giving
 duplication a bounded lease.
 
 ### Opportunistic refactoring
 
 Most refactoring should arise during other work, not be scheduled separately
-(Fowler, 2nd ed., 2018, Chapter 2). The three opportunistic modes:
+(Fowler, *Refactoring*, 2nd ed., 2018, Chapter 2). The three opportunistic modes:
 
 - **Preparatory.** Before adding a feature, refactor the code into a structure
   that makes the feature easy to add. Fowler: "The best time to refactor is
@@ -104,10 +104,10 @@ moves cannot make a dent. Keep sessions bounded: a clear scope, a time limit,
 and a specific target state. A team doing opportunistic refactoring consistently
 rarely needs large planned sessions.
 
-## The Test Net as Prerequisite
+## The test net as prerequisite
 
 Refactoring without tests is guesswork. The test suite is the mechanism by
-which each small step is verified safe (Fowler, 2nd ed., 2018, Chapter 2).
+which each small step is verified safe (Fowler, *Refactoring*, 2nd ed., 2018, Chapter 2).
 Before refactoring any piece of code, confirm that tests cover the behaviour
 you intend to preserve and that they all pass.
 
@@ -117,10 +117,10 @@ bar is green. For the general TDD loop and writing tests for new behaviour,
 defer to `test-driven-development`; this skill covers the refactoring steps
 that follow a green bar.
 
-## Mechanics in Small Steps
+## Mechanics in small steps
 
 Move in the smallest step the transformation allows
-(Fowler, 2nd ed., 2018, Chapter 1). After each step:
+(Fowler, *Refactoring*, 2nd ed., 2018, Chapter 1). After each step:
 
 1. Compile (if the language requires it) and run the full test suite.
 2. If all tests pass, commit or checkpoint and proceed to the next step.
@@ -145,7 +145,7 @@ on Fowler's theatrical-players example from Chapter 1:
 For the complete catalogue of named moves with mechanics and TypeScript
 examples, see the sibling skill `refactoring-catalog`.
 
-## When Not to Refactor
+## When not to refactor
 
 - **Code you are about to rewrite.** If a section is scheduled for deletion
   or complete replacement, refactoring it first adds cost with no benefit.
@@ -172,7 +172,7 @@ examples, see the sibling skill `refactoring-catalog`.
   paths. Measure before and after; do not sacrifice readability for speculative
   performance gains without measurement.
 
-## Relationship to Other Skills
+## Relationship to other skills
 
 - **`code-smells`**: the catalogue of symptoms that signal the need for
   refactoring, each pointing to the refactoring moves that address it
@@ -191,7 +191,7 @@ examples, see the sibling skill `refactoring-catalog`.
   destination properties refactoring works toward. Refactoring is the
   mechanism; those skills name the target qualities.
 
-## Adapt to Your Context
+## Adapt to your context
 
 This skill stays generic on purpose. Your team may have preferred naming
 conventions for extracted functions, agreed limits on step size before

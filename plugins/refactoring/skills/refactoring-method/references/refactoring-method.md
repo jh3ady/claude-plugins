@@ -44,7 +44,7 @@ the bar is green.
 ## 2. Chapter 1 worked example: theatrical players
 
 Fowler opens the book with a theatrical players billing system
-(Fowler, 2nd ed., 2018, Chapter 1). A theatre company records which plays it
+(Fowler, *Refactoring*, 2nd ed., 2018, Chapter 1). A theatre company records which plays it
 performed and how large each audience was. The billing function produces a
 statement showing the charge for each performance and the total volume credits
 earned.
@@ -130,6 +130,7 @@ import { statement } from "../src/statement";
 const plays: Map<string, Play> = new Map([
   ["hamlet", { name: "Hamlet", type: "tragedy" }],
   ["asYouLikeIt", { name: "As You Like It", type: "comedy" }],
+  ["othello", { name: "Othello", type: "tragedy" }],
 ]);
 
 const invoice: Invoice = {
@@ -137,6 +138,7 @@ const invoice: Invoice = {
   performances: [
     { playId: "hamlet", audience: 55 },
     { playId: "asYouLikeIt", audience: 35 },
+    { playId: "othello", audience: 40 },
   ],
 };
 
@@ -145,7 +147,8 @@ test("statement produces the correct plain text output", () => {
     "Statement for BigCo\n" +
     "  Hamlet: 650.00 (55 seats)\n" +
     "  As You Like It: 580.00 (35 seats)\n" +
-    "Amount owed is 1230.00\n" +
+    "  Othello: 500.00 (40 seats)\n" +
+    "Amount owed is 1730.00\n" +
     "You earned 47 credits\n",
   );
 });
@@ -162,7 +165,7 @@ step in the sequence below must leave this test green.
 
 The switch statement calculates the amount for one performance. It is a
 well-bounded piece of logic with a clear name: `amountFor`. Extracting it to its
-own function is the first move (Fowler, 2nd ed., 2018, Chapter 1).
+own function is the first move (Fowler, *Refactoring*, 2nd ed., 2018, Chapter 1).
 
 ```typescript
 function amountFor(performance: Performance, play: Play): number {
@@ -287,7 +290,7 @@ Run the test. Still green.
 The final structural move is to separate the concern of enriching the data
 (calculating amounts and credits per performance) from the concern of rendering
 it as text. Fowler introduces an intermediate data structure
-(Fowler, 2nd ed., 2018, Chapter 1).
+(Fowler, *Refactoring*, 2nd ed., 2018, Chapter 1).
 
 ```typescript
 interface StatementData {
@@ -370,14 +373,14 @@ observable output. The test suite remained green throughout.
 
 ## 4. The two hats: extended notes
 
-The metaphor is Kent Beck's (Fowler, 2nd ed., 2018, Chapter 2). Wear one hat
+The metaphor is Kent Beck's (Fowler, *Refactoring*, 2nd ed., 2018, Chapter 2). Wear one hat
 at a time, never both simultaneously.
 
 ### The adding-function hat
 
 Under this hat you are changing what the code does:
 - You write new tests for the new behaviour.
-- Existing tests may break temporarily as you plumb in new paths.
+- Existing tests stay green; you write new tests for the new behaviour, which start failing until you implement the feature.
 - You are enlarging the surface of the system.
 
 ### The refactoring hat
@@ -411,7 +414,7 @@ different mental mode from "I am now making the code do something new."
 
 ## 5. When to refactor: full taxonomy
 
-Based on Fowler, 2nd ed., 2018, Chapter 2, and the accompanying article at
+Based on Fowler, *Refactoring*, 2nd ed., 2018, Chapter 2, and the accompanying article at
 https://martinfowler.com/articles/workflowsOfRefactoring/
 
 ### Opportunistic refactoring (the default)
@@ -458,7 +461,7 @@ live, until the old structure can be removed safely.
 
 The first time you do something, just do it. The second time you do something
 similar, do it but notice the duplication. The third time you do something
-similar, refactor (Fowler, 2nd ed., 2018, Chapter 2). The rule gives permission
+similar, refactor (Fowler, *Refactoring*, 2nd ed., 2018, Chapter 2). The rule gives permission
 to duplicate once, on the expectation that the pattern must appear three times
 before it is worth generalising. This keeps premature abstraction in check.
 
