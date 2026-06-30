@@ -1,11 +1,11 @@
 ---
 name: design-patterns
-description: This skill should be used when introducing, reviewing, or refactoring around a point of variation; hesitating between two patterns; asking whether a pattern is warranted here; or recognising a smell that a pattern addresses (behaviour that varies at runtime, repeated null guards, families of related objects, a tangle of conditionals), even when no pattern is named. It covers design patterns, the Gang of Four catalogue, and modern idioms (Null Object, Result/Either, Specification), with judgment on when to reach for a pattern and when to refuse it. Includes explicit guardrails against speculative application: a pattern you cannot name a current need for is speculative abstraction, not good design. Routes specialised applications to the owning architecture plugins: boundary adapters belong to hexagonal-architecture, the CQRS command message belongs to cqrs, and the aggregate factory belongs to domain-driven-design.
+description: This skill should be used when introducing, reviewing, or refactoring around a point of variation; hesitating between two patterns; asking whether a pattern is warranted here; or recognising a smell whose named resolution is a design pattern (behaviour that varies at runtime, repeated null guards, families of related objects, a tangle of conditionals), or when a named design pattern needs to be applied or implemented, even when no pattern is named. It covers design patterns, the Gang of Four catalogue, and modern idioms (Null Object, Result/Either, Specification), with judgment on when to reach for a pattern and when to refuse it. Includes explicit guardrails against speculative application: a pattern you cannot name a current need for is speculative abstraction, not good design. Routes specialised applications to the owning architecture plugins: boundary adapters belong to hexagonal-architecture, the CQRS command message belongs to cqrs, the aggregate factory belongs to domain-driven-design, and dependency injection wiring belongs to dependency-injection.
 ---
 
 # Design patterns
 
-A design pattern is a named, reusable solution to a recurring design problem in a context. The name carries a shared vocabulary that communicates intent between developers without requiring a full description of the structure every time. Gamma, Helm, Johnson, and Vlissides catalogued twenty-three of them in three families (Gamma, Helm, Johnson, Vlissides, Design Patterns, 1994): creational patterns that abstract object construction (Factory Method, Abstract Factory, Builder, Prototype, Singleton); structural patterns that compose objects and classes into larger structures (Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy); and behavioral patterns that distribute responsibility and define communication between objects (Chain of Responsibility, Command, Interpreter, Iterator, Mediator, Memento, Observer, State, Strategy, Template Method, Visitor). The modern canon adds patterns that have emerged since, particularly in functional-style and type-safe TypeScript: Null Object, Result/Either, and Specification.
+A design pattern is a named, reusable solution to a recurring design problem; the Gang of Four (Gamma et al., 1994) groups them into creational, structural, and behavioral.
 
 ## The decision reflex
 
@@ -39,7 +39,7 @@ In TypeScript, first-class functions and closures often replace a multi-class pa
 
 ## Ownership and composition
 
-This skill is the source of truth for the generic mechanism: Adapter as wrapping an incompatible interface, Command as reifying a request, Factory as encapsulating construction, Decorator as adding behaviour without subclassing, Observer as notifying dependents of state change. That is the level of abstraction this skill owns.
+This skill is the source of truth for the generic mechanism: Adapter as wrapping an incompatible interface, Command as reifying a request, Factory as encapsulating creation, Decorator as adding behaviour without subclassing, Observer as notifying dependents of state change. That is the level of abstraction this skill owns.
 
 The architecture plugins own the specialised application of these mechanisms:
 
