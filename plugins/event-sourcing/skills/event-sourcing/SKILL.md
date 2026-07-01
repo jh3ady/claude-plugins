@@ -163,6 +163,10 @@ that it was undone, which is itself part of the history.
   event store is the write model, projections are the read model), but CQRS
   does not require event sourcing. Consult that skill for the command/query
   split in its own right; this skill covers the event-sourcing half.
+- **`design-patterns`**: a snapshot is the Memento pattern applied to the event
+  store, and projections are driven by an Observer-style subscription to the
+  event stream. The generic mechanisms live in `design-patterns`; this skill
+  applies them to the store.
 
 ## Adapt to your context
 

@@ -143,6 +143,11 @@ pattern demanded it.
   optional delivery and coordination machinery often seen around CQRS. They are
   not part of the core pattern and are out of scope here; add them only when a
   concrete need justifies them.
+- **`design-patterns`**: the CQRS command is a write-model message, not the
+  Gang of Four Command pattern (a reified action captured as an object so it can
+  be queued, logged, or undone). They share only the name. Consult
+  `design-patterns` for the generic Command pattern, and for Mediator when a
+  command bus is in play.
 
 ## Adapt to your context
 

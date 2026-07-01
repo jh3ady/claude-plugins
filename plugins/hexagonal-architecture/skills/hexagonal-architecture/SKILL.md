@@ -45,6 +45,11 @@ redefine them.
 A driving adapter calls a port; a driven adapter implements a port. Keep the
 distinction straight and the dependency direction follows automatically.
 
+The adapter here is the Adapter design pattern applied at the architectural
+boundary: the generic mechanism, wrapping an incompatible interface so it fits
+the one the core expects, is covered by the `design-patterns` skill, while this
+skill governs its driving and driven roles around the core.
+
 When a secondary port integrates a foreign model (an external system, a legacy
 system, or another bounded context), translate that model into the domain's
 terms at the boundary so it never leaks past the port. This is where a

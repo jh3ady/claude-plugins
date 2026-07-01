@@ -60,6 +60,10 @@ Prefer the simplest wiring that meets the need:
   the composition root, not the architecture itself.
 - **Modular monolith**: one composition root per application; each module
   exposes a registration fragment, not its own root.
+- **Design patterns**: a Strategy is most often wired through constructor
+  injection, and a single shared instance is better expressed as a singleton
+  lifetime here than as the Gang of Four Singleton pattern. See
+  `design-patterns` for the patterns, this skill for their wiring and lifetimes.
 
 ## Adapt to your context
 
