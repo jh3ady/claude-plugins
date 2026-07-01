@@ -5,6 +5,7 @@ minimal TypeScript form, and composition notes for each of the seven Gang of
 Four structural patterns.
 
 Standards and sources:
+
 - Gamma, Helm, Johnson, Vlissides, *Design Patterns: Elements of Reusable
   Object-Oriented Software* (1994): the canonical source for all seven patterns
   below, cited as Gamma et al. (1994).
@@ -35,27 +36,28 @@ eliminate at the source is unnecessary indirection.
 ```typescript
 // Target interface expected by the client.
 interface EmailSender {
-  send(to: string, subject: string, body: string): Promise<void>;
+    send(to: string, subject: string, body: string): Promise<void>;
 }
 
 // Adaptee: a third-party SDK with a different shape.
 class ThirdPartyMailer {
-  sendMail(options: {
-    recipient: string;
-    title: string;
-    content: string;
-  }): Promise<void> {
-    return Promise.resolve(); // real implementation omitted
-  }
+    sendMail(options: {
+        recipient: string;
+        title: string;
+        content: string;
+    }): Promise<void> {
+        return Promise.resolve(); // real implementation omitted
+    }
 }
 
 // Adapter: wraps the adaptee and exposes the target interface.
 class MailerAdapter implements EmailSender {
-  constructor(private readonly mailer: ThirdPartyMailer) {}
+    constructor(private readonly mailer: ThirdPartyMailer) {
+    }
 
-  send(to: string, subject: string, body: string): Promise<void> {
-    return this.mailer.sendMail({ recipient: to, title: subject, content: body });
-  }
+    send(to: string, subject: string, body: string): Promise<void> {
+        return this.mailer.sendMail({recipient: to, title: subject, content: body});
+    }
 }
 ```
 
@@ -98,42 +100,55 @@ introducing the Bridge.
 ```typescript
 // Implementation side: the interface that varies independently.
 interface Renderer {
-  renderCircle(radius: number): void;
-  renderRectangle(width: number, height: number): void;
+    renderCircle(radius: number): void;
+
+    renderRectangle(width: number, height: number): void;
 }
 
 const svgRenderer: Renderer = {
-  renderCircle:    (r) => { /* SVG circle */    },
-  renderRectangle: (w, h) => { /* SVG rect */   },
+    renderCircle: (r) => { /* SVG circle */
+    },
+    renderRectangle: (w, h) => { /* SVG rect */
+    },
 };
 
 const canvasRenderer: Renderer = {
-  renderCircle:    (r) => { /* canvas arc */       },
-  renderRectangle: (w, h) => { /* canvas fillRect */ },
+    renderCircle: (r) => { /* canvas arc */
+    },
+    renderRectangle: (w, h) => { /* canvas fillRect */
+    },
 };
 
 // Abstraction side: holds a reference to the implementation.
 abstract class Shape {
-  constructor(protected readonly renderer: Renderer) {}
-  abstract draw(): void;
+    constructor(protected readonly renderer: Renderer) {
+    }
+
+    abstract draw(): void;
 }
 
 class Circle extends Shape {
-  constructor(private readonly radius: number, renderer: Renderer) {
-    super(renderer);
-  }
-  draw(): void { this.renderer.renderCircle(this.radius); }
+    constructor(private readonly radius: number, renderer: Renderer) {
+        super(renderer);
+    }
+
+    draw(): void {
+        this.renderer.renderCircle(this.radius);
+    }
 }
 
 class Rectangle extends Shape {
-  constructor(
-    private readonly width:  number,
-    private readonly height: number,
-    renderer: Renderer,
-  ) {
-    super(renderer);
-  }
-  draw(): void { this.renderer.renderRectangle(this.width, this.height); }
+    constructor(
+        private readonly width: number,
+        private readonly height: number,
+        renderer: Renderer,
+    ) {
+        super(renderer);
+    }
+
+    draw(): void {
+        this.renderer.renderRectangle(this.width, this.height);
+    }
 }
 ```
 
@@ -173,38 +188,51 @@ time and uniformity across levels is a real requirement.
 
 ```typescript
 interface FileSystemNode {
-  name(): string;
-  size(): number;
+    name(): string;
+
+    size(): number;
 }
 
 // Leaf: no children.
 class File implements FileSystemNode {
-  constructor(
-    private readonly _name: string,
-    private readonly _size: number,
-  ) {}
+    constructor(
+        private readonly _name: string,
+        private readonly _size: number,
+    ) {
+    }
 
-  name(): string { return this._name; }
-  size(): number { return this._size; }
+    name(): string {
+        return this._name;
+    }
+
+    size(): number {
+        return this._size;
+    }
 }
 
 // Composite: contains other nodes of the same interface.
 class Directory implements FileSystemNode {
-  private readonly children: FileSystemNode[] = [];
+    private readonly children: FileSystemNode[] = [];
 
-  constructor(private readonly _name: string) {}
+    constructor(private readonly _name: string) {
+    }
 
-  add(node: FileSystemNode): void { this.children.push(node); }
+    add(node: FileSystemNode): void {
+        this.children.push(node);
+    }
 
-  name(): string { return this._name; }
-  size(): number {
-    return this.children.reduce((sum, n) => sum + n.size(), 0);
-  }
+    name(): string {
+        return this._name;
+    }
+
+    size(): number {
+        return this.children.reduce((sum, n) => sum + n.size(), 0);
+    }
 }
 
 // Client code treats File and Directory uniformly through FileSystemNode.
 function printSize(node: FileSystemNode): void {
-  console.log(`${node.name()}: ${node.size()} bytes`);
+    console.log(`${node.name()}: ${node.size()} bytes`);
 }
 ```
 
@@ -240,34 +268,40 @@ composition is clearer than nested wrapping.
 
 ```typescript
 // Define simple request/response types so the example is self-contained.
-interface Request  { method: string; url: string; }
-interface Response { status: number; }
+interface Request {
+    method: string;
+    url: string;
+}
+
+interface Response {
+    status: number;
+}
 
 // Functional form: the idiomatic TypeScript choice.
 // A higher-order function wraps a function and preserves its signature exactly.
 type Handler = (request: Request) => Promise<Response>;
 
 function withLogging(handler: Handler): Handler {
-  return async (request) => {
-    console.log(`${request.method} ${request.url}`);
-    const response = await handler(request);
-    console.log(`${response.status}`);
-    return response;
-  };
+    return async (request) => {
+        console.log(`${request.method} ${request.url}`);
+        const response = await handler(request);
+        console.log(`${response.status}`);
+        return response;
+    };
 }
 
 function withRetry(maxAttempts: number, handler: Handler): Handler {
-  return async (request) => {
-    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-      try {
-        return await handler(request);
-      } catch (error) {
-        if (attempt === maxAttempts) throw error;
-      }
-    }
-    // Unreachable for maxAttempts >= 1; satisfies the TypeScript return type.
-    throw new Error("unreachable");
-  };
+    return async (request) => {
+        for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+            try {
+                return await handler(request);
+            } catch (error) {
+                if (attempt === maxAttempts) throw error;
+            }
+        }
+        // Unreachable for maxAttempts >= 1; satisfies the TypeScript return type.
+        throw new Error("unreachable");
+    };
 }
 
 // Decorators stack by composition; order reads left-to-right.
@@ -279,15 +313,16 @@ const handler = withLogging(withRetry(3, baseHandler));
 // Class form: heavier alternative; justified when the decorator must carry
 // state across calls or when many collaborators share the same interface.
 interface Logger {
-  log(level: "info" | "warn" | "error", message: string): void;
+    log(level: "info" | "warn" | "error", message: string): void;
 }
 
 class TimestampLogger implements Logger {
-  constructor(private readonly inner: Logger) {}
+    constructor(private readonly inner: Logger) {
+    }
 
-  log(level: "info" | "warn" | "error", message: string): void {
-    this.inner.log(level, `[${new Date().toISOString()}] ${message}`);
-  }
+    log(level: "info" | "warn" | "error", message: string): void {
+        this.inner.log(level, `[${new Date().toISOString()}] ${message}`);
+    }
 }
 ```
 
@@ -326,36 +361,41 @@ genuinely has many moving parts that callers should not need to know about.
 ```typescript
 // Wide subsystem with three internal services.
 class InventoryService {
-  reserve(productId: string, quantity: number): void { /* reserve */ }
+    reserve(productId: string, quantity: number): void { /* reserve */
+    }
 }
 
 class PaymentService {
-  charge(accountId: string, amount: number): string { return "tx-id"; }
+    charge(accountId: string, amount: number): string {
+        return "tx-id";
+    }
 }
 
 class ShippingService {
-  schedule(transactionId: string, address: string): void { /* schedule */ }
+    schedule(transactionId: string, address: string): void { /* schedule */
+    }
 }
 
 // Facade: exposes a single clear entry point for the "place order" operation.
 class OrderFacade {
-  constructor(
-    private readonly inventory: InventoryService,
-    private readonly payment:   PaymentService,
-    private readonly shipping:  ShippingService,
-  ) {}
+    constructor(
+        private readonly inventory: InventoryService,
+        private readonly payment: PaymentService,
+        private readonly shipping: ShippingService,
+    ) {
+    }
 
-  placeOrder(
-    productId:  string,
-    quantity:   number,
-    accountId:  string,
-    amount:     number,
-    address:    string,
-  ): void {
-    this.inventory.reserve(productId, quantity);
-    const transactionId = this.payment.charge(accountId, amount);
-    this.shipping.schedule(transactionId, address);
-  }
+    placeOrder(
+        productId: string,
+        quantity: number,
+        accountId: string,
+        amount: number,
+        address: string,
+    ): void {
+        this.inventory.reserve(productId, quantity);
+        const transactionId = this.payment.charge(accountId, amount);
+        this.shipping.schedule(transactionId, address);
+    }
 }
 ```
 
@@ -396,30 +436,30 @@ measurement demands it.
 
 ```typescript
 interface GlyphStyle {
-  readonly fontFamily: string;
-  readonly fontSize:   number;
-  readonly bold:       boolean;
+    readonly fontFamily: string;
+    readonly fontSize: number;
+    readonly bold: boolean;
 }
 
 // Flyweight factory: returns a shared instance for each unique style combination.
 class GlyphStyleCache {
-  private readonly cache = new Map<string, GlyphStyle>();
+    private readonly cache = new Map<string, GlyphStyle>();
 
-  get(fontFamily: string, fontSize: number, bold: boolean): GlyphStyle {
-    const key = `${fontFamily}-${fontSize}-${String(bold)}`;
-    if (!this.cache.has(key)) {
-      this.cache.set(key, { fontFamily, fontSize, bold });
+    get(fontFamily: string, fontSize: number, bold: boolean): GlyphStyle {
+        const key = `${fontFamily}-${fontSize}-${String(bold)}`;
+        if (!this.cache.has(key)) {
+            this.cache.set(key, {fontFamily, fontSize, bold});
+        }
+        return this.cache.get(key)!;
     }
-    return this.cache.get(key)!;
-  }
 }
 
 // Extrinsic state (position, character) lives with the glyph, not the style.
 interface Glyph {
-  readonly character: string;
-  readonly x:         number;
-  readonly y:         number;
-  readonly style:     GlyphStyle; // shared flyweight
+    readonly character: string;
+    readonly x: number;
+    readonly y: number;
+    readonly style: GlyphStyle; // shared flyweight
 }
 ```
 
@@ -460,32 +500,34 @@ pipeline is a better fit for the intent.
 ```typescript
 // Target interface shared by the real object and the proxy.
 interface DataStore {
-  read(key: string):               Promise<string | undefined>;
-  write(key: string, value: string): Promise<void>;
+    read(key: string): Promise<string | undefined>;
+
+    write(key: string, value: string): Promise<void>;
 }
 
 // Caching proxy: returns a cached value when available; writes through and
 // invalidates the cache on write.
 class CachingDataStoreProxy implements DataStore {
-  private readonly cache = new Map<string, string>();
+    private readonly cache = new Map<string, string>();
 
-  constructor(private readonly real: DataStore) {}
-
-  async read(key: string): Promise<string | undefined> {
-    if (this.cache.has(key)) {
-      return this.cache.get(key);
+    constructor(private readonly real: DataStore) {
     }
-    const value = await this.real.read(key);
-    if (value !== undefined) {
-      this.cache.set(key, value);
-    }
-    return value;
-  }
 
-  async write(key: string, value: string): Promise<void> {
-    this.cache.delete(key); // invalidate before delegating
-    return this.real.write(key, value);
-  }
+    async read(key: string): Promise<string | undefined> {
+        if (this.cache.has(key)) {
+            return this.cache.get(key);
+        }
+        const value = await this.real.read(key);
+        if (value !== undefined) {
+            this.cache.set(key, value);
+        }
+        return value;
+    }
+
+    async write(key: string, value: string): Promise<void> {
+        this.cache.delete(key); // invalidate before delegating
+        return this.real.write(key, value);
+    }
 }
 ```
 
@@ -493,18 +535,18 @@ class CachingDataStoreProxy implements DataStore {
 // JavaScript Proxy: a language-level alternative for dynamic interception
 // without a shared interface, suited to logging or validation shells.
 function loggingProxy<T extends object>(target: T): T {
-  return new Proxy(target, {
-    get(obj, prop) {
-      const value = Reflect.get(obj, prop) as unknown;
-      if (typeof value === "function") {
-        return (...args: unknown[]) => {
-          console.log(`calling ${String(prop)}`);
-          return (value as (...a: unknown[]) => unknown).apply(obj, args);
-        };
-      }
-      return value;
-    },
-  });
+    return new Proxy(target, {
+        get(obj, prop) {
+            const value = Reflect.get(obj, prop) as unknown;
+            if (typeof value === "function") {
+                return (...args: unknown[]) => {
+                    console.log(`calling ${String(prop)}`);
+                    return (value as (...a: unknown[]) => unknown).apply(obj, args);
+                };
+            }
+            return value;
+        },
+    });
 }
 ```
 

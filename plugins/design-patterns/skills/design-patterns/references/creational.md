@@ -5,6 +5,7 @@ minimal TypeScript form, and composition notes for each of the five Gang of
 Four creational patterns.
 
 Standards and sources:
+
 - Gamma, Helm, Johnson, Vlissides, *Design Patterns: Elements of Reusable
   Object-Oriented Software* (1994): the canonical source for all five patterns
   below, cited as Gamma et al. (1994).
@@ -33,28 +34,46 @@ family appears.
 ### Minimal form
 
 ```typescript
-interface Button   { render(): void; }
-interface Checkbox { render(): void; }
+interface Button {
+    render(): void;
+}
+
+interface Checkbox {
+    render(): void;
+}
 
 interface UIFactory {
-  createButton():   Button;
-  createCheckbox(): Checkbox;
+    createButton(): Button;
+
+    createCheckbox(): Checkbox;
 }
 
 // Two concrete families as plain objects of factory functions.
 const webFactory: UIFactory = {
-  createButton:   () => ({ render: () => { /* web button */ } }),
-  createCheckbox: () => ({ render: () => { /* web checkbox */ } }),
+    createButton: () => ({
+        render: () => { /* web button */
+        }
+    }),
+    createCheckbox: () => ({
+        render: () => { /* web checkbox */
+        }
+    }),
 };
 
 const mobileFactory: UIFactory = {
-  createButton:   () => ({ render: () => { /* mobile button */ } }),
-  createCheckbox: () => ({ render: () => { /* mobile checkbox */ } }),
+    createButton: () => ({
+        render: () => { /* mobile button */
+        }
+    }),
+    createCheckbox: () => ({
+        render: () => { /* mobile checkbox */
+        }
+    }),
 };
 
 function renderUI(factory: UIFactory): void {
-  factory.createButton().render();
-  factory.createCheckbox().render();
+    factory.createButton().render();
+    factory.createCheckbox().render();
 }
 ```
 
@@ -94,15 +113,15 @@ the same configuration is used to produce multiple objects.
 ```typescript
 // Preferred: an options object handles most cases.
 interface QueryOptions {
-  table:   string;
-  filter?: string;
-  limit?:  number;
-  offset?: number;
+    table: string;
+    filter?: string;
+    limit?: number;
+    offset?: number;
 }
 
 function buildQuery(options: QueryOptions): string {
-  const { table, filter = "1=1", limit = 100, offset = 0 } = options;
-  return `SELECT * FROM ${table} WHERE ${filter} LIMIT ${limit} OFFSET ${offset}`;
+    const {table, filter = "1=1", limit = 100, offset = 0} = options;
+    return `SELECT * FROM ${table} WHERE ${filter} LIMIT ${limit} OFFSET ${offset}`;
 }
 
 // buildQuery({ table: "users", filter: "active = true", limit: 20 });
@@ -110,13 +129,31 @@ function buildQuery(options: QueryOptions): string {
 // Heavier alternative: a fluent builder, justified when construction spans
 // steps with ordering constraints or inter-step validation.
 class QueryBuilder {
-  private options: QueryOptions = { table: "" };
+    private options: QueryOptions = {table: ""};
 
-  from(table: string): this   { this.options.table = table;    return this; }
-  where(filter: string): this { this.options.filter = filter;  return this; }
-  take(limit: number): this   { this.options.limit = limit;    return this; }
-  skip(offset: number): this  { this.options.offset = offset;  return this; }
-  build(): string             { return buildQuery(this.options); }
+    from(table: string): this {
+        this.options.table = table;
+        return this;
+    }
+
+    where(filter: string): this {
+        this.options.filter = filter;
+        return this;
+    }
+
+    take(limit: number): this {
+        this.options.limit = limit;
+        return this;
+    }
+
+    skip(offset: number): this {
+        this.options.offset = offset;
+        return this;
+    }
+
+    build(): string {
+        return buildQuery(this.options);
+    }
 }
 ```
 
@@ -151,16 +188,28 @@ collaborator, achieves the same decoupling with less indirection.
 type Channel = "email" | "sms" | "push";
 
 interface Notification {
-  send(message: string): void;
+    send(message: string): void;
 }
 
 // A plain factory function: the idiomatic TypeScript form.
 function createNotification(channel: Channel): Notification {
-  switch (channel) {
-    case "email": return { send: (msg) => { /* send email */ } };
-    case "sms":   return { send: (msg) => { /* send SMS */   } };
-    case "push":  return { send: (msg) => { /* send push */  } };
-  }
+    switch (channel) {
+        case "email":
+            return {
+                send: (msg) => { /* send email */
+                }
+            };
+        case "sms":
+            return {
+                send: (msg) => { /* send SMS */
+                }
+            };
+        case "push":
+            return {
+                send: (msg) => { /* send push */
+                }
+            };
+    }
 }
 
 // Usage: const n = createNotification("email"); n.send("Welcome");
@@ -205,15 +254,16 @@ copy mutates the other.
 
 ```typescript
 class DocumentTemplate {
-  constructor(
-    public readonly title:    string,
-    public readonly sections: readonly string[],
-  ) {}
+    constructor(
+        public readonly title: string,
+        public readonly sections: readonly string[],
+    ) {
+    }
 
-  clone(): DocumentTemplate {
-    // Deep-copy sections so the clone is fully independent.
-    return new DocumentTemplate(this.title, [...this.sections]);
-  }
+    clone(): DocumentTemplate {
+        // Deep-copy sections so the clone is fully independent.
+        return new DocumentTemplate(this.title, [...this.sections]);
+    }
 }
 
 const base = new DocumentTemplate("Quarterly Report", ["Introduction", "Findings"]);
@@ -272,9 +322,9 @@ reason; treat it as a last resort.
 // Preferred: a module-level constant.
 // config.ts
 export const config = Object.freeze({
-  apiUrl:      process.env["API_URL"]      ?? "https://api.example.com",
-  timeout:     Number(process.env["TIMEOUT"] ?? 5000),
-  databaseUrl: process.env["DATABASE_URL"] ?? "postgres://localhost/app",
+    apiUrl: process.env["API_URL"] ?? "https://api.example.com",
+    timeout: Number(process.env["TIMEOUT"] ?? 5000),
+    databaseUrl: process.env["DATABASE_URL"] ?? "postgres://localhost/app",
 });
 
 // Any module that needs it imports explicitly:
@@ -286,10 +336,10 @@ export const config = Object.freeze({
 // Also acceptable: a single instance created at the composition root and
 // injected into every consumer that needs it.
 // main.ts (composition root)
-import { config } from "./config";
-import { DatabasePool } from "./database-pool";
-import { UserRepository } from "./user-repository";
-import { UserService } from "./user-service";
+import {config} from "./config";
+import {DatabasePool} from "./database-pool";
+import {UserRepository} from "./user-repository";
+import {UserService} from "./user-service";
 
 const pool = new DatabasePool(config.databaseUrl);           // created once
 const repo = new UserRepository(pool);                       // injected

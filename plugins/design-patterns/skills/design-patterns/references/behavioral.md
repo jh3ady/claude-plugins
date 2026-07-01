@@ -5,6 +5,7 @@ minimal TypeScript form, and composition notes for each of the eleven Gang of
 Four behavioral patterns.
 
 Standards and sources:
+
 - Gamma, Helm, Johnson, Vlissides, *Design Patterns: Elements of Reusable
   Object-Oriented Software* (1994): the canonical source for all eleven patterns
   below, cited as Gamma et al. (1994).
@@ -35,29 +36,29 @@ varies at runtime.
 type Handler<T> = (request: T) => boolean;
 
 function chain<T>(handlers: Handler<T>[]): Handler<T> {
-  return (request: T): boolean => {
-    for (const handle of handlers) {
-      if (handle(request)) return true;
-    }
-    return false;
-  };
+    return (request: T): boolean => {
+        for (const handle of handlers) {
+            if (handle(request)) return true;
+        }
+        return false;
+    };
 }
 
 // Usage: each handler returns true to claim the request, false to pass it on.
 const logHandler: Handler<string> = (req) => {
-  if (req.startsWith("log:")) {
-    console.log("Handled as log:", req);
-    return true;
-  }
-  return false;
+    if (req.startsWith("log:")) {
+        console.log("Handled as log:", req);
+        return true;
+    }
+    return false;
 };
 
 const auditHandler: Handler<string> = (req) => {
-  if (req.startsWith("audit:")) {
-    console.log("Handled as audit:", req);
-    return true;
-  }
-  return false;
+    if (req.startsWith("audit:")) {
+        console.log("Handled as audit:", req);
+        return true;
+    }
+    return false;
 };
 
 const dispatch = chain([logHandler, auditHandler]);
@@ -103,11 +104,13 @@ in a Command object for its own sake adds indirection without a payoff.
 type Command = () => void;
 
 function createRenameCommand(target: { name: string }, newName: string): Command {
-  return () => { target.name = newName; };
+    return () => {
+        target.name = newName;
+    };
 }
 
 // Usage: store the command in a queue for deferred execution.
-const doc = { name: "Report v1" };
+const doc = {name: "Report v1"};
 const commandQueue: Command[] = [];
 
 const cmd = createRenameCommand(doc, "Report v2");
@@ -119,22 +122,28 @@ cmd();                  // executes: doc.name is now "Report v2"
 // Object form: justified when undo is required, because the command must carry
 // both the forward action and the reverse action together.
 interface UndoableCommand {
-  execute(): void;
-  undo():    void;
+    execute(): void;
+
+    undo(): void;
 }
 
 class RenameCommand implements UndoableCommand {
-  private readonly previousName: string;
+    private readonly previousName: string;
 
-  constructor(
-    private readonly target:  { name: string },
-    private readonly newName: string,
-  ) {
-    this.previousName = target.name;
-  }
+    constructor(
+        private readonly target: { name: string },
+        private readonly newName: string,
+    ) {
+        this.previousName = target.name;
+    }
 
-  execute(): void { this.target.name = this.newName;      }
-  undo():    void { this.target.name = this.previousName; }
+    execute(): void {
+        this.target.name = this.newName;
+    }
+
+    undo(): void {
+        this.target.name = this.previousName;
+    }
 }
 ```
 
@@ -183,37 +192,45 @@ fit should you consider this pattern.
 ```typescript
 // A tiny expression grammar: numbers, variables, and addition only.
 interface Expression {
-  interpret(context: Record<string, number>): number;
+    interpret(context: Record<string, number>): number;
 }
 
 class NumberExpression implements Expression {
-  constructor(private readonly value: number) {}
-  interpret(_context: Record<string, number>): number { return this.value; }
+    constructor(private readonly value: number) {
+    }
+
+    interpret(_context: Record<string, number>): number {
+        return this.value;
+    }
 }
 
 class VariableExpression implements Expression {
-  constructor(private readonly name: string) {}
-  interpret(context: Record<string, number>): number {
-    return context[this.name] ?? 0;
-  }
+    constructor(private readonly name: string) {
+    }
+
+    interpret(context: Record<string, number>): number {
+        return context[this.name] ?? 0;
+    }
 }
 
 class AddExpression implements Expression {
-  constructor(
-    private readonly left:  Expression,
-    private readonly right: Expression,
-  ) {}
-  interpret(context: Record<string, number>): number {
-    return this.left.interpret(context) + this.right.interpret(context);
-  }
+    constructor(
+        private readonly left: Expression,
+        private readonly right: Expression,
+    ) {
+    }
+
+    interpret(context: Record<string, number>): number {
+        return this.left.interpret(context) + this.right.interpret(context);
+    }
 }
 
 // Evaluates: x + 5
 const expression: Expression = new AddExpression(
-  new VariableExpression("x"),
-  new NumberExpression(5),
+    new VariableExpression("x"),
+    new NumberExpression(5),
 );
-console.log(expression.interpret({ x: 3 })); // 8
+console.log(expression.interpret({x: 3})); // 8
 ```
 
 Keep the example small. As soon as the grammar grows beyond a handful of node
@@ -254,29 +271,30 @@ not express the traversal naturally.
 ```typescript
 // Generator function: the idiomatic TypeScript form for a lazy sequence.
 function* range(start: number, end: number, step: number = 1): Generator<number> {
-  for (let i = start; i < end; i += step) {
-    yield i;
-  }
+    for (let i = start; i < end; i += step) {
+        yield i;
+    }
 }
 
 for (const value of range(0, 10, 2)) {
-  console.log(value); // 0, 2, 4, 6, 8
+    console.log(value); // 0, 2, 4, 6, 8
 }
 
 // Implementing Symbol.iterator on a class so callers use for...of directly.
 class NumberRange {
-  constructor(
-    private readonly start: number,
-    private readonly end:   number,
-  ) {}
+    constructor(
+        private readonly start: number,
+        private readonly end: number,
+    ) {
+    }
 
-  [Symbol.iterator](): Generator<number> {
-    return range(this.start, this.end);
-  }
+    [Symbol.iterator](): Generator<number> {
+        return range(this.start, this.end);
+    }
 }
 
 for (const n of new NumberRange(1, 4)) {
-  console.log(n); // 1, 2, 3
+    console.log(n); // 1, 2, 3
 }
 ```
 
@@ -318,45 +336,46 @@ is a net simplification.
 ```typescript
 // Mediator: the central coordinator that dispatches events between components.
 class EventMediator {
-  private readonly handlers = new Map<string, Array<(payload: unknown) => void>>();
+    private readonly handlers = new Map<string, Array<(payload: unknown) => void>>();
 
-  on(type: string, handler: (payload: unknown) => void): void {
-    const existing = this.handlers.get(type) ?? [];
-    this.handlers.set(type, [...existing, handler]);
-  }
-
-  emit(type: string, payload: unknown): void {
-    const registered = this.handlers.get(type) ?? [];
-    for (const handler of registered) {
-      handler(payload);
+    on(type: string, handler: (payload: unknown) => void): void {
+        const existing = this.handlers.get(type) ?? [];
+        this.handlers.set(type, [...existing, handler]);
     }
-  }
+
+    emit(type: string, payload: unknown): void {
+        const registered = this.handlers.get(type) ?? [];
+        for (const handler of registered) {
+            handler(payload);
+        }
+    }
 }
 
 // Two components that interact only through the mediator; neither holds a
 // reference to the other.
 class FormComponent {
-  constructor(private readonly mediator: EventMediator) {}
+    constructor(private readonly mediator: EventMediator) {
+    }
 
-  submit(data: Record<string, string>): void {
-    this.mediator.emit("form:submitted", data);
-  }
+    submit(data: Record<string, string>): void {
+        this.mediator.emit("form:submitted", data);
+    }
 }
 
 class ValidationComponent {
-  constructor(mediator: EventMediator) {
-    mediator.on("form:submitted", (payload) => {
-      const data = payload as Record<string, string>;
-      console.log("Validating:", data);
-    });
-  }
+    constructor(mediator: EventMediator) {
+        mediator.on("form:submitted", (payload) => {
+            const data = payload as Record<string, string>;
+            console.log("Validating:", data);
+        });
+    }
 }
 
 const mediator = new EventMediator();
-const form       = new FormComponent(mediator);
+const form = new FormComponent(mediator);
 const validation = new ValidationComponent(mediator); // constructed for its subscription side effect
 
-form.submit({ username: "alice" }); // ValidationComponent reacts via mediator
+form.submit({username: "alice"}); // ValidationComponent reacts via mediator
 ```
 
 ### Composition
@@ -390,29 +409,29 @@ a confirmed requirement.
 ```typescript
 // Snapshot type: the captured state, immutable by convention.
 interface EditorState {
-  readonly content:        string;
-  readonly cursorPosition: number;
+    readonly content: string;
+    readonly cursorPosition: number;
 }
 
 class Editor {
-  private content:        string = "";
-  private cursorPosition: number = 0;
+    private content: string = "";
+    private cursorPosition: number = 0;
 
-  type(text: string): void {
-    this.content += text;
-    this.cursorPosition = this.content.length;
-  }
+    type(text: string): void {
+        this.content += text;
+        this.cursorPosition = this.content.length;
+    }
 
-  // Returns the current state as an immutable snapshot.
-  snapshot(): EditorState {
-    return { content: this.content, cursorPosition: this.cursorPosition };
-  }
+    // Returns the current state as an immutable snapshot.
+    snapshot(): EditorState {
+        return {content: this.content, cursorPosition: this.cursorPosition};
+    }
 
-  // Applies a previously captured snapshot, discarding current state.
-  restore(state: EditorState): void {
-    this.content        = state.content;
-    this.cursorPosition = state.cursorPosition;
-  }
+    // Applies a previously captured snapshot, discarding current state.
+    restore(state: EditorState): void {
+        this.content = state.content;
+        this.cursorPosition = state.cursorPosition;
+    }
 }
 
 // Caretaker: holds snapshots without knowing their internal structure.
@@ -459,33 +478,33 @@ open-ended, decoupled from the subject, and varies independently.
 type Listener<T> = (event: T) => void;
 
 class EventEmitter<T> {
-  private readonly listeners: Set<Listener<T>> = new Set();
+    private readonly listeners: Set<Listener<T>> = new Set();
 
-  subscribe(listener: Listener<T>): () => void {
-    this.listeners.add(listener);
-    return () => this.listeners.delete(listener); // returns an unsubscribe function
-  }
-
-  emit(event: T): void {
-    for (const listener of this.listeners) {
-      listener(event);
+    subscribe(listener: Listener<T>): () => void {
+        this.listeners.add(listener);
+        return () => this.listeners.delete(listener); // returns an unsubscribe function
     }
-  }
+
+    emit(event: T): void {
+        for (const listener of this.listeners) {
+            listener(event);
+        }
+    }
 }
 
 // Usage: a subject that notifies observers of state changes.
 interface PriceChangedEvent {
-  productId: string;
-  newPrice:  number;
+    productId: string;
+    newPrice: number;
 }
 
 const priceChanges = new EventEmitter<PriceChangedEvent>();
 
 const unsubscribe = priceChanges.subscribe((event) => {
-  console.log(`Price for ${event.productId} is now ${event.newPrice}`);
+    console.log(`Price for ${event.productId} is now ${event.newPrice}`);
 });
 
-priceChanges.emit({ productId: "sku-42", newPrice: 19.99 });
+priceChanges.emit({productId: "sku-42", newPrice: 19.99});
 unsubscribe(); // clean up when the listener is no longer needed
 ```
 
@@ -528,21 +547,27 @@ methods, and the transitions between them are non-trivial.
 type TrafficLightState = "red" | "yellow" | "green";
 
 interface StateHandlers {
-  action():    void;
-  nextState(): TrafficLightState;
+    action(): void;
+
+    nextState(): TrafficLightState;
 }
 
 const stateMap: Record<TrafficLightState, StateHandlers> = {
-  red:    { action: () => console.log("Stop"), nextState: () => "green"  },
-  green:  { action: () => console.log("Go"),   nextState: () => "yellow" },
-  yellow: { action: () => console.log("Slow"), nextState: () => "red"    },
+    red: {action: () => console.log("Stop"), nextState: () => "green"},
+    green: {action: () => console.log("Go"), nextState: () => "yellow"},
+    yellow: {action: () => console.log("Slow"), nextState: () => "red"},
 };
 
 class TrafficLight {
-  private state: TrafficLightState = "red";
+    private state: TrafficLightState = "red";
 
-  act():        void { stateMap[this.state].action();               }
-  transition(): void { this.state = stateMap[this.state].nextState(); }
+    act(): void {
+        stateMap[this.state].action();
+    }
+
+    transition(): void {
+        this.state = stateMap[this.state].nextState();
+    }
 }
 ```
 
@@ -587,10 +612,10 @@ anticipating variation that does not yet exist.
 type SortStrategy<T> = (items: T[]) => T[];
 
 function processItems<T>(items: T[], sort: SortStrategy<T>): T[] {
-  return sort([...items]);
+    return sort([...items]);
 }
 
-const ascending:  SortStrategy<number> = (arr) => [...arr].sort((a, b) => a - b);
+const ascending: SortStrategy<number> = (arr) => [...arr].sort((a, b) => a - b);
 const descending: SortStrategy<number> = (arr) => [...arr].sort((a, b) => b - a);
 
 processItems([3, 1, 2], ascending);  // [1, 2, 3]
@@ -601,30 +626,37 @@ processItems([3, 1, 2], descending); // [3, 2, 1]
 // Interface form: justified when the strategy carries state across calls or
 // when several related strategies share more than one method.
 interface PricingStrategy {
-  calculatePrice(basePrice: number, quantity: number): number;
-  label(): string;
+    calculatePrice(basePrice: number, quantity: number): number;
+
+    label(): string;
 }
 
 class BulkDiscountStrategy implements PricingStrategy {
-  constructor(
-    private readonly threshold: number,
-    private readonly discount:  number,
-  ) {}
+    constructor(
+        private readonly threshold: number,
+        private readonly discount: number,
+    ) {
+    }
 
-  calculatePrice(basePrice: number, quantity: number): number {
-    return quantity >= this.threshold
-      ? basePrice * quantity * (1 - this.discount)
-      : basePrice * quantity;
-  }
+    calculatePrice(basePrice: number, quantity: number): number {
+        return quantity >= this.threshold
+            ? basePrice * quantity * (1 - this.discount)
+            : basePrice * quantity;
+    }
 
-  label(): string { return `bulk discount (${this.discount * 100}% off)`; }
+    label(): string {
+        return `bulk discount (${this.discount * 100}% off)`;
+    }
 }
 
 class StandardPricingStrategy implements PricingStrategy {
-  calculatePrice(basePrice: number, quantity: number): number {
-    return basePrice * quantity;
-  }
-  label(): string { return "standard pricing"; }
+    calculatePrice(basePrice: number, quantity: number): number {
+        return basePrice * quantity;
+    }
+
+    label(): string {
+        return "standard pricing";
+    }
 }
 ```
 
@@ -663,53 +695,57 @@ exists and extension is the natural boundary.
 ### Minimal form
 
 ```typescript
-import { readFileSync } from "fs";
+import {readFileSync} from "fs";
 
 // Preferred: a function accepting callbacks for the varying steps.
 // Composition over inheritance; the idiomatic TypeScript form.
 function processFile(
-  filePath: string,
-  options: {
-    parse:    (raw: string) => unknown[];
-    validate: (records: unknown[]) => unknown[];
-    persist:  (records: unknown[]) => void;
-  },
+    filePath: string,
+    options: {
+        parse: (raw: string) => unknown[];
+        validate: (records: unknown[]) => unknown[];
+        persist: (records: unknown[]) => void;
+    },
 ): void {
-  const raw     = readFileSync(filePath, "utf8"); // fixed step
-  const records = options.parse(raw);             // varying
-  const valid   = options.validate(records);      // varying
-  options.persist(valid);                         // varying
+    const raw = readFileSync(filePath, "utf8"); // fixed step
+    const records = options.parse(raw);             // varying
+    const valid = options.validate(records);      // varying
+    options.persist(valid);                         // varying
 }
 ```
 
 ```typescript
-import { readFileSync } from "fs";
+import {readFileSync} from "fs";
 
 // Class form: the GoF subclass form; use when the varying steps need access
 // to shared protected state or when a class hierarchy is already in place.
 abstract class FileProcessor {
-  process(filePath: string): void {
-    const raw     = readFileSync(filePath, "utf8"); // fixed step
-    const records = this.parse(raw);               // varying
-    const valid   = this.validate(records);        // varying
-    this.persist(valid);                           // varying
-  }
+    process(filePath: string): void {
+        const raw = readFileSync(filePath, "utf8"); // fixed step
+        const records = this.parse(raw);               // varying
+        const valid = this.validate(records);        // varying
+        this.persist(valid);                           // varying
+    }
 
-  protected abstract parse(raw: string):           unknown[];
-  protected abstract validate(records: unknown[]): unknown[];
-  protected abstract persist(records: unknown[]):  void;
+    protected abstract parse(raw: string): unknown[];
+
+    protected abstract validate(records: unknown[]): unknown[];
+
+    protected abstract persist(records: unknown[]): void;
 }
 
 class CsvFileProcessor extends FileProcessor {
-  protected parse(raw: string): unknown[] {
-    return raw.split("\n").map((line) => line.split(","));
-  }
-  protected validate(records: unknown[]): unknown[] {
-    return records.filter((r) => Array.isArray(r) && r.length > 0);
-  }
-  protected persist(records: unknown[]): void {
-    console.log("Persisting", records.length, "records");
-  }
+    protected parse(raw: string): unknown[] {
+        return raw.split("\n").map((line) => line.split(","));
+    }
+
+    protected validate(records: unknown[]): unknown[] {
+        return records.filter((r) => Array.isArray(r) && r.length > 0);
+    }
+
+    protected persist(records: unknown[]): void {
+        console.log("Persisting", records.length, "records");
+    }
 }
 ```
 
@@ -755,26 +791,38 @@ element objects are large classes that cannot easily be converted to a union.
 // branch produces a compile error if a new Shape variant is added without
 // updating the switch.
 type Shape =
-  | { kind: "circle";    radius: number }
-  | { kind: "rectangle"; width: number; height: number }
-  | { kind: "triangle";  base: number;  height: number };
+    | { kind: "circle"; radius: number }
+    | { kind: "rectangle"; width: number; height: number }
+    | { kind: "triangle"; base: number; height: number };
 
 function area(shape: Shape): number {
-  switch (shape.kind) {
-    case "circle":    return Math.PI * shape.radius ** 2;
-    case "rectangle": return shape.width * shape.height;
-    case "triangle":  return 0.5 * shape.base * shape.height;
-    default: { const _exhaustive: never = shape; return _exhaustive; }
-  }
+    switch (shape.kind) {
+        case "circle":
+            return Math.PI * shape.radius ** 2;
+        case "rectangle":
+            return shape.width * shape.height;
+        case "triangle":
+            return 0.5 * shape.base * shape.height;
+        default: {
+            const _exhaustive: never = shape;
+            return _exhaustive;
+        }
+    }
 }
 
 function perimeter(shape: Shape): number {
-  switch (shape.kind) {
-    case "circle":    return 2 * Math.PI * shape.radius;
-    case "rectangle": return 2 * (shape.width + shape.height);
-    case "triangle":  return shape.base + shape.height + Math.hypot(shape.base, shape.height); // assumes a right triangle
-    default: { const _exhaustive: never = shape; return _exhaustive; }
-  }
+    switch (shape.kind) {
+        case "circle":
+            return 2 * Math.PI * shape.radius;
+        case "rectangle":
+            return 2 * (shape.width + shape.height);
+        case "triangle":
+            return shape.base + shape.height + Math.hypot(shape.base, shape.height); // assumes a right triangle
+        default: {
+            const _exhaustive: never = shape;
+            return _exhaustive;
+        }
+    }
 }
 ```
 
@@ -782,32 +830,51 @@ function perimeter(shape: Shape): number {
 // Classical Visitor form: justified when the element set is a stable class
 // hierarchy that cannot easily be expressed as a discriminated union.
 interface ShapeVisitor {
-  visitCircle(circle: Circle): number;
-  visitRectangle(rectangle: Rectangle): number;
+    visitCircle(circle: Circle): number;
+
+    visitRectangle(rectangle: Rectangle): number;
 }
 
 interface VisitableShape {
-  accept(visitor: ShapeVisitor): number;
+    accept(visitor: ShapeVisitor): number;
 }
 
 class Circle implements VisitableShape {
-  constructor(readonly radius: number) {}
-  accept(visitor: ShapeVisitor): number { return visitor.visitCircle(this); }
+    constructor(readonly radius: number) {
+    }
+
+    accept(visitor: ShapeVisitor): number {
+        return visitor.visitCircle(this);
+    }
 }
 
 class Rectangle implements VisitableShape {
-  constructor(readonly width: number, readonly height: number) {}
-  accept(visitor: ShapeVisitor): number { return visitor.visitRectangle(this); }
+    constructor(readonly width: number, readonly height: number) {
+    }
+
+    accept(visitor: ShapeVisitor): number {
+        return visitor.visitRectangle(this);
+    }
 }
 
 class AreaVisitor implements ShapeVisitor {
-  visitCircle(circle: Circle): number       { return Math.PI * circle.radius ** 2;       }
-  visitRectangle(rect: Rectangle): number   { return rect.width * rect.height;           }
+    visitCircle(circle: Circle): number {
+        return Math.PI * circle.radius ** 2;
+    }
+
+    visitRectangle(rect: Rectangle): number {
+        return rect.width * rect.height;
+    }
 }
 
 class PerimeterVisitor implements ShapeVisitor {
-  visitCircle(circle: Circle): number       { return 2 * Math.PI * circle.radius;        }
-  visitRectangle(rect: Rectangle): number   { return 2 * (rect.width + rect.height);     }
+    visitCircle(circle: Circle): number {
+        return 2 * Math.PI * circle.radius;
+    }
+
+    visitRectangle(rect: Rectangle): number {
+        return 2 * (rect.width + rect.height);
+    }
 }
 ```
 

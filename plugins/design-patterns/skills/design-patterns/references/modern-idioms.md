@@ -33,33 +33,49 @@ correct for every call site, not just convenient at one.
 
 ```typescript
 interface Logger {
-  info(message: string):  void;
-  warn(message: string):  void;
-  error(message: string): void;
+    info(message: string): void;
+
+    warn(message: string): void;
+
+    error(message: string): void;
 }
 
 class ConsoleLogger implements Logger {
-  info(message: string):  void { console.info(message);  }
-  warn(message: string):  void { console.warn(message);  }
-  error(message: string): void { console.error(message); }
+    info(message: string): void {
+        console.info(message);
+    }
+
+    warn(message: string): void {
+        console.warn(message);
+    }
+
+    error(message: string): void {
+        console.error(message);
+    }
 }
 
 // Null Object: satisfies the Logger interface without producing side-effects.
 class NullLogger implements Logger {
-  info(_message: string):  void {}
-  warn(_message: string):  void {}
-  error(_message: string): void {}
+    info(_message: string): void {
+    }
+
+    warn(_message: string): void {
+    }
+
+    error(_message: string): void {
+    }
 }
 
 class ReportGenerator {
-  constructor(private readonly logger: Logger) {}
+    constructor(private readonly logger: Logger) {
+    }
 
-  generate(): string {
-    this.logger.info("starting report generation");
-    // ... generation logic ...
-    this.logger.info("report generation complete");
-    return "report content";
-  }
+    generate(): string {
+        this.logger.info("starting report generation");
+        // ... generation logic ...
+        this.logger.info("report generation complete");
+        return "report content";
+    }
 }
 
 // In production pass ConsoleLogger; in tests or quiet contexts pass NullLogger.
@@ -112,20 +128,20 @@ contract.
 type Result<T, E> = { ok: true; value: T } | { ok: false; error: E };
 
 function parsePositiveInteger(input: string): Result<number, string> {
-  const n = parseInt(input, 10);
-  if (isNaN(n) || n <= 0) {
-    return { ok: false, error: `"${input}" is not a positive integer` };
-  }
-  return { ok: true, value: n };
+    const n = parseInt(input, 10);
+    if (isNaN(n) || n <= 0) {
+        return {ok: false, error: `"${input}" is not a positive integer`};
+    }
+    return {ok: true, value: n};
 }
 
 const result = parsePositiveInteger("42");
 if (result.ok) {
-  // TypeScript narrows the union: result.value is number in this branch.
-  console.log(result.value * 2);
+    // TypeScript narrows the union: result.value is number in this branch.
+    console.log(result.value * 2);
 } else {
-  // TypeScript narrows: result.error is string in this branch.
-  console.error(result.error);
+    // TypeScript narrows: result.error is string in this branch.
+    console.error(result.error);
 }
 ```
 
@@ -170,85 +186,96 @@ Introducing the algebra for a single predicate is premature machinery.
 
 ```typescript
 interface Specification<T> {
-  isSatisfiedBy(candidate: T): boolean;
-  and(other: Specification<T>): Specification<T>;
-  or(other: Specification<T>):  Specification<T>;
-  not(): Specification<T>;
+    isSatisfiedBy(candidate: T): boolean;
+
+    and(other: Specification<T>): Specification<T>;
+
+    or(other: Specification<T>): Specification<T>;
+
+    not(): Specification<T>;
 }
 
 // Abstract base that implements the combinators in terms of isSatisfiedBy,
 // so concrete specifications only need to override the one abstract method.
 abstract class CompositeSpecification<T> implements Specification<T> {
-  abstract isSatisfiedBy(candidate: T): boolean;
+    abstract isSatisfiedBy(candidate: T): boolean;
 
-  and(other: Specification<T>): Specification<T> {
-    return new AndSpecification(this, other);
-  }
+    and(other: Specification<T>): Specification<T> {
+        return new AndSpecification(this, other);
+    }
 
-  or(other: Specification<T>): Specification<T> {
-    return new OrSpecification(this, other);
-  }
+    or(other: Specification<T>): Specification<T> {
+        return new OrSpecification(this, other);
+    }
 
-  not(): Specification<T> {
-    return new NotSpecification(this);
-  }
+    not(): Specification<T> {
+        return new NotSpecification(this);
+    }
 }
 
 class AndSpecification<T> extends CompositeSpecification<T> {
-  constructor(
-    private readonly left:  Specification<T>,
-    private readonly right: Specification<T>,
-  ) { super(); }
+    constructor(
+        private readonly left: Specification<T>,
+        private readonly right: Specification<T>,
+    ) {
+        super();
+    }
 
-  isSatisfiedBy(candidate: T): boolean {
-    return this.left.isSatisfiedBy(candidate) &&
-           this.right.isSatisfiedBy(candidate);
-  }
+    isSatisfiedBy(candidate: T): boolean {
+        return this.left.isSatisfiedBy(candidate) &&
+            this.right.isSatisfiedBy(candidate);
+    }
 }
 
 class OrSpecification<T> extends CompositeSpecification<T> {
-  constructor(
-    private readonly left:  Specification<T>,
-    private readonly right: Specification<T>,
-  ) { super(); }
+    constructor(
+        private readonly left: Specification<T>,
+        private readonly right: Specification<T>,
+    ) {
+        super();
+    }
 
-  isSatisfiedBy(candidate: T): boolean {
-    return this.left.isSatisfiedBy(candidate) ||
-           this.right.isSatisfiedBy(candidate);
-  }
+    isSatisfiedBy(candidate: T): boolean {
+        return this.left.isSatisfiedBy(candidate) ||
+            this.right.isSatisfiedBy(candidate);
+    }
 }
 
 class NotSpecification<T> extends CompositeSpecification<T> {
-  constructor(private readonly inner: Specification<T>) { super(); }
+    constructor(private readonly inner: Specification<T>) {
+        super();
+    }
 
-  isSatisfiedBy(candidate: T): boolean {
-    return !this.inner.isSatisfiedBy(candidate);
-  }
+    isSatisfiedBy(candidate: T): boolean {
+        return !this.inner.isSatisfiedBy(candidate);
+    }
 }
 
 // Concrete specifications expressed in domain terms.
 interface Product {
-  inStock: boolean;
-  price:   number;
+    inStock: boolean;
+    price: number;
 }
 
 class InStockSpecification extends CompositeSpecification<Product> {
-  isSatisfiedBy(product: Product): boolean {
-    return product.inStock;
-  }
+    isSatisfiedBy(product: Product): boolean {
+        return product.inStock;
+    }
 }
 
 class AffordableSpecification extends CompositeSpecification<Product> {
-  constructor(private readonly maxPrice: number) { super(); }
+    constructor(private readonly maxPrice: number) {
+        super();
+    }
 
-  isSatisfiedBy(product: Product): boolean {
-    return product.price <= this.maxPrice;
-  }
+    isSatisfiedBy(product: Product): boolean {
+        return product.price <= this.maxPrice;
+    }
 }
 
 // Compose in domain terms: in stock AND priced at or under 50.
 const availableAndAffordable =
-  new InStockSpecification().and(new AffordableSpecification(50));
+    new InStockSpecification().and(new AffordableSpecification(50));
 
 declare const products: Product[];
 const results = products.filter(p => availableAndAffordable.isSatisfiedBy(p));
@@ -299,7 +326,7 @@ avoid writing a class when the class form is actually clearer.
 type SortStrategy<T> = (items: ReadonlyArray<T>) => T[];
 
 function sortItems<T>(items: ReadonlyArray<T>, sort: SortStrategy<T>): T[] {
-  return sort(items);
+    return sort(items);
 }
 
 // Pass an arrow directly; no class instantiation needed.
@@ -308,7 +335,7 @@ const sorted = sortItems([3, 1, 2], xs => [...xs].sort((a, b) => a - b));
 // Class form: justified when the strategy carries persistent configuration or
 // when many collaborators must share the same named interface.
 interface SortStrategyObject<T> {
-  sort(items: ReadonlyArray<T>): T[];
+    sort(items: ReadonlyArray<T>): T[];
 }
 ```
 
@@ -317,10 +344,10 @@ interface SortStrategyObject<T> {
 
 // The closure captures its dependencies at construction time and IS the command.
 function makeDeleteCommand(
-  repository: { delete(id: string): Promise<void> },
-  id: string,
+    repository: { delete(id: string): Promise<void> },
+    id: string,
 ): () => Promise<void> {
-  return () => repository.delete(id); // closes over repository and id
+    return () => repository.delete(id); // closes over repository and id
 }
 
 declare const userRepository: { delete(id: string): Promise<void> };
@@ -331,18 +358,19 @@ deleteUser(); // returns Promise<void>; await it in an async context
 // interface, carry undo logic as a second method, or integrate with a command
 // bus that requires an object with a known shape.
 interface Command {
-  execute(): Promise<void>;
+    execute(): Promise<void>;
 }
 
 class DeleteCommand implements Command {
-  constructor(
-    private readonly repository: { delete(id: string): Promise<void> },
-    private readonly id: string,
-  ) {}
+    constructor(
+        private readonly repository: { delete(id: string): Promise<void> },
+        private readonly id: string,
+    ) {
+    }
 
-  execute(): Promise<void> {
-    return this.repository.delete(this.id);
-  }
+    execute(): Promise<void> {
+        return this.repository.delete(this.id);
+    }
 }
 ```
 
@@ -351,14 +379,15 @@ class DeleteCommand implements Command {
 
 // Produce a new value rather than mutating in place.
 interface Config {
-  readonly host:  string;
-  readonly port:  number;
-  readonly debug: boolean;
+    readonly host: string;
+    readonly port: number;
+    readonly debug: boolean;
 }
 
 function withDebug(config: Config): Config {
-  return { ...config, debug: true };
+    return {...config, debug: true};
 }
+
 // The original config is untouched; the caller receives a new object.
 ```
 
