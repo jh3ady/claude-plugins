@@ -20,15 +20,15 @@ to arbitrate when the rules pull against each other.
 The order is a priority for arbitration, not a checklist sequence. When two
 rules conflict, the higher one wins.
 
-1. **Passes the tests** — the design does not work, or its behaviour is not
+1. **Passes the tests**: the design does not work, or its behaviour is not
    verified -> make it correct and covered first; nothing else matters until it
    works.
-2. **Reveals intention** — the code works but a reader cannot tell what it means
+2. **Reveals intention**: the code works but a reader cannot tell what it means
    or why -> name and shape it so the intent is obvious to the next reader.
-3. **No duplication** — the same piece of knowledge lives in more than one place
+3. **No duplication**: the same piece of knowledge lives in more than one place
    and can diverge -> establish one authoritative source (duplication of
    knowledge, not of text).
-4. **Fewest elements** — classes, methods, or indirection remain that no longer
+4. **Fewest elements**: classes, methods, or indirection remain that no longer
    earn their keep -> remove what the first three rules do not require.
 
 ## How to apply it

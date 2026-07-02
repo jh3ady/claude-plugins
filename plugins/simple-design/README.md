@@ -16,11 +16,11 @@ When you write, modify, review, or refactor production code, judge whether a
 design is "simple enough", or hesitate between clarity and deduplication, the
 bundled skill applies Kent Beck's four rules in priority order:
 
-1. **Passes the tests** — correctness, verified, is the non-negotiable floor.
-2. **Reveals intention** — the code makes its meaning obvious to the next reader.
-3. **No duplication** — every piece of knowledge has one authoritative source
+1. **Passes the tests**: correctness, verified, is the non-negotiable floor.
+2. **Reveals intention**: the code makes its meaning obvious to the next reader.
+3. **No duplication**: every piece of knowledge has one authoritative source
    (duplication of knowledge, not of text).
-4. **Fewest elements** — no class, method, or indirection that the first three
+4. **Fewest elements**: no class, method, or indirection that the first three
    rules do not require.
 
 The skill adds what the individual rules do not:
@@ -43,9 +43,9 @@ The skill adds what the individual rules do not:
 This skill owns the set of rules and their ordering. Each rule's depth lives in
 a sibling plugin:
 
-- `test-driven-development`: owns "passes the tests" — the failing test first
+- `test-driven-development`: owns "passes the tests", the failing test first
   and self-testing code that make the other three rules safe to pursue.
-- `clean-code`: owns "reveals intention" — naming and intent-revealing code and
+- `clean-code`: owns "reveals intention", naming and intent-revealing code and
   comments.
 - `simplicity-principles`: owns "no duplication" (DRY, the rule of three,
   duplication versus the wrong abstraction) and "fewest elements" on its YAGNI
