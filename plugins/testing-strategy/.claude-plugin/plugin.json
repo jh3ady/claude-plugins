@@ -1,0 +1,23 @@
+{
+  "name": "testing-strategy",
+  "version": "0.1.0",
+  "description": "Testing strategy applied pragmatically, the macro view above the inner TDD loop: the portfolio idea, the shapes (the pyramid, the practical test pyramid, the testing trophy, the ice-cream cone anti-pattern), the tiers (unit, integration, contract, end-to-end, acceptance), the size-versus-scope distinction from Software Engineering at Google, consumer-driven contract testing, coverage as a signal rather than a target, and flaky tests, with TypeScript specifics. Composable with your own conventions.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/testing-strategy",
+  "keywords": [
+    "testing-strategy",
+    "test-pyramid",
+    "testing-trophy",
+    "test-automation",
+    "integration-testing",
+    "end-to-end-testing",
+    "contract-testing",
+    "test-coverage",
+    "flaky-tests",
+    "software-craftsmanship"
+  ]
+}
