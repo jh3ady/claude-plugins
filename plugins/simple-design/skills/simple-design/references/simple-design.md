@@ -13,8 +13,9 @@ Standards and sources:
   the older wiki formulation ("runs all the tests", "no duplication", "reveals
   intention", "fewest elements").
 - Corey Haines, *Understanding the Four Rules of Simple Design* (2014): the
-  book-length treatment, source of the "duplication of knowledge, not of text"
-  emphasis, built on the Conway's Game of Life exercise.
+  book-length treatment that popularised, for the four rules, the emphasis on
+  duplication of knowledge rather than of text (rooted in DRY as stated by Hunt
+  and Thomas), built on the Conway's Game of Life exercise.
 - Robert C. Martin, *Clean Code* (2008): lists the same rules but orders
   "no duplication" before "reveals intention".
 
