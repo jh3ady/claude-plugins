@@ -4,7 +4,7 @@ A Claude Code plugin that applies Jeff Bay's nine rules of object calisthenics
 to the object-oriented code you write and review, pragmatically. Its value is
 not re-teaching the principles behind each rule (the sibling plugins do that) but
 carrying the exercise: the nine rules as concrete drills, applied strictly to
-build habits and relaxed with judgment in production.
+build habits and relaxed with judgement in production.
 
 It stays generic on purpose: compose it with your own project conventions and
 your team or personal rules.
@@ -30,7 +30,7 @@ The skill adds what the rules alone do not:
 
 - **The exercise framing.** The rules are a training discipline, deliberately
   extreme, applied rigorously on a small greenfield project to build habits, then
-  relaxed with judgment. They are guidelines, not an architectural mandate.
+  relaxed with judgement. They are guidelines, not an architectural mandate.
 - **Concrete drills.** Each rule comes with the mechanics to satisfy it in
   TypeScript and the smell it targets.
 - **When to relax.** Each rule has an explicit note on when softening it is the

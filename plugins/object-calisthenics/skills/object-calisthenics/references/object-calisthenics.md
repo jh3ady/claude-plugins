@@ -20,7 +20,7 @@ Bay presented object calisthenics as an exercise, not a rulebook. The nine rules
 are intentionally severe; the discipline is to apply them without compromise on
 a small, new object-oriented project (commonly cited as the first thousand lines
 or so) so that better instincts become automatic. Afterwards, in real code, the
-rules are relaxed with judgment: they are guidelines aimed at readability,
+rules are relaxed with judgement: they are guidelines aimed at readability,
 maintainability, and encapsulation at a granular level, not architectural
 mandates. The point of the strict phase is the muscle it builds, not permanent
 adherence.

@@ -45,7 +45,7 @@
     {
       "name": "object-calisthenics",
       "source": "./plugins/object-calisthenics",
-      "description": "Jeff Bay's nine rules of object calisthenics applied pragmatically, as a training discipline: one level of indentation, no else, wrap primitives, first-class collections, one dot per line, no abbreviations, small entities, at most two instance variables, and no getters or setters, framed as an exercise to apply strictly and relax with judgment in production, with each rule's underlying principle owned by its sibling plugin (clean-code, solid-principles, refactoring, domain-driven-design). Composable with your own conventions.",
+      "description": "Jeff Bay's nine rules of object calisthenics applied pragmatically, as a training discipline: one level of indentation, no else, wrap primitives, first-class collections, one dot per line, no abbreviations, small entities, at most two instance variables, and no getters or setters, framed as an exercise to apply strictly and relax with judgement in production, with each rule's underlying principle owned by its sibling plugin (clean-code, solid-principles, refactoring, domain-driven-design). Composable with your own conventions.",
       "version": "0.1.0"
     },
     {

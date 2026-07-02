@@ -1,6 +1,6 @@
 ---
 name: object-calisthenics
-description: This skill should be used when writing or reviewing object-oriented code, when practising or drilling clean object-oriented habits, when deciding how strictly to apply the nine rules, or when recognising primitive obsession, deep nesting, message chains, or anemic objects, applying Jeff Bay's object calisthenics, even when they are not explicitly mentioned. It carries the exercise framing and the concrete drill for each rule; each rule's underlying principle is owned by a sibling plugin.
+description: This skill should be used when practising or drilling clean object-oriented habits, when deciding how strictly to apply the nine rules, when recognising primitive obsession, deep nesting, message chains, or anemic objects, or when writing or reviewing object-oriented code, applying Jeff Bay's object calisthenics, even when they are not explicitly mentioned. It carries the exercise framing and the concrete drill for each rule; each rule's underlying principle is owned by a sibling plugin.
 ---
 
 # Object calisthenics
@@ -8,7 +8,7 @@ description: This skill should be used when writing or reviewing object-oriented
 Jeff Bay's nine rules are a training discipline, not a competing principle set.
 They are deliberately extreme: apply them rigorously as an exercise to build
 object-oriented habits (Bay's framing is a small greenfield project, on the
-order of the first thousand lines), then relax them with judgment in production.
+order of the first thousand lines), then relax them with judgement in production.
 They are guidelines that sharpen instincts, not an architectural mandate.
 
 Each rule trains a principle that a sibling plugin owns in depth (see the
@@ -51,7 +51,7 @@ production code keeps the ones that pay their way: wrapping a genuinely
 meaningful primitive, flattening a tangled conditional, telling instead of
 asking. Others soften against real constraints: a data transfer object at a
 boundary may expose fields; a third instance variable may be the honest shape of
-a concept; a framework may require accessors. Relaxing a rule is a judgment
+a concept; a framework may require accessors. Relaxing a rule is a judgement
 call, made from having done the exercise, not an excuse to skip it.
 
 ## Ownership map
