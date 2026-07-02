@@ -195,7 +195,7 @@ server side request forgery was absorbed into **Broken Access Control** at A01.
   enough context to investigate; alert on the patterns that matter; never log the
   secret itself. Control C9.
 - **TypeScript**: emit structured security events (actor, action, outcome,
-  correlation id) to a log the operations team actually watches.
+  correlation identifier) to a log the operations team actually watches.
 
 ### A10 Mishandling of Exceptional Conditions (new in 2025)
 
@@ -353,6 +353,24 @@ const ALLOWED_HOSTS = new Set(["images.example.com"]);
 function assertFetchable(url: URL) {
   if (!ALLOWED_HOSTS.has(url.hostname)) throw new ForbiddenError();
   // Also block link-local and metadata addresses such as 169.254.169.254.
+}
+```
+
+### File uploads (C3, A05, A08)
+
+Treat an upload as hostile input plus hostile storage. Validate type and size,
+store outside the web root under a generated name, and never execute it.
+
+```ts
+const Upload = z.object({
+  mimeType: z.enum(["image/png", "image/jpeg"]), // allowlist, do not infer from the name
+  size: z.number().int().positive().max(5_000_000),
+});
+
+function safeStoredName(original: string) {
+  const ext = path.extname(original).toLowerCase();
+  // Generated name defeats path traversal and client-controlled filenames.
+  return `${crypto.randomUUID()}${ext === ".png" || ext === ".jpg" ? ext : ".bin"}`;
 }
 ```
 

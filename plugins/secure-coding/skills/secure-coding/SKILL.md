@@ -106,6 +106,9 @@ reference maps the levels and the practices.
 - **Input handling, injection, output encoding**: validate at the boundary
   against a schema and an allowlist; use parameterized queries; encode output for
   its context to stop XSS.
+- **File uploads**: validate type and size, store outside the web root with a
+  generated name, never trust the client-supplied filename or content type, and
+  never execute what was uploaded.
 - **Cryptography and secrets**: standard libraries and constructions; secrets in
   the environment or a secret manager, never in code or version control.
 - **Secure configuration and defaults**: hardened defaults, no sample or debug
