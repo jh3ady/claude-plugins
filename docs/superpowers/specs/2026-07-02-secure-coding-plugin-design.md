@@ -1,7 +1,7 @@
 # Secure coding plugin: design
 
 - Date: 2026-07-02
-- Status: proposed (design and spec)
+- Status: implemented (design and spec authored under delegation, pending user review)
 - Author: Jean-Denis VIDOT
 
 ## Context and goal
