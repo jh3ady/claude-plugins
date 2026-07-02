@@ -47,6 +47,10 @@ The simplest readable design wins.
   `simple-design` owns how it combines, in priority order, with passes the
   tests, no duplication, and fewest elements as the yardstick of the refactor
   step.
+- **`object-calisthenics`**: several of its nine rules train clean-code habits
+  directly (no abbreviations, small functions and classes, no getters or
+  setters). This skill owns those principles; `object-calisthenics` owns the
+  exercise that drills them.
 
 ## Adapt to your context
 

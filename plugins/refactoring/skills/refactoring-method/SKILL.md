@@ -204,6 +204,10 @@ examples, see the sibling skill `refactoring-catalog`.
 - **`simple-design`**: Beck's four rules of simple design are what the refactor
   step aims at. This skill is the method; `simple-design` is the priority-ordered
   target the mechanics drive the code toward.
+- **`object-calisthenics`**: its nine rules are drills whose moves this skill
+  owns (Extract Function, guard clauses, Encapsulate Collection, Hide Delegate)
+  and whose target smells it catalogues (Primitive Obsession, Message Chains).
+  That skill is the exercise; this one is the mechanics.
 
 ## Adapt to your context
 

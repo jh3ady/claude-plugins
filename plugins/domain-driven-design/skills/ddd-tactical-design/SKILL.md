@@ -63,6 +63,7 @@ A module is a named, cohesive, low-coupling partition of the domain model whose 
 - **`ddd-strategic-design`**: the sibling skill. Strategic design answers where the model boundary lies and what the ubiquitous language is; tactical design fills in the building blocks inside that boundary. Apply strategic design first.
 - **`ddd-event-storming`**: the discovery workshop that precedes modelling. Its Software Design level produces the candidate aggregates and domain events that this skill turns into entities, value objects, aggregates, and domain events in code.
 - **`design-patterns`**: the factory that guards an aggregate's invariants is the Gang of Four Factory Method or Abstract Factory applied to the domain, and a domain Specification is the generic Specification idiom applied to a business rule. Consult `design-patterns` for those generic mechanisms; this skill governs their domain application.
+- **`object-calisthenics`**: its rules to wrap primitives, give collections a first-class home, and forbid getters and setters drill exactly the value objects and Tell Don't Ask that this skill defines. That skill is the exercise that builds the habit; this skill governs the domain modelling.
 
 ## Adapt to your context
 
