@@ -1,7 +1,7 @@
 # Simple design plugin: design
 
 - Date: 2026-07-02
-- Status: approved (design), pending spec review
+- Status: approved (design and spec), implemented
 - Author: Jean-Denis VIDOT
 
 ## Context and goal
