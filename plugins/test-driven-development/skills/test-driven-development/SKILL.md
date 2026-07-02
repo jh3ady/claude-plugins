@@ -256,6 +256,11 @@ view rebalances towards integration; both agree the end-to-end tier stays small.
 Classical sociable tests, which touch several real collaborators, already sit
 comfortably between the two.)
 
+For the outer loop, see `testing-strategy`: the test portfolio, the shapes
+(pyramid, trophy, the ice-cream cone anti-pattern), the tiers, the
+size-versus-scope distinction, consumer-driven contract testing, and coverage
+as a signal rather than a target.
+
 ## Guardrails
 
 - **Do not over-mock.** A test that mocks everything tests the mocks, not the

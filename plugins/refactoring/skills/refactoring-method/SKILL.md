@@ -195,6 +195,9 @@ examples, see the sibling skill `refactoring-catalog`.
 - **`test-driven-development`**: the red-green-refactor loop, of which
   refactoring is the third step. The two skills compose: TDD governs when to
   write code; this skill governs how to improve it once the bar is green.
+- **`testing-strategy`**: self-testing code is the prerequisite for safe
+  refactoring; `testing-strategy` decides the shape and balance of that test
+  suite.
 - **`legacy-code`**: when the code to be refactored has no tests, that skill
   covers how to get it under test first via seams and characterization tests.
   Return to this skill once the test net is in place.

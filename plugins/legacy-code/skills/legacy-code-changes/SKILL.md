@@ -126,6 +126,8 @@ For the full technique catalogue, see the sibling skill `legacy-dependency-break
 - **`test-driven-development`**: characterization tests are a case of the same discipline applied in reverse (observe
   first, then encode), and once code is under test the standard red-green-refactor cycle resumes. The two skills
   compose: this one covers getting into the harness, the TDD skill covers what to do once you are there.
+- **`testing-strategy`**: characterization tests are the entry point when adding tests to untested code;
+  `testing-strategy` frames where they sit in the wider portfolio.
 - **`clean-code`** and **`simplicity-principles`**: the refactor step in the algorithm is where these apply. Getting
   code under test does not mean leaving it as found; the safety net is the licence to improve names, reduce duplication,
   and simplify structure.
