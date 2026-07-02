@@ -37,6 +37,12 @@
       "version": "0.1.0"
     },
     {
+      "name": "simple-design",
+      "source": "./plugins/simple-design",
+      "description": "Kent Beck's four rules of simple design applied pragmatically, meta first: the four rules (passes the tests, reveals intention, no duplication, fewest elements) as one priority-ordered decision procedure for the refactor step, how to arbitrate when the rules pull against each other, and simple design as emergent rather than up-front, with each individual rule owned by its sibling plugin (TDD, clean-code, simplicity-principles, refactoring). Composable with your own conventions.",
+      "version": "0.1.0"
+    },
+    {
       "name": "modular-monolith",
       "source": "./plugins/modular-monolith",
       "description": "The modular monolith applied pragmatically: one deployable unit, strictly bounded modules with public APIs, isolated data, and TypeScript-ecosystem boundary enforcement. Composable with your own conventions.",
