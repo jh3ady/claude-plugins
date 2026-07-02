@@ -113,6 +113,12 @@
       "source": "./plugins/design-patterns",
       "description": "Design patterns applied pragmatically, judgement first: the 23 Gang of Four patterns plus modern idioms (Null Object, Result/Either, Specification, functional patterns), framed by when to reach for a pattern, when to refuse it (the rule of three, no speculative abstraction), the minimal TypeScript form, and ownership by level of abstraction so the generic mechanism lives here while its specialised application lives in hexagonal, CQRS, and DDD. Composable with your own conventions.",
       "version": "0.1.0"
+    },
+    {
+      "name": "testing-strategy",
+      "source": "./plugins/testing-strategy",
+      "description": "Testing strategy applied pragmatically, the macro view above the inner TDD loop: the portfolio idea, the shapes (the pyramid, the practical test pyramid, the testing trophy, the ice-cream cone anti-pattern), the tiers (unit, integration, contract, end-to-end, acceptance), the size-versus-scope distinction from Software Engineering at Google, consumer-driven contract testing, coverage as a signal rather than a target, and flaky tests, with TypeScript specifics. Composable with your own conventions.",
+      "version": "0.1.0"
     }
   ]
 }
