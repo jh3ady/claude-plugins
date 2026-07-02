@@ -119,6 +119,12 @@
       "source": "./plugins/testing-strategy",
       "description": "Testing strategy applied pragmatically, the macro view above the inner TDD loop: the portfolio idea, the shapes (the pyramid, the practical test pyramid, the testing trophy, the ice-cream cone anti-pattern), the tiers (unit, integration, contract, end-to-end, acceptance), the size-versus-scope distinction from Software Engineering at Google, consumer-driven contract testing, coverage as a signal rather than a target, and flaky tests, with TypeScript specifics. Composable with your own conventions.",
       "version": "0.1.0"
+    },
+    {
+      "name": "secure-coding",
+      "source": "./plugins/secure-coding",
+      "description": "Secure coding applied pragmatically, prevention first: the secure-by-design mindset (Saltzer and Schroeder), the OWASP Proactive Controls 2024 as the what-to-do-while-coding checklist, the OWASP Top 10:2025 as the risk catalogue to recognise and prevent, ASVS 5.0.0 as the verification standard, and concrete practices for access control, authentication, input handling and injection, cryptography and secrets, configuration, dependencies and the supply chain, exceptional conditions, logging, and SSRF, with TypeScript specifics. Composable with your own conventions.",
+      "version": "0.1.0"
     }
   ]
 }

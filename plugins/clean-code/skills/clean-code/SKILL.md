@@ -51,6 +51,9 @@ The simplest readable design wins.
   directly (no abbreviations, small functions and classes, no getters or
   setters). This skill owns those principles; `object-calisthenics` owns the
   exercise that drills them.
+- **`secure-coding`**: this skill owns disciplined error handling in general;
+  `secure-coding` owns its security dimension, where an error path must fail
+  closed and never leak sensitive detail to the caller.
 
 ## Adapt to your context
 

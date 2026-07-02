@@ -1,0 +1,23 @@
+{
+  "name": "secure-coding",
+  "version": "0.1.0",
+  "description": "Secure coding applied pragmatically, prevention first: the secure-by-design mindset (Saltzer and Schroeder), the OWASP Proactive Controls 2024 as the what-to-do-while-coding checklist, the OWASP Top 10:2025 as the risk catalogue to recognise and prevent, ASVS 5.0.0 as the verification standard, and concrete practices for access control, authentication, input handling and injection, cryptography and secrets, configuration, dependencies and the supply chain, exceptional conditions, logging, and SSRF, with TypeScript specifics. Composable with your own conventions.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/secure-coding",
+  "keywords": [
+    "secure-coding",
+    "application-security",
+    "owasp-top-10",
+    "owasp-asvs",
+    "secure-by-design",
+    "input-validation",
+    "authentication",
+    "access-control",
+    "cryptography",
+    "software-craftsmanship"
+  ]
+}

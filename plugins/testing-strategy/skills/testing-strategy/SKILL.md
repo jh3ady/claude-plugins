@@ -136,6 +136,9 @@ leave it flickering in the main suite.
 - **`domain-driven-design`**: acceptance tests express the ubiquitous language at
   the outer tier of the portfolio. A future behaviour-driven-development plugin
   could own acceptance and Gherkin in depth.
+- **`secure-coding`**: abuse-case and security tests belong in the portfolio;
+  `secure-coding` says what to test for (each OWASP risk), while this skill
+  decides at which tier those tests sit.
 
 ## Adapt to your context
 
