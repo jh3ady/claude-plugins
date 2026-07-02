@@ -1,0 +1,20 @@
+{
+  "name": "simple-design",
+  "version": "0.1.0",
+  "description": "Kent Beck's four rules of simple design applied pragmatically, meta first: the four rules (passes the tests, reveals intention, no duplication, fewest elements) as one priority-ordered decision procedure for the refactor step, how to arbitrate when the rules pull against each other, and simple design as emergent rather than up-front, with each individual rule owned by its sibling plugin (TDD, clean-code, simplicity-principles, refactoring). Composable with your own conventions.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/simple-design",
+  "keywords": [
+    "simple-design",
+    "four-rules-of-simple-design",
+    "kent-beck",
+    "emergent-design",
+    "extreme-programming",
+    "refactoring",
+    "software-craftsmanship"
+  ]
+}
