@@ -1,7 +1,7 @@
 {
   "name": "design-patterns",
   "version": "0.1.0",
-  "description": "Design patterns applied pragmatically, judgment first: the 23 Gang of Four patterns plus modern idioms (Null Object, Result/Either, Specification, functional patterns), framed by when to reach for a pattern, when to refuse it (the rule of three, no speculative abstraction), the minimal TypeScript form, and ownership by level of abstraction so the generic mechanism lives here while its specialised application lives in hexagonal, CQRS, and DDD. Composable with your own conventions.",
+  "description": "Design patterns applied pragmatically, judgement first: the 23 Gang of Four patterns plus modern idioms (Null Object, Result/Either, Specification, functional patterns), framed by when to reach for a pattern, when to refuse it (the rule of three, no speculative abstraction), the minimal TypeScript form, and ownership by level of abstraction so the generic mechanism lives here while its specialised application lives in hexagonal, CQRS, and DDD. Composable with your own conventions.",
   "author": {
     "name": "Jean-Denis VIDOT",
     "url": "https://github.com/jh3ady"

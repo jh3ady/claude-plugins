@@ -1,6 +1,6 @@
 # design-patterns
 
-A Claude Code plugin that applies judgment to design pattern usage in the code you write and review. Claude already knows what a pattern is; the value this plugin adds is the when: when a pattern is warranted by a real, named variation point; when to refuse one; what the minimal form looks like; and how patterns compose with one another and with the architecture plugins in this collection.
+A Claude Code plugin that applies judgement to design pattern usage in the code you write and review. Claude already knows what a pattern is; the value this plugin adds is the when: when a pattern is warranted by a real, named variation point; when to refuse one; what the minimal form looks like; and how patterns compose with one another and with the architecture plugins in this collection.
 
 It stays generic on purpose: compose it with your own project conventions and your team or personal rules.
 
@@ -44,7 +44,7 @@ The skill covers four reference groups:
 
 ## Adapt to your context
 
-This plugin is a baseline catalogue of judgment heuristics, not a dogma. Layer your own conventions on top: record which patterns your project or team has agreed to standardise on, document project-specific exceptions with an explicit reason (for example, a Singleton that is justified by the runtime environment), and configure framework-specific or architecture-specific rules in your own `CLAUDE.md` or a higher-priority skill. The plugin does not impose them.
+This plugin is a baseline catalogue of judgement heuristics, not a dogma. Layer your own conventions on top: record which patterns your project or team has agreed to standardise on, document project-specific exceptions with an explicit reason (for example, a Singleton that is justified by the runtime environment), and configure framework-specific or architecture-specific rules in your own `CLAUDE.md` or a higher-priority skill. The plugin does not impose them.
 
 ## License
 
