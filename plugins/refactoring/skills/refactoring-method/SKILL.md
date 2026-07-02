@@ -201,6 +201,9 @@ examples, see the sibling skill `refactoring-catalog`.
 - **`clean-code`**, **`solid-principles`**, **`simplicity-principles`**: the
   destination properties refactoring works toward. Refactoring is the
   mechanism; those skills name the target qualities.
+- **`simple-design`**: Beck's four rules of simple design are what the refactor
+  step aims at. This skill is the method; `simple-design` is the priority-ordered
+  target the mechanics drive the code toward.
 
 ## Adapt to your context
 

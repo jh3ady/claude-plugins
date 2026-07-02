@@ -291,6 +291,11 @@ comfortably between the two.)
 - **`clean-code`** and **`solid-principles`**: the refactor step is where these
   are applied; dependency inversion in particular is what makes the in-memory
   ladder possible.
+- **`simple-design`**: the iron law (a failing test first) is the first and
+  highest of Beck's four rules of simple design (passes the tests). Consult
+  `simple-design` for how that rule combines, in priority order, with reveals
+  intention, no duplication, and fewest elements as the yardstick of the
+  refactor step.
 
 ## Adapt to your context
 

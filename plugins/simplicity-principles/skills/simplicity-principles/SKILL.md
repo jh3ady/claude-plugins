@@ -39,6 +39,15 @@ adding it later. That is a judgement call, not a blanket prohibition.
 naive or easy to write. Some problems are inherently complex; KISS is about
 not adding to that complexity through accidental cleverness.
 
+## Relationship to other skills
+
+- **`simple-design`**: no duplication (DRY, the rule of three) is the third of
+  Kent Beck's four rules of simple design, and fewest elements is YAGNI's near
+  neighbour (removing superfluous structure that exists now, rather than
+  declining to build for a speculative future need). This skill owns those
+  rules' depth; `simple-design` owns how the four combine in priority order as
+  the yardstick of the refactor step.
+
 ## Adapt to your context
 
 This skill stays generic on purpose. Layer your own conventions on top:

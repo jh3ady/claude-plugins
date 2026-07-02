@@ -40,6 +40,14 @@ Do not apply these heuristics as absolute rules:
 
 The simplest readable design wins.
 
+## Relationship to other skills
+
+- **`simple-design`**: intent-revealing code is the second of Kent Beck's four
+  rules of simple design (reveals intention). This skill owns that rule's depth;
+  `simple-design` owns how it combines, in priority order, with passes the
+  tests, no duplication, and fewest elements as the yardstick of the refactor
+  step.
+
 ## Adapt to your context
 
 This skill stays generic on purpose. Layer your own conventions on top:
