@@ -247,15 +247,12 @@ different problems. Confusing them is common and costly, so keep them apart.
 
 ### The in-memory contract test (owned by `test-driven-development`)
 
-The first meaning is a **within-process fidelity** check. When a fast test
-doubles a slow dependency with an in-memory implementation, the risk is that the
-double drifts from the real thing and passes tests production would fail. The
-answer is to write one test suite against the **interface** and run that same
-suite against both the in-memory implementation and the real one; if both pass,
-the fast double is a verified stand-in. This technique, and the ownership rule
-that the team owning the real implementation maintains the double, belong to
-`test-driven-development`. This skill references it and does not re-teach it. The
-problem it solves is **double fidelity within a single process**.
+The first meaning is a **within-process fidelity** check: keeping a fast
+in-memory double honest against the real implementation it stands in for. This
+technique, the in-memory contract test, is owned by `test-driven-development`
+(see its "Keep in-memory implementations faithful" section); this skill needs
+only the ownership boundary, not the mechanism. The problem it solves is
+**double fidelity within a single process**.
 
 ### The consumer-driven contract test (owned here)
 
@@ -368,10 +365,10 @@ policy: retrying a flaky test until it passes launders a real defect into a gree
 bar and trains the team to distrust reds. Second, when a test turns flaky,
 **quarantine** it out of the signal path so it stops poisoning the suite, then
 **fix the root cause** or delete it. The isolation properties that prevent
-flakiness in the first place (each test builds its own fixture, controls its own
-clock, depends on no other test, and touches no uncontrolled network) are the
-test desiderata owned by `test-driven-development`; a good strategy simply
-refuses to keep a flickering test in the trusted suite.
+flakiness in the first place are the strategy's own concern: each test builds
+its own fixture, controls its own clock, depends on no other test, and touches no
+uncontrolled network. A good strategy refuses to keep a flickering test in the
+trusted suite.
 
 ---
 
