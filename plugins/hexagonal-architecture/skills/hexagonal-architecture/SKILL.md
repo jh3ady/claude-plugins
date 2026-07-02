@@ -65,10 +65,10 @@ an anti-corruption layer, and the pattern's full treatment is DDD territory, cov
 - **Testing in isolation**: because the core depends only on ports, substitute
   an in-memory adapter for the real one and test business logic with no
   database or network. This is the original motivation, not a side effect.
-- **`testing-strategy`**: integration tests exercise a real adapter against real
-  infrastructure; the ports defined here are the seams those tests cross.
-  `testing-strategy` decides how many such tests to keep relative to unit and
-  end-to-end tests.
+  Integration tests then exercise a real adapter against real infrastructure,
+  crossing the same ports as seams; how many such tests to keep relative to
+  unit and end-to-end tests is a portfolio question covered by the
+  `testing-strategy` skill.
 
 ## Guardrails
 
