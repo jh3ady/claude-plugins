@@ -57,6 +57,9 @@ run() { # label command [args...]
   finish
 }
 
+# Signal (dry-run only) that all guards passed and selection is reached.
+[ "$DRY_RUN" = "1" ] && printf 'markdown-conventions: guards passed\n' >&2
+
 # Task 4 inserts the formatter detection block here.
 
 # Nothing configured (or configured but not installed) -> no-op.

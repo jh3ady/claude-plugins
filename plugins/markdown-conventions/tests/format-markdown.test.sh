@@ -19,6 +19,20 @@ assert_eq() { # description expected actual
   fi
 }
 
+assert_contains() { # description needle haystack
+  case "$3" in
+    *"$2"*) pass=$((pass + 1)); printf 'ok   - %s\n' "$1" ;;
+    *) fail=$((fail + 1)); printf 'FAIL - %s\n       needle:   [%s]\n       haystack: [%s]\n' "$1" "$2" "$3" ;;
+  esac
+}
+
+assert_not_contains() { # description needle haystack
+  case "$3" in
+    *"$2"*) fail=$((fail + 1)); printf 'FAIL - %s\n       unexpected needle: [%s]\n       haystack:          [%s]\n' "$1" "$2" "$3" ;;
+    *) pass=$((pass + 1)); printf 'ok   - %s\n' "$1" ;;
+  esac
+}
+
 # Run the hook in dry-run mode. Args: <project_dir> <file_path> [extra PATH dir]
 run_hook() { # project_dir file_path path_prepend
   proj="$1"; fp="$2"; extra_path="${3:-}"
@@ -28,6 +42,13 @@ run_hook() { # project_dir file_path path_prepend
   else
     printf '%s' "$payload" | MARKDOWN_CONVENTIONS_DRY_RUN=1 CLAUDE_PROJECT_DIR="$proj" sh "$HOOK" 2>/dev/null
   fi
+}
+
+# Run the hook in dry-run mode and capture STDERR only.
+run_hook_stderr() { # project_dir file_path
+  proj="$1"; fp="$2"
+  payload=$(printf '{"tool_input":{"file_path":"%s"},"cwd":"%s"}' "$fp" "$proj")
+  printf '%s' "$payload" | MARKDOWN_CONVENTIONS_DRY_RUN=1 CLAUDE_PROJECT_DIR="$proj" sh "$HOOK" 2>&1 1>/dev/null
 }
 
 # --- guard tests ---
@@ -69,6 +90,42 @@ proj=$(mktemp -d)
 : > "$proj/dprint.json"
 out=$(run_hook "$proj" "$proj/does-not-exist.md")
 assert_eq "missing file -> ignored" "" "$out"
+rm -rf "$proj"
+
+# --- guard discrimination via the "guards passed" marker (stderr, dry-run) ---
+
+# A valid markdown file inside the project reaches selection (positive control).
+proj=$(mktemp -d)
+: > "$proj/notes.md"
+err=$(run_hook_stderr "$proj" "$proj/notes.md")
+assert_contains "valid markdown reaches selection" "guards passed" "$err"
+rm -rf "$proj"
+
+# A non-markdown file is stopped before selection.
+proj=$(mktemp -d)
+: > "$proj/script.ts"
+err=$(run_hook_stderr "$proj" "$proj/script.ts")
+assert_not_contains "non-markdown stopped before selection" "guards passed" "$err"
+rm -rf "$proj"
+
+# A path outside the project is stopped before selection.
+proj=$(mktemp -d); outside=$(mktemp -d)
+: > "$outside/x.md"
+err=$(run_hook_stderr "$proj" "$outside/x.md")
+assert_not_contains "outside path stopped before selection" "guards passed" "$err"
+rm -rf "$proj" "$outside"
+
+# A traversal path is stopped before selection.
+proj=$(mktemp -d)
+: > "$proj/x.md"
+err=$(run_hook_stderr "$proj" "$proj/../x.md")
+assert_not_contains "traversal stopped before selection" "guards passed" "$err"
+rm -rf "$proj"
+
+# A missing file is stopped before selection.
+proj=$(mktemp -d)
+err=$(run_hook_stderr "$proj" "$proj/does-not-exist.md")
+assert_not_contains "missing file stopped before selection" "guards passed" "$err"
 rm -rf "$proj"
 
 printf '\n%d passed, %d failed\n' "$pass" "$fail"
