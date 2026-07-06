@@ -229,6 +229,22 @@ author, MIT license, homepage under
 keywords such as `markdown`, `formatting`, `prettier`, `markdownlint`,
 `dprint`).
 
+## Implementation approach
+
+The plugin is not authored by hand. The implementation plan drives it through
+the `plugin-dev` skills and validates with its agents, so the result matches
+the marketplace's established shape:
+
+- `plugin-dev:plugin-structure` for the plugin layout and `plugin.json`, and
+  the `marketplace.json` entry.
+- `plugin-dev:skill-development` for `SKILL.md` and `references/conventions.md`.
+- `plugin-dev:hook-development` for `hooks/hooks.json` and
+  `hooks/format-markdown.sh`.
+- The `plugin-dev:skill-reviewer` agent to review the skill's trigger and
+  quality.
+- The `plugin-dev:plugin-validator` agent for a final structural check before
+  the marketplace entry is considered done.
+
 ## Testing
 
 The skill is validated by review against the family conventions (trigger
