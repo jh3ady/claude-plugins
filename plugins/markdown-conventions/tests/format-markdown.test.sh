@@ -77,11 +77,13 @@ out=$(run_hook "$proj" "$outside/x.md")
 assert_eq "path outside project -> ignored" "" "$out"
 rm -rf "$proj" "$outside"
 
-# A path containing .. -> ignored.
+# A path containing .. that resolves to a real in-project file -> ignored.
+# The .. must resolve inside the project so only the traversal guard (not the
+# existence or boundary check) can reject it.
 proj=$(mktemp -d)
-: > "$proj/dprint.json"
-: > "$proj/x.md"
-out=$(run_hook "$proj" "$proj/../x.md")
+mkdir "$proj/sub"
+: > "$proj/notes.md"
+out=$(run_hook "$proj" "$proj/sub/../notes.md")
 assert_eq "path traversal -> ignored" "" "$out"
 rm -rf "$proj"
 
@@ -115,10 +117,13 @@ err=$(run_hook_stderr "$proj" "$outside/x.md")
 assert_not_contains "outside path stopped before selection" "guards passed" "$err"
 rm -rf "$proj" "$outside"
 
-# A traversal path is stopped before selection.
+# A traversal path that resolves to a real in-project file is stopped before
+# selection. The .. resolves inside the project, so only the traversal guard
+# can reject it -- this genuinely discriminates that guard.
 proj=$(mktemp -d)
-: > "$proj/x.md"
-err=$(run_hook_stderr "$proj" "$proj/../x.md")
+mkdir "$proj/sub"
+: > "$proj/notes.md"
+err=$(run_hook_stderr "$proj" "$proj/sub/../notes.md")
 assert_not_contains "traversal stopped before selection" "guards passed" "$err"
 rm -rf "$proj"
 
