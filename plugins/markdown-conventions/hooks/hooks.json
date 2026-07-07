@@ -1,0 +1,17 @@
+{
+  "description": "After Claude edits a markdown file, reformat it with the formatter the project already configures (dprint, Prettier, or markdownlint-cli2). No configured formatter means no action.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"${CLAUDE_PLUGIN_ROOT}/hooks/format-markdown.sh\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

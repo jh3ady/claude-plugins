@@ -214,5 +214,22 @@ chosen=$(cat "$marker" 2>/dev/null || printf 'MISSING')
 assert_eq "local node_modules/.bin prettier preferred over PATH" "local" "$chosen"
 rm -rf "$proj" "$pathbin"
 
+# --- real invocation (no dry-run) ---
+
+# With DRY_RUN off, the chosen formatter is actually executed on the file.
+proj=$(mktemp -d)
+bin=$(mktemp -d)
+marker="$proj/formatted.marker"
+# A prettier stub that records the file path it was asked to format.
+printf '#!/bin/sh\necho "$2" > "%s"\n' "$marker" > "$bin/prettier"
+chmod +x "$bin/prettier"
+: > "$proj/.prettierrc"
+: > "$proj/doc.md"
+payload=$(printf '{"tool_input":{"file_path":"%s"},"cwd":"%s"}' "$proj/doc.md" "$proj")
+printf '%s' "$payload" | CLAUDE_PROJECT_DIR="$proj" PATH="$bin:$PATH" sh "$HOOK" 2>/dev/null
+recorded=$(cat "$marker" 2>/dev/null || printf 'MISSING')
+assert_eq "real invocation runs prettier --write on the file" "$proj/doc.md" "$recorded"
+rm -rf "$proj" "$bin"
+
 printf '\n%d passed, %d failed\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]
