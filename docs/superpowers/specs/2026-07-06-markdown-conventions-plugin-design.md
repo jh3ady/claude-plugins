@@ -1,7 +1,7 @@
 # Markdown conventions plugin: design
 
 - Date: 2026-07-06
-- Status: draft (design and spec authored under delegation, pending user review)
+- Status: implemented
 - Author: Jean-Denis VIDOT
 
 ## Context and goal
