@@ -51,6 +51,16 @@ run_hook_stderr() { # project_dir file_path
   printf '%s' "$payload" | MARKDOWN_CONVENTIONS_DRY_RUN=1 CLAUDE_PROJECT_DIR="$proj" sh "$HOOK" 2>&1 1>/dev/null
 }
 
+# Create a directory holding no-op stub executables for the named tools.
+make_stubs() { # tool [tool...]  -> prints the bin dir
+  bin=$(mktemp -d)
+  for t in "$@"; do
+    printf '#!/bin/sh\nexit 0\n' > "$bin/$t"
+    chmod +x "$bin/$t"
+  done
+  printf '%s' "$bin"
+}
+
 # --- guard tests ---
 
 # A markdown file in a project with no formatter configured -> no output.
@@ -131,6 +141,57 @@ rm -rf "$proj"
 proj=$(mktemp -d)
 err=$(run_hook_stderr "$proj" "$proj/does-not-exist.md")
 assert_not_contains "missing file stopped before selection" "guards passed" "$err"
+rm -rf "$proj"
+
+# --- detection and precedence tests ---
+
+# Prettier configured via .prettierrc and installed -> prettier runs.
+proj=$(mktemp -d); bin=$(make_stubs prettier)
+: > "$proj/.prettierrc"; : > "$proj/doc.md"
+out=$(run_hook "$proj" "$proj/doc.md" "$bin")
+assert_eq "prettier config + binary -> prettier" "prettier $proj/doc.md" "$out"
+rm -rf "$proj" "$bin"
+
+# Prettier configured via a package.json prettier key -> prettier runs.
+proj=$(mktemp -d); bin=$(make_stubs prettier)
+printf '{"prettier":{}}\n' > "$proj/package.json"; : > "$proj/doc.md"
+out=$(run_hook "$proj" "$proj/doc.md" "$bin")
+assert_eq "package.json prettier key -> prettier" "prettier $proj/doc.md" "$out"
+rm -rf "$proj" "$bin"
+
+# dprint configured and installed -> dprint runs.
+proj=$(mktemp -d); bin=$(make_stubs dprint)
+: > "$proj/dprint.json"; : > "$proj/doc.md"
+out=$(run_hook "$proj" "$proj/doc.md" "$bin")
+assert_eq "dprint config + binary -> dprint" "dprint $proj/doc.md" "$out"
+rm -rf "$proj" "$bin"
+
+# markdownlint-cli2 configured and installed -> markdownlint-cli2 runs.
+proj=$(mktemp -d); bin=$(make_stubs markdownlint-cli2)
+: > "$proj/.markdownlint.json"; : > "$proj/doc.md"
+out=$(run_hook "$proj" "$proj/doc.md" "$bin")
+assert_eq "markdownlint config + binary -> markdownlint-cli2" "markdownlint-cli2 $proj/doc.md" "$out"
+rm -rf "$proj" "$bin"
+
+# All three configured and installed -> precedence picks dprint.
+proj=$(mktemp -d); bin=$(make_stubs dprint prettier markdownlint-cli2)
+: > "$proj/dprint.json"; : > "$proj/.prettierrc"; : > "$proj/.markdownlint.json"; : > "$proj/doc.md"
+out=$(run_hook "$proj" "$proj/doc.md" "$bin")
+assert_eq "all configured -> dprint wins" "dprint $proj/doc.md" "$out"
+rm -rf "$proj" "$bin"
+
+# Prettier and markdownlint configured -> precedence picks prettier.
+proj=$(mktemp -d); bin=$(make_stubs prettier markdownlint-cli2)
+: > "$proj/.prettierrc"; : > "$proj/.markdownlint.json"; : > "$proj/doc.md"
+out=$(run_hook "$proj" "$proj/doc.md" "$bin")
+assert_eq "prettier + markdownlint -> prettier wins" "prettier $proj/doc.md" "$out"
+rm -rf "$proj" "$bin"
+
+# Configured but NOT installed (no stub on PATH) -> no-op.
+proj=$(mktemp -d)
+: > "$proj/.prettierrc"; : > "$proj/doc.md"
+out=$(run_hook "$proj" "$proj/doc.md")
+assert_eq "configured but not installed -> no-op" "" "$out"
 rm -rf "$proj"
 
 printf '\n%d passed, %d failed\n' "$pass" "$fail"

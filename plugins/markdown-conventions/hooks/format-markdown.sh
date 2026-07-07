@@ -60,7 +60,57 @@ run() { # label command [args...]
 # Signal (dry-run only) that all guards passed and selection is reached.
 [ "$DRY_RUN" = "1" ] && printf 'markdown-conventions: guards passed\n' >&2
 
-# Task 4 inserts the formatter detection block here.
+# Pick and run the first configured-and-resolvable formatter, in fixed order:
+# dprint, then Prettier, then markdownlint-cli2.
+
+# --- dprint ---
+if [ -f "$project_dir/dprint.json" ] || [ -f "$project_dir/.dprint.json" ] \
+   || [ -f "$project_dir/dprint.jsonc" ] || [ -f "$project_dir/.dprint.jsonc" ]; then
+  if command -v dprint >/dev/null 2>&1; then
+    run dprint dprint fmt "$abs_path"
+  fi
+fi
+
+# --- Prettier ---
+prettier_configured=0
+for f in .prettierrc .prettierrc.json .prettierrc.jsonc .prettierrc.yml .prettierrc.yaml \
+         .prettierrc.json5 .prettierrc.js .prettierrc.cjs .prettierrc.mjs .prettierrc.toml \
+         prettier.config.js prettier.config.cjs prettier.config.mjs; do
+  if [ -f "$project_dir/$f" ]; then prettier_configured=1; break; fi
+done
+if [ "$prettier_configured" = "0" ] && [ -f "$project_dir/package.json" ]; then
+  if jq -e '(.prettier != null) or (.devDependencies.prettier != null) or (.dependencies.prettier != null)' \
+       "$project_dir/package.json" >/dev/null 2>&1; then
+    prettier_configured=1
+  fi
+fi
+if [ "$prettier_configured" = "1" ]; then
+  if [ -x "$project_dir/node_modules/.bin/prettier" ]; then
+    run prettier "$project_dir/node_modules/.bin/prettier" --write "$abs_path"
+  elif command -v prettier >/dev/null 2>&1; then
+    run prettier prettier --write "$abs_path"
+  fi
+fi
+
+# --- markdownlint-cli2 ---
+mdl_configured=0
+for f in .markdownlint-cli2.jsonc .markdownlint-cli2.yaml .markdownlint-cli2.cjs .markdownlint-cli2.mjs \
+         .markdownlint.json .markdownlint.jsonc .markdownlint.yaml .markdownlint.yml .markdownlint.cjs; do
+  if [ -f "$project_dir/$f" ]; then mdl_configured=1; break; fi
+done
+if [ "$mdl_configured" = "0" ] && [ -f "$project_dir/package.json" ]; then
+  if jq -e '(.devDependencies["markdownlint-cli2"] != null) or (.dependencies["markdownlint-cli2"] != null)' \
+       "$project_dir/package.json" >/dev/null 2>&1; then
+    mdl_configured=1
+  fi
+fi
+if [ "$mdl_configured" = "1" ]; then
+  if [ -x "$project_dir/node_modules/.bin/markdownlint-cli2" ]; then
+    run markdownlint-cli2 "$project_dir/node_modules/.bin/markdownlint-cli2" --fix "$abs_path"
+  elif command -v markdownlint-cli2 >/dev/null 2>&1; then
+    run markdownlint-cli2 markdownlint-cli2 --fix "$abs_path"
+  fi
+fi
 
 # Nothing configured (or configured but not installed) -> no-op.
 finish
