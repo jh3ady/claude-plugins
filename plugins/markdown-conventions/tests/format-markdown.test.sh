@@ -194,5 +194,25 @@ out=$(run_hook "$proj" "$proj/doc.md")
 assert_eq "configured but not installed -> no-op" "" "$out"
 rm -rf "$proj"
 
+# --- local node_modules/.bin preferred over PATH (real invocation) ---
+
+# With both a local node_modules/.bin/prettier and a prettier on PATH, the
+# local one must run. Non-dry-run: each stub records which binary executed.
+proj=$(mktemp -d)
+pathbin=$(mktemp -d)
+mkdir -p "$proj/node_modules/.bin"
+marker="$proj/which.marker"
+printf '#!/bin/sh\necho local > "%s"\n' "$marker" > "$proj/node_modules/.bin/prettier"
+chmod +x "$proj/node_modules/.bin/prettier"
+printf '#!/bin/sh\necho path > "%s"\n' "$marker" > "$pathbin/prettier"
+chmod +x "$pathbin/prettier"
+: > "$proj/.prettierrc"
+: > "$proj/doc.md"
+payload=$(printf '{"tool_input":{"file_path":"%s"},"cwd":"%s"}' "$proj/doc.md" "$proj")
+printf '%s' "$payload" | CLAUDE_PROJECT_DIR="$proj" PATH="$pathbin:$PATH" sh "$HOOK" 2>/dev/null
+chosen=$(cat "$marker" 2>/dev/null || printf 'MISSING')
+assert_eq "local node_modules/.bin prettier preferred over PATH" "local" "$chosen"
+rm -rf "$proj" "$pathbin"
+
 printf '\n%d passed, %d failed\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]
