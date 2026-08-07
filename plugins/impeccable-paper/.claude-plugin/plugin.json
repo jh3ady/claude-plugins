@@ -1,0 +1,20 @@
+{
+  "name": "impeccable-paper",
+  "version": "0.1.0",
+  "description": "The Impeccable design craft adapted to Paper (paper.design): design-director quality standards, visual-world commitment, critique with heuristic scoring, and refinement playbooks, all driven through the Paper MCP server on the canvas instead of code.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/impeccable-paper",
+  "keywords": [
+    "design",
+    "paper",
+    "paper.design",
+    "mcp",
+    "ui",
+    "craft",
+    "critique"
+  ]
+}
