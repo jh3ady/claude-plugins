@@ -131,6 +131,12 @@
       "source": "./plugins/markdown-conventions",
       "description": "Markdown formatting conventions applied pragmatically, deferring to the project: a composable baseline (CommonMark, the markdownlint rule set, Prettier defaults) for how Claude writes markdown, plus a PostToolUse hook that reformats each edited file with the formatter the project already configures (dprint, Prettier, or markdownlint-cli2) and stays inert when none is set. Composable with your own conventions.",
       "version": "0.1.0"
+    },
+    {
+      "name": "repository-conventions",
+      "source": "./plugins/repository-conventions",
+      "description": "The standard files of a well-kept repository: README structure and tone, license, contributing guide, community health files, and AI agent instruction files (AGENTS.md, CLAUDE.md), following the majority conventions of popular repositories while deferring to maintainer style. Composable with your own conventions.",
+      "version": "0.1.0"
     }
   ]
 }
