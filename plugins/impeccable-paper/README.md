@@ -2,8 +2,9 @@
 
 A Claude Code plugin that adapts the Impeccable design craft to Paper
 (paper.design): design-director quality standards, visual-world commitment,
-critique with heuristic scoring, and refinement playbooks, all driven through
-the Paper MCP server on the canvas instead of code.
+critique with heuristic scoring, refinement playbooks, design token
+extraction, and review-comment workflows, all driven through the Paper MCP
+server on the canvas instead of code.
 
 ## What it does
 
@@ -18,10 +19,20 @@ applies:
   contract on the canvas, and build fully committed.
 - Canvas-native commands: `craft`, `shape`, `variants`, `adapt`, `critique`,
   `audit`, `polish`, `bolder`, `quieter`, `distill`, `layout`, `typeset`,
-  `colorize`, `delight`, `clarify`, and `export`.
+  `colorize`, `delight`, `clarify`, `extract`, and `export`.
+- Paper's native design tokens: reading the file's vocabulary before
+  styling, and an `extract` flow that consolidates repeated values into
+  typed tokens and migrates every usage.
+- Review comments as a first-class backlog: refinement reads the team's
+  open threads, addresses them, and resolves the ones it fully closed.
 - A disciplined way of driving the Paper MCP tools: read before write,
   surgical patches over destructive rewrites, batched edits, and bounded
   verification rounds.
+
+## Documentation
+
+The complete usage guide, with every command, example prompts, the main
+workflows, and troubleshooting, lives in [docs/usage.md](docs/usage.md).
 
 ## Prerequisites
 

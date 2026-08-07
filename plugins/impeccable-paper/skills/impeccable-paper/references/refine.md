@@ -27,19 +27,25 @@ Polish is refinement, never concealed redesign. If the concept itself is
 wrong, say so and recommend `craft` or `bolder` instead of smuggling in a
 replacement.
 
-1. Establish the system: read the canvas's own conventions (spacing values,
-   type roles, color roles) from computed styles across sibling frames.
-   Classify each drift: missing system value, one-off implementation,
-   conceptual mismatch, or local defect. Fix the cause at the narrowest
-   correct level.
-2. Triage in order: misleading or broken-looking regions first, then missing
-   states the brief needs, then hierarchy and layout drift, then visual
-   inconsistencies, then layer naming.
-3. Polish the whole frame to one bar; do not perfect one corner while leaving
+1. Establish the system: read the canvas's own conventions from `get_tokens`
+   when the file has a token vocabulary, and from computed styles across
+   sibling frames. Classify each drift: missing token or system value,
+   one-off implementation, conceptual mismatch, or local defect. Fix the
+   cause at the narrowest correct level, and promote a genuinely reusable
+   value to a token (see `extract.md`) rather than repeating the literal.
+2. Gather the backlog: open comment threads on the target
+   (`list_comment_threads`, then `get_comment_thread` on the relevant ones)
+   and any prior critique summary on the canvas. The team's feedback comes
+   first; resolve each fully addressed thread with
+   `set_comment_thread_status` and report which were closed.
+3. Triage in order: the team's open threads and misleading or broken-looking
+   regions first, then missing states the brief needs, then hierarchy and
+   layout drift, then visual inconsistencies, then layer naming.
+4. Polish the whole frame to one bar; do not perfect one corner while leaving
    the rest below it. Keep same-role typography identical across frames, fix
    optical as well as mathematical alignment, verify contrast in every state
    frame, keep icon families in one stroke and weight.
-4. Verify with the bounded rounds and leave the layers named.
+5. Verify with the bounded rounds and leave the layers named.
 
 ## Bolder
 

@@ -6,7 +6,9 @@ How to drive the Paper MCP tools with precision. Read this once per session befo
 
 - [Connection and context](#connection-and-context)
 - [Reading the canvas](#reading-the-canvas)
+- [Review comments](#review-comments)
 - [Writing to the canvas](#writing-to-the-canvas)
+- [Design tokens](#design-tokens)
 - [Layer hygiene](#layer-hygiene)
 - [Verification loop](#verification-loop)
 - [Variants](#variants)
@@ -41,6 +43,22 @@ Read before you write, always. An edit made without reading the incumbent struct
   implementation matters (spacing systems, token-like consistency), not as a default read.
 - `get_fill_image` retrieves image fills when the content of an image drives a decision (art direction, cropping,
   legibility of text over it).
+- `find_nodes` locates nodes by computed style or text content, with wildcards, across the page or scoped to a node.
+  Use it to resolve a target the user described by its content ("the pricing card", "the Get started button"), to count
+  the real spread of a value before extracting a token, or to list every usage before a bulk `update_styles`.
+
+## Review comments
+
+Paper files carry review discussion as comment threads pinned to nodes. The MCP server reads and resolves them; it
+cannot create them, so critique findings are reported in chat and never promised as canvas comments.
+
+- Before refining a target, run `list_comment_threads` (default status `open`) scoped to the node or page. Open threads
+  are the team's own backlog for that region; feedback the user's collaborators already wrote outranks defects you
+  would go hunting for.
+- Read a thread in full with `get_comment_thread` before acting on its preview; replies often narrow or reverse the
+  first message.
+- When your edit fully addresses a thread's feedback, mark it done with `set_comment_thread_status` set to `resolved`,
+  and say so in the report. Resolve only what the edit genuinely closed; a half-addressed thread stays open.
 
 ## Writing to the canvas
 
@@ -62,6 +80,17 @@ brush for refinement.
 
 Author real CSS, not framework shorthand, unless the canvas already uses Tailwind-style classes. Match whatever
 convention the incumbent artboards use.
+
+## Design tokens
+
+Paper has a native design token system: typed CSS custom properties (`color`, `spacing`, `fontSize`, `radius`, and the
+rest) that styles consume as `var(--token-name)`.
+
+- Read the vocabulary with `get_tokens` before styling anything in a file that has one; authoring a literal where a
+  token exists is design-system drift from the first edit.
+- New values that represent decisions (a palette role, a spacing step, a type scale entry) are created as tokens with
+  `create_tokens` and consumed as `var()` references; `set_tokens` renames, retargets, or deletes.
+- The full extraction flow, including migrating existing literals with `find_nodes`, lives in `extract.md`.
 
 ## Layer hygiene
 

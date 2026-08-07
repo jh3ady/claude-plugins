@@ -1,8 +1,8 @@
 ---
 name: impeccable-paper
-description: This skill should be used whenever designing, critiquing, or refining anything inside Paper (paper.design) through the Paper MCP server, even when the user does not say "design" explicitly. Use it when the user wants to create, redesign, mock up, audit, polish, clarify, distill, amplify, lay out, colorize, or typeset artboards, frames, screens, landing pages, dashboards, components, or flows on the Paper canvas, when they ask for design variants or alternatives in Paper, for responsive or mobile versions of a frame, to export assets (PNG, SVG, MP4) from Paper, or when they ask "make this better" about anything selected in Paper. Not for writing production frontend code (the Impeccable skill owns that) and not for backend or non-visual tasks.
+description: This skill should be used whenever designing, critiquing, or refining anything inside Paper (paper.design) through the Paper MCP server, even when the user does not say "design" explicitly. Use it when the user wants to create, redesign, mock up, audit, polish, clarify, distill, amplify, lay out, colorize, or typeset artboards, frames, screens, landing pages, dashboards, components, or flows on the Paper canvas, when they ask for design variants or alternatives in Paper, for responsive or mobile versions of a frame, to extract or consolidate design tokens in Paper, to address review comments on a Paper file, to export assets (PNG, SVG, MP4) from Paper, or when they ask "make this better" about anything selected in Paper. Not for writing production frontend code (the Impeccable skill owns that) and not for backend or non-visual tasks.
 user-invocable: true
-argument-hint: "[shape | craft | variants | adapt | critique | audit | polish | bolder | quieter | distill | layout | typeset | colorize | delight | clarify | export] [target]"
+argument-hint: "[shape | craft | variants | adapt | critique | audit | polish | bolder | quieter | distill | layout | typeset | colorize | delight | clarify | extract | export] [target]"
 ---
 
 # Impeccable Paper
@@ -26,7 +26,9 @@ Core principles:
    open; on connection failure, ask the user to open Paper Desktop first, then retry once.
 2. Read the canvas before acting: `get_selection` for the user's focus,
    `get_tree_summary` on the relevant artboard, and `get_screenshot` of the target. The canvas is the incumbent visual
-   truth; when the session also has a code project with PRODUCT.md or DESIGN.md, read those too.
+   truth, and it has two more voices: `get_tokens` for the file's design token vocabulary, and `list_comment_threads`
+   for the team's open feedback on the target. When the session also has a code project with PRODUCT.md or DESIGN.md,
+   read those too.
 3. Read `references/paper-workflow.md` before the first canvas edit of the session. It explains how to drive the Paper
    tools precisely (write versus patch, batching, layer hygiene, verification).
 4. After analysis and direction are resolved, and immediately before editing the canvas, read
@@ -77,6 +79,7 @@ documentation is still Read.
 | `colorize [target]` | Refine   | Add color as hierarchy, meaning, and atmosphere                        | `references/refine.md`                            |
 | `delight [target]`  | Refine   | Add product character at moments that earn it                          | `references/refine.md`                            |
 | `clarify [target]`  | Refine   | Rewrite interface copy on the canvas: labels, errors, empty states     | `references/refine.md`                            |
+| `extract [target]`  | System   | Consolidate reusable values into Paper design tokens and migrate usages | `references/extract.md`                          |
 | `export [target]`   | Handoff  | Export assets; for production code, hand off to a design-to-code flow  | `references/paper-workflow.md` (Handoff section)  |
 
 Routing:
@@ -84,7 +87,8 @@ Routing:
 - **No argument:** read the canvas first (`get_basic_info`, `get_selection`,
   `get_tree_summary`), then recommend the 2-3 highest-value commands with a one-line reason each, followed by the table
   above. An empty or near-empty file leads with `craft`; a selected frame that has never been reviewed leads with
-  `critique`; never auto-run a command.
+  `critique`; open comment threads on the target lead with `polish` scoped to that feedback; a file styled on literals
+  with no token vocabulary suggests `extract`; never auto-run a command.
 - **Explicit or clearly implied command:** load its reference section and follow it. Ask once if two commands fit.
 - **Otherwise:** treat the request as general design work. A new surface or a replacement world routes through
   `references/new-work.md`; a narrow refinement of an existing artboard proceeds on the incumbent canvas as context.
@@ -92,9 +96,10 @@ Routing:
 ## Target resolution
 
 A target is a node on the canvas. Resolve it in this order: the user's explicit node or artboard name (find it via
-`get_tree_summary`), the current selection (`get_selection`), then ask. When nothing is selected and several artboards
-could match, ask the user to select the frame in Paper rather than guessing; selection is the cheapest, most precise
-brief the user can give.
+`get_tree_summary`), a description of its content or style (find it via `find_nodes`, which matches text and computed
+values with wildcards), the current selection (`get_selection`), then ask. When nothing is selected and several
+artboards could match, ask the user to select the frame in Paper rather than guessing; selection is the cheapest, most
+precise brief the user can give.
 
 ## Verification is bounded
 

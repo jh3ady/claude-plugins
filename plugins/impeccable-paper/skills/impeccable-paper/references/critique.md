@@ -23,7 +23,9 @@ and of each major section as its own crop (one full-page thumbnail hides
 exactly the failures that matter: crude controls, wrong lettering character,
 flattened material), and `get_computed_styles` batched over the text, control,
 and surface nodes. Read `craft-floor.md` too: its refuse list is the checklist
-Assessment B scans against.
+Assessment B scans against. Also gather the team's own findings:
+`list_comment_threads` scoped to the target (default status `open`), reading
+any relevant thread in full with `get_comment_thread`.
 
 ## Two isolated assessments
 
@@ -81,10 +83,14 @@ noted as such.
 Synthesize both assessments into one report: header (target, method, whether
 assessments were isolated), specificity verdict, scored heuristics, findings
 ranked P0 to P3 with the evidence for each, strengths, and 2-3 recommended
-next commands from this skill with one line each. Offer, without doing it
-unasked, to write a compact summary onto the canvas as a text frame named
-`Critique <date>` beside the target, so the backlog lives where the design
-lives.
+next commands from this skill with one line each. Cross-reference open
+comment threads: a finding the team already flagged cites its thread, and a
+thread neither assessment reproduced is listed with your verdict on it. The
+MCP server cannot create comments, so the report lives in chat; offer,
+without doing it unasked, to write a compact summary onto the canvas as a
+text frame named `Critique <date>` beside the target, so the backlog lives
+where the design lives. Critique resolves no threads; that belongs to the
+command that fixes them.
 
 ## Audit section
 
