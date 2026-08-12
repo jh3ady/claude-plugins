@@ -1,6 +1,6 @@
 ---
 name: commit-conventions
-description: This skill should be used whenever writing or amending a commit message, or preparing or splitting a commit, even when conventions are not explicitly mentioned, applying the gitmoji + Conventional Commits standard to commit messages (subject-based scopes and the Git 50/72 length rule).
+description: This skill should be used whenever writing or amending a commit message, preparing or splitting a commit, or writing a pull request or merge request title or description, even when conventions are not explicitly mentioned, applying the gitmoji + Conventional Commits standard (subject-based scopes, the Git 50/72 length rule) and the rule that public-facing text never cites an internal working artifact by code, number, or path.
 ---
 
 # Commit conventions
@@ -33,6 +33,28 @@ Derive the scope from the project's own areas (for example `auth`, `api`,
 `ui`, `db`). Omit the scope only for genuinely repository-wide changes.
 Each repository defines its own scope vocabulary; keep it consistent
 within a repository.
+
+## Never cite an internal working artifact
+
+A commit message is read by people who do not have your plan, your board,
+or your task list. Do not refer to a plan, a specification, a milestone, a
+phase, a task, or a step by code, by number, or by path. `phase 1`,
+`task 3`, `step 4`, `per the spec`, and `implement the kernel plan` all mean
+nothing to a reader of the history, and they make it illegible the moment
+the working document is renamed, closed, or deleted. State the actual
+objective in plain words.
+
+- Bad: `✨ feat: implement task 9 of phase 1`
+- Good: `✨ feat(executors): add embedded cross-platform shell`
+
+Two things are not covered by this rule. Cross-references between internal
+documents are fine, because both sides travel together. And an issue or
+pull request reference in a footer (`Refs: #123`, `Closes #123`) is fine,
+because it points at something any reader of the repository can open.
+
+The same rule governs pull request and merge request titles and
+descriptions, issue titles, and changelog entries: everything a reader of
+the project will see.
 
 ## Adapt to your context
 

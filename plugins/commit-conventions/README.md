@@ -9,14 +9,19 @@ vocabulary and your team or personal rules.
 
 ## What it does
 
-When you write or amend a commit, or prepare or split a commit, the bundled
-skill applies:
+When you write or amend a commit, prepare or split a commit, or write a
+pull request or merge request title or description, the bundled skill
+applies:
 
 - The commit format `<gitmoji> <type>(<optional scope>): <summary>`.
 - The Conventional Commits type list and the gitmoji-to-type pairing.
 - Subject-based scoping (derive scopes from your project's own areas).
 - The Git 50/72 length rule and lower-case-verb casing (proper nouns and
   acronyms keep their natural case).
+- No references to internal working artifacts. A plan, a specification, a
+  milestone, a phase, a task, or a step is never cited by code, by number,
+  or by path, because those labels mean nothing to a reader of the history.
+  Issue and pull request footers stay allowed.
 
 ## Install
 

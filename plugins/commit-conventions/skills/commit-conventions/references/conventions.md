@@ -55,3 +55,25 @@ is not a user-facing feature.
 ♻️ refactor(parser): simplify the request handler
 ✅ test(payments): cover the declined-card edge case
 ```
+
+## Internal working artifacts
+
+The history outlives the working documents that produced it. A plan gets
+archived, a milestone is renamed, a task board is migrated, and every
+message that pointed at them stops meaning anything. Write the objective,
+not the pointer.
+
+| Instead of | Write |
+|------------|-------|
+| `✨ feat: implement task 9 of phase 1` | `✨ feat(executors): add embedded cross-platform shell` |
+| `📝 docs: apply the M0 plan` | `📝 docs(community): add the contribution guide` |
+| `♻️ refactor(api): step 3 of the migration` | `♻️ refactor(api): move pagination to cursor tokens` |
+| `👷 ci: set up CI per the design document` | `👷 ci: run formatting, linting, and tests on every change` |
+
+The rule covers commit subjects and bodies, pull request and merge request
+titles and descriptions, issue titles, and changelog entries.
+
+Two exceptions. A reference between internal documents is fine, because
+both sides travel together. And a footer pointing at an issue or a pull
+request (`Refs: #123`, `Closes #123`) is fine, because a reader of the
+repository can open it.
