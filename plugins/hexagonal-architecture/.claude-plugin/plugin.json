@@ -1,6 +1,6 @@
 {
   "name": "hexagonal-architecture",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Hexagonal architecture (ports and adapters) applied pragmatically: the dependency rule, primary and secondary ports and adapters, the application core, composition-root wiring, and its relationship to Onion and Clean Architecture, with TypeScript specifics. Composable with your own conventions.",
   "author": {
     "name": "Jean-Denis VIDOT",
