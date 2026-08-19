@@ -1,6 +1,6 @@
 ---
 name: object-calisthenics
-description: This skill should be used when practising or drilling clean object-oriented habits, when deciding how strictly to apply the nine rules, when recognising primitive obsession, deep nesting, message chains, or anemic objects, or when writing or reviewing object-oriented code, applying Jeff Bay's object calisthenics, even when they are not explicitly mentioned. It carries the exercise framing and the concrete drill for each rule; each rule's underlying principle is owned by a sibling plugin.
+description: This skill should be used when practising or drilling clean object-oriented habits, when deciding how strictly to apply the nine rules of object calisthenics, when recognising primitive obsession, deep nesting, message chains, or anemic objects, or when writing or reviewing object-oriented code, applying Jeff Bay's object calisthenics even when they are not mentioned. Each rule's underlying principle is owned by a sibling plugin.
 ---
 
 # Object calisthenics

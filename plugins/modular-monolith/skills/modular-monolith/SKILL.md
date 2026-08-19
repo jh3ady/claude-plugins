@@ -1,6 +1,6 @@
 ---
 name: modular-monolith
-description: This skill should be used when structuring, reviewing, or refactoring application architecture, module or package structure, or deployment topology, and when weighing a monolith against microservices or asking whether to split a system into services, even when the term "modular monolith" is not used, applying the modular monolith pattern. Covers public-API module boundaries, inter-module communication, per-module data isolation, TypeScript-ecosystem enforcement, and extraction to microservices. Includes pragmatic guardrails against premature splitting and over-engineering.
+description: This skill should be used when structuring, reviewing, or refactoring application architecture, module or package structure, or deployment topology, when weighing a monolith against microservices, when asking whether to split a system into services, or when module boundaries leak across a codebase, applying the modular monolith pattern even when the term is not used.
 ---
 
 # Modular monolith

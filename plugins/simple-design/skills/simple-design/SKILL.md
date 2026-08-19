@@ -1,6 +1,6 @@
 ---
 name: simple-design
-description: This skill should be used when judging whether a design is "simple enough", when arbitrating between clarity and deduplication, or when writing, modifying, reviewing, or refactoring production code, applying Kent Beck's four rules of simple design in priority order (passes the tests, reveals intention, no duplication, fewest elements), even when they are not explicitly mentioned. It carries the ordered decision procedure and the arbitration between the rules; each rule's depth is owned by a sibling plugin.
+description: This skill should be used when judging whether a design is "simple enough", when arbitrating between clarity and deduplication, or when writing, modifying, reviewing, or refactoring production code, applying Kent Beck's four rules of simple design in priority order even when they are not mentioned. Each rule's depth is owned by a sibling plugin.
 ---
 
 # Simple design

@@ -1,6 +1,6 @@
 ---
 name: ddd-tactical-design
-description: This skill should be used when modelling domain building blocks, deciding whether a concept is an entity or a value object, designing an aggregate and its consistency boundary, selecting a repository or a domain service, reviewing code for an anemic domain model, or expressing a rich domain inside one bounded context, applying the tactical design half of domain-driven design (DDD) even when the terms "DDD", "aggregate", "entity", or "value object" are not used. Also covers Vernon's four aggregate design rules, the repository-versus-DAO and domain-service-versus-application-service distinctions, domain events, and factories. Also applies when a domain-driven design request does not specify strategic or tactical scope, because modelling the building blocks that express a rich domain inside a bounded context is the complementary second half of any DDD engagement alongside strategic design.
+description: This skill should be used when modelling domain building blocks, deciding whether a concept is an entity or a value object, designing an aggregate and its consistency boundary, choosing a repository, a factory, or a domain service, emitting domain events, or reviewing code for an anemic domain model, applying the tactical half of domain-driven design (DDD) even when the terms are not used. Also applies when a DDD request does not specify strategic or tactical scope.
 ---
 
 # Tactical design (DDD)

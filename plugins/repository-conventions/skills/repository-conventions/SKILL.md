@@ -1,6 +1,6 @@
 ---
 name: repository-conventions
-description: This skill should be used whenever scaffolding a new repository, open-sourcing or publishing a project, creating, writing, or reviewing its standard and community health files (README.md, LICENSE, CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md, issue and pull request templates, CHANGELOG, FUNDING.yml, CODEOWNERS, AGENTS.md, CLAUDE.md), or auditing which of them a project has, even when conventions are not explicitly mentioned, applying the majority conventions of popular repositories while deferring to the maintainers' own style.
+description: This skill should be used whenever scaffolding a new repository, open-sourcing or publishing a project, creating, writing, or reviewing its standard and community health files (README, LICENSE, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY, issue and pull request templates, CHANGELOG, FUNDING.yml, CODEOWNERS, AGENTS.md, CLAUDE.md), or auditing which of them a project has, even when conventions are not explicitly mentioned.
 ---
 
 # Repository conventions

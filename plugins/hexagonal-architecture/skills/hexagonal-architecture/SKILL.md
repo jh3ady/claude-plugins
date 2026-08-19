@@ -1,6 +1,6 @@
 ---
 name: hexagonal-architecture
-description: This skill should be used when structuring, reviewing, or refactoring how an application's business logic is isolated from its infrastructure (web frameworks, databases, message brokers, external APIs, the UI), when deciding where a use case, a repository interface, a controller, an ORM, or an HTTP client belongs, when a domain is leaking framework or persistence details, or when asking how to test business logic without a database, even when the terms "hexagonal", "ports and adapters", "onion", or "clean architecture" are not used, applying hexagonal architecture (ports and adapters). Covers the dependency rule, primary (driving) and secondary (driven) ports and adapters, the application core, composition-root wiring, the relationship to Onion and Clean Architecture, and TypeScript modelling. Includes pragmatic guardrails against over-porting, mapping fatigue, and applying it to simple CRUD.
+description: This skill should be used when structuring, reviewing, or refactoring how business logic is isolated from infrastructure (web frameworks, databases, message brokers, external APIs, the UI), when deciding where a use case, a repository interface, a controller, an ORM, or an HTTP client belongs, when a domain leaks framework or persistence details, or when asking how to test business logic without a database, applying hexagonal architecture (ports and adapters) even when the terms "hexagonal", "onion", or "clean architecture" are not used.
 ---
 
 # Hexagonal architecture (ports and adapters)
