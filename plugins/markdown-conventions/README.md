@@ -21,6 +21,13 @@ The hook only reaches Claude's own edits, not edits made by hand in an editor.
 It never blocks, never fails a workflow, and never installs a formatter: with
 no formatter configured in the project, it does nothing.
 
+## Install
+
+```bash
+/plugin marketplace add jh3ady/claude-plugins
+/plugin install jh3ady-markdown-conventions@jh3ady-claude-plugins
+```
+
 ## Configuration
 
 Add a formatter to your project to make the enforcement deterministic:
