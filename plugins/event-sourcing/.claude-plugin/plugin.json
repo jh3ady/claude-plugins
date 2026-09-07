@@ -1,5 +1,5 @@
 {
-  "name": "event-sourcing",
+  "name": "jh3ady-event-sourcing",
   "version": "0.1.1",
   "description": "Event sourcing applied pragmatically: an append-only event store as the system of record, event-sourced aggregates rehydrated by replaying their events, snapshots, projections and read models, schema versioning and upcasting, idempotency and ordering, compensating events, and the relationship to CQRS and domain-driven design, with TypeScript specifics. Composable with your own conventions.",
   "author": {

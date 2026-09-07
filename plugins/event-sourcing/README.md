@@ -1,4 +1,4 @@
-# event-sourcing
+# jh3ady-event-sourcing
 
 A Claude Code plugin that helps apply event sourcing pragmatically: persist the
 full sequence of state-changing events in an append-only store as the system of
@@ -51,7 +51,7 @@ applies:
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install event-sourcing@jh3ady-claude-plugins
+/plugin install jh3ady-event-sourcing@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

@@ -49,7 +49,7 @@ does not write production code.
 
    ```
    /plugin marketplace add jh3ady/claude-plugins
-   /plugin install impeccable-paper@jh3ady-claude-plugins
+   /plugin install jh3ady-impeccable-paper@jh3ady-claude-plugins
    ```
 
 ## Invoking the skill
@@ -57,8 +57,8 @@ does not write production code.
 Three ways, from most to least explicit:
 
 - **Slash command with a sub-command**:
-  `/impeccable-paper:impeccable-paper critique the pricing artboard`.
-- **Slash command alone**: `/impeccable-paper:impeccable-paper`. The skill
+  `/jh3ady-impeccable-paper:impeccable-paper critique the pricing artboard`.
+- **Slash command alone**: `/jh3ady-impeccable-paper:impeccable-paper`. The skill
   reads the canvas and recommends the highest-value next commands instead of
   acting on its own.
 - **Natural language**: any design request about Paper triggers it. "Design a

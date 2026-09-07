@@ -1,4 +1,4 @@
-# design-patterns
+# jh3ady-design-patterns
 
 A Claude Code plugin that applies judgement to design pattern usage in the code you write and review. Claude already knows what a pattern is; the value this plugin adds is the when: when a pattern is warranted by a real, named variation point; when to refuse one; what the minimal form looks like; and how patterns compose with one another and with the architecture plugins in this collection.
 
@@ -39,7 +39,7 @@ The skill covers four reference groups:
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install design-patterns@jh3ady-claude-plugins
+/plugin install jh3ady-design-patterns@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

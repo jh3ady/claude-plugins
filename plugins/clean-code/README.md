@@ -1,4 +1,4 @@
-# clean-code
+# jh3ady-clean-code
 
 A Claude Code plugin that applies clean code craftsmanship to the code you
 write and review, pragmatically: clear names, small focused functions,
@@ -21,7 +21,7 @@ skill applies:
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install clean-code@jh3ady-claude-plugins
+/plugin install jh3ady-clean-code@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

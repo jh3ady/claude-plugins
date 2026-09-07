@@ -5,141 +5,166 @@
     "email": "5817251+jh3ady@users.noreply.github.com",
     "url": "https://github.com/jh3ady"
   },
+  "renames": {
+    "commit-conventions": "jh3ady-commit-conventions",
+    "review-conventions": "jh3ady-review-conventions",
+    "solid-principles": "jh3ady-solid-principles",
+    "simplicity-principles": "jh3ady-simplicity-principles",
+    "clean-code": "jh3ady-clean-code",
+    "simple-design": "jh3ady-simple-design",
+    "object-calisthenics": "jh3ady-object-calisthenics",
+    "modular-monolith": "jh3ady-modular-monolith",
+    "dependency-injection": "jh3ady-dependency-injection",
+    "hexagonal-architecture": "jh3ady-hexagonal-architecture",
+    "domain-driven-design": "jh3ady-domain-driven-design",
+    "event-sourcing": "jh3ady-event-sourcing",
+    "cqrs": "jh3ady-cqrs",
+    "screaming-architecture": "jh3ady-screaming-architecture",
+    "test-driven-development": "jh3ady-test-driven-development",
+    "legacy-code": "jh3ady-legacy-code",
+    "refactoring": "jh3ady-refactoring",
+    "design-patterns": "jh3ady-design-patterns",
+    "testing-strategy": "jh3ady-testing-strategy",
+    "secure-coding": "jh3ady-secure-coding",
+    "markdown-conventions": "jh3ady-markdown-conventions",
+    "impeccable-paper": "jh3ady-impeccable-paper",
+    "repository-conventions": "jh3ady-repository-conventions"
+  },
   "plugins": [
     {
-      "name": "commit-conventions",
+      "name": "jh3ady-commit-conventions",
       "source": "./plugins/commit-conventions",
       "description": "The gitmoji + Conventional Commits standard for commit messages: subject-based scopes, the 50/72 rule, and lower-case-verb casing. Composable with your own conventions.",
       "version": "0.1.0"
     },
     {
-      "name": "review-conventions",
+      "name": "jh3ady-review-conventions",
       "source": "./plugins/review-conventions",
       "description": "The Conventional Comments standard for pull and merge request reviews: labelled, decorated, actionable comments. Composable with your own conventions.",
       "version": "0.1.0"
     },
     {
-      "name": "solid-principles",
+      "name": "jh3ady-solid-principles",
       "source": "./plugins/solid-principles",
       "description": "The five SOLID principles applied pragmatically: recognizable smells, focused refactorings, and guardrails against speculative abstraction. Composable with your own conventions.",
       "version": "0.1.0"
     },
     {
-      "name": "simplicity-principles",
+      "name": "jh3ady-simplicity-principles",
       "source": "./plugins/simplicity-principles",
       "description": "The simplicity cluster KISS, DRY, and YAGNI applied pragmatically: do-less heuristics, the rule of three, and the trade-offs such as duplication versus the wrong abstraction. Composable with your own conventions.",
       "version": "0.1.0"
     },
     {
-      "name": "clean-code",
+      "name": "jh3ady-clean-code",
       "source": "./plugins/clean-code",
       "description": "Clean code craftsmanship applied pragmatically: naming, small focused functions, intent-revealing comments, and disciplined error handling. Composable with your own conventions.",
       "version": "0.1.0"
     },
     {
-      "name": "simple-design",
+      "name": "jh3ady-simple-design",
       "source": "./plugins/simple-design",
       "description": "Kent Beck's four rules of simple design applied pragmatically, meta first: the four rules (passes the tests, reveals intention, no duplication, fewest elements) as one priority-ordered decision procedure for the refactor step, how to arbitrate when the rules pull against each other, and simple design as emergent rather than up-front, with each individual rule owned by its sibling plugin (TDD, clean-code, simplicity-principles, refactoring). Composable with your own conventions.",
       "version": "0.1.1"
     },
     {
-      "name": "object-calisthenics",
+      "name": "jh3ady-object-calisthenics",
       "source": "./plugins/object-calisthenics",
       "description": "Jeff Bay's nine rules of object calisthenics applied pragmatically, as a training discipline: one level of indentation, no else, wrap primitives, first-class collections, one dot per line, no abbreviations, small entities, at most two instance variables, and no getters or setters, framed as an exercise to apply strictly and relax with judgement in production, with each rule's underlying principle owned by its sibling plugin (clean-code, solid-principles, refactoring, domain-driven-design). Composable with your own conventions.",
       "version": "0.1.1"
     },
     {
-      "name": "modular-monolith",
+      "name": "jh3ady-modular-monolith",
       "source": "./plugins/modular-monolith",
       "description": "The modular monolith applied pragmatically: one deployable unit, strictly bounded modules with public APIs, isolated data, and TypeScript-ecosystem boundary enforcement. Composable with your own conventions.",
       "version": "0.1.1"
     },
     {
-      "name": "dependency-injection",
+      "name": "jh3ady-dependency-injection",
       "source": "./plugins/dependency-injection",
       "description": "Dependency injection applied pragmatically: Pure DI (manual constructor injection) first, the composition root, object lifetimes, and the anti-pattern catalogue, with DI containers referenced as a justified option. Composable with your own conventions.",
       "version": "0.1.1"
     },
     {
-      "name": "hexagonal-architecture",
+      "name": "jh3ady-hexagonal-architecture",
       "source": "./plugins/hexagonal-architecture",
       "description": "Hexagonal architecture (ports and adapters) applied pragmatically: the dependency rule, primary and secondary ports and adapters, the application core, composition-root wiring, and its relationship to Onion and Clean Architecture, with TypeScript specifics. Composable with your own conventions.",
       "version": "0.1.1"
     },
     {
-      "name": "domain-driven-design",
+      "name": "jh3ady-domain-driven-design",
       "source": "./plugins/domain-driven-design",
       "description": "Domain-driven design applied pragmatically, in three skills: EventStorming (collaborative domain discovery, the three formats, the orange-sticky notation), strategic design (ubiquitous language, bounded contexts, subdomains, context mapping), and tactical design (entities, value objects, aggregates, domain events, repositories, domain services, factories), with TypeScript specifics. Composable with your own conventions.",
       "version": "0.1.1"
     },
     {
-      "name": "event-sourcing",
+      "name": "jh3ady-event-sourcing",
       "source": "./plugins/event-sourcing",
       "description": "Event sourcing applied pragmatically: an append-only event store as the system of record, event-sourced aggregates rehydrated by replaying their events, snapshots, projections and read models, schema versioning and upcasting, idempotency and ordering, compensating events, and the relationship to CQRS and domain-driven design, with TypeScript specifics. Composable with your own conventions.",
       "version": "0.1.1"
     },
     {
-      "name": "cqrs",
+      "name": "jh3ady-cqrs",
       "source": "./plugins/cqrs",
       "description": "Command Query Responsibility Segregation applied pragmatically: the command/query split promoted to the model level, command and query handlers, the write model versus read models and projections, the levels of separation from a shared store to separate stores, the consistency trade-off, and the relationship to CQS, event sourcing, and domain-driven design, with TypeScript specifics. Composable with your own conventions.",
       "version": "0.1.1"
     },
     {
-      "name": "screaming-architecture",
+      "name": "jh3ady-screaming-architecture",
       "source": "./plugins/screaming-architecture",
       "description": "Screaming Architecture applied pragmatically: a top-level structure that announces the business domain and its use cases rather than the framework, package-by-feature over package-by-layer, package-by-component, vertical slices, and composition with hexagonal, clean, and domain-driven design. Composable with your own conventions.",
       "version": "0.1.1"
     },
     {
-      "name": "test-driven-development",
+      "name": "jh3ady-test-driven-development",
       "source": "./plugins/test-driven-development",
       "description": "Test-driven development applied pragmatically in the classical (Detroit) style: the iron law of a failing test first, red-green-refactor, testing behaviour rather than implementation (the unit is a behaviour or module, not a class), the test-double ladder that prefers real objects and in-memory implementations over stubs and mocks, state verification over interaction verification, keeping in-memory implementations faithful through contract tests, and the inner-loop scope of TDD, with TypeScript specifics. Composable with your own conventions.",
       "version": "0.1.1"
     },
     {
-      "name": "legacy-code",
+      "name": "jh3ady-legacy-code",
       "source": "./plugins/legacy-code",
       "description": "Working effectively with legacy code (Michael Feathers) applied pragmatically, in two skills: the method (legacy code is code without tests, the Legacy Code Change Algorithm, seams and enabling points, characterization tests, reasoning about effects) and the dependency-breaking catalogue (Sprout, Wrap, Extract Interface, Subclass and Override, Parameterize Constructor, Extract and Override Factory, and the rest), with TypeScript specifics. Composable with your own conventions.",
       "version": "0.1.0"
     },
     {
-      "name": "refactoring",
+      "name": "jh3ady-refactoring",
       "source": "./plugins/refactoring",
       "description": "Refactoring (Martin Fowler, 2nd edition, with Kent Beck) applied pragmatically, in three skills: the method (the definition, the two hats, why and when to refactor, mechanics in small steps, and self-testing code as a prerequisite), the code smells (the chapter 3 catalogue of bad smells, each pointing to the refactorings that resolve it), and the refactoring catalogue (the full set of moves grouped by category, with condensed mechanics and TypeScript examples). Composable with your own conventions.",
       "version": "0.1.0"
     },
     {
-      "name": "design-patterns",
+      "name": "jh3ady-design-patterns",
       "source": "./plugins/design-patterns",
       "description": "Design patterns applied pragmatically, judgement first: the 23 Gang of Four patterns plus modern idioms (Null Object, Result/Either, Specification, functional patterns), framed by when to reach for a pattern, when to refuse it (the rule of three, no speculative abstraction), the minimal TypeScript form, and ownership by level of abstraction so the generic mechanism lives here while its specialised application lives in hexagonal, CQRS, and DDD. Composable with your own conventions.",
       "version": "0.1.0"
     },
     {
-      "name": "testing-strategy",
+      "name": "jh3ady-testing-strategy",
       "source": "./plugins/testing-strategy",
       "description": "Testing strategy applied pragmatically, the macro view above the inner TDD loop: the portfolio idea, the shapes (the pyramid, the practical test pyramid, the testing trophy, the ice-cream cone anti-pattern), the tiers (unit, integration, contract, end-to-end, acceptance), the size-versus-scope distinction from Software Engineering at Google, consumer-driven contract testing, coverage as a signal rather than a target, and flaky tests, with TypeScript specifics. Composable with your own conventions.",
       "version": "0.1.1"
     },
     {
-      "name": "secure-coding",
+      "name": "jh3ady-secure-coding",
       "source": "./plugins/secure-coding",
       "description": "Secure coding applied pragmatically, prevention first: the secure-by-design mindset (Saltzer and Schroeder), the OWASP Proactive Controls 2024 as the what-to-do-while-coding checklist, the OWASP Top 10:2025 as the risk catalogue to recognise and prevent, ASVS 5.0.0 as the verification standard, and concrete practices for access control, authentication, input handling and injection, cryptography and secrets, configuration, dependencies and the supply chain, exceptional conditions, logging, and SSRF, with TypeScript specifics. Composable with your own conventions.",
       "version": "0.1.1"
     },
     {
-      "name": "markdown-conventions",
+      "name": "jh3ady-markdown-conventions",
       "source": "./plugins/markdown-conventions",
       "description": "Markdown formatting conventions applied pragmatically, deferring to the project: a composable baseline (CommonMark, the markdownlint rule set, Prettier defaults) for how Claude writes markdown, plus a PostToolUse hook that reformats each edited file with the formatter the project already configures (dprint, Prettier, or markdownlint-cli2) and stays inert when none is set. Composable with your own conventions.",
       "version": "0.1.0"
     },
     {
-      "name": "impeccable-paper",
+      "name": "jh3ady-impeccable-paper",
       "source": "./plugins/impeccable-paper",
       "description": "The Impeccable design craft adapted to Paper (paper.design): design-director quality standards, visual-world commitment, critique with heuristic scoring, refinement playbooks, design token extraction, and review-comment workflows, all driven through the Paper MCP server on the canvas instead of code.",
       "version": "0.2.1"
     },
     {
-      "name": "repository-conventions",
+      "name": "jh3ady-repository-conventions",
       "source": "./plugins/repository-conventions",
       "description": "The standard files of a well-kept repository: README structure and tone, license, contributing guide, community health files, and AI agent instruction files (AGENTS.md, CLAUDE.md), following the majority conventions of popular repositories while deferring to maintainer style. Composable with your own conventions.",
       "version": "0.1.1"

@@ -1,5 +1,5 @@
 {
-  "name": "commit-conventions",
+  "name": "jh3ady-commit-conventions",
   "version": "0.1.0",
   "description": "The gitmoji + Conventional Commits standard for commit messages: subject-based scopes, the 50/72 rule, and lower-case-verb casing. Composable with your own conventions.",
   "author": {

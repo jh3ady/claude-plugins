@@ -1,4 +1,4 @@
-# dependency-injection
+# jh3ady-dependency-injection
 
 A Claude Code plugin that helps wire dependencies pragmatically: supply an
 object's collaborators from outside rather than constructing them inside,
@@ -25,7 +25,7 @@ skill applies:
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install dependency-injection@jh3ady-claude-plugins
+/plugin install jh3ady-dependency-injection@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

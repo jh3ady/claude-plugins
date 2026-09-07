@@ -1,4 +1,4 @@
-# markdown-conventions
+# jh3ady-markdown-conventions
 
 A Claude Code plugin for markdown formatting. It has two parts that work
 together and impose nothing the project did not choose:

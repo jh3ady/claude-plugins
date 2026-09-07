@@ -1,4 +1,4 @@
-# solid-principles
+# jh3ady-solid-principles
 
 A Claude Code plugin that applies the five SOLID principles (SRP, OCP,
 LSP, ISP, DIP) to the code you write and review, pragmatically: it
@@ -23,7 +23,7 @@ skill applies:
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install solid-principles@jh3ady-claude-plugins
+/plugin install jh3ady-solid-principles@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

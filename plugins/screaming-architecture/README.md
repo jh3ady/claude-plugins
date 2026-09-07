@@ -1,4 +1,4 @@
-# screaming-architecture
+# jh3ady-screaming-architecture
 
 A Claude Code plugin that helps apply Screaming Architecture pragmatically:
 organise the top-level structure of a codebase so it announces the business
@@ -60,7 +60,7 @@ bundled skill applies:
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install screaming-architecture@jh3ady-claude-plugins
+/plugin install jh3ady-screaming-architecture@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

@@ -1,4 +1,4 @@
-# commit-conventions
+# jh3ady-commit-conventions
 
 A Claude Code plugin that applies the gitmoji + Conventional Commits
 standard to commit messages: subject-based scopes, the Git 50/72 length
@@ -27,7 +27,7 @@ applies:
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install commit-conventions@jh3ady-claude-plugins
+/plugin install jh3ady-commit-conventions@jh3ady-claude-plugins
 ```
 
 For review comments on pull and merge requests, see the companion

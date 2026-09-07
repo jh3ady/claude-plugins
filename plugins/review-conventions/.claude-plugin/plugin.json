@@ -1,5 +1,5 @@
 {
-  "name": "review-conventions",
+  "name": "jh3ady-review-conventions",
   "version": "0.1.0",
   "description": "The Conventional Comments standard for pull and merge request reviews: labelled, decorated, actionable comments. Composable with your own conventions.",
   "author": {

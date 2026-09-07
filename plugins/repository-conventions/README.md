@@ -1,4 +1,4 @@
-# repository-conventions
+# jh3ady-repository-conventions
 
 A Claude Code plugin that applies the majority conventions of popular
 repositories to a project's standard files: README structure and tone,
@@ -35,7 +35,7 @@ twenty of the most-starred GitHub repositories in August 2026.
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install repository-conventions@jh3ady-claude-plugins
+/plugin install jh3ady-repository-conventions@jh3ady-claude-plugins
 ```
 
 For commit messages and review comments, see the companion

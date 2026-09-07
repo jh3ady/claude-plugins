@@ -1,4 +1,4 @@
-# legacy-code
+# jh3ady-legacy-code
 
 A Claude Code plugin that encodes Michael Feathers' *Working Effectively with Legacy Code* in two matched skills: one for the method (how to approach any change in untested code safely) and one for the catalogue (which specific technique to reach for when a dependency blocks testing). Together they resolve the central dilemma of working with legacy code: you need tests to change code safely, but the code resists testing until you change it first.
 
@@ -38,7 +38,7 @@ When you know you face a sensing or separation problem and need to choose a spec
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install legacy-code@jh3ady-claude-plugins
+/plugin install jh3ady-legacy-code@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

@@ -1,5 +1,5 @@
 {
-  "name": "simplicity-principles",
+  "name": "jh3ady-simplicity-principles",
   "version": "0.1.0",
   "description": "The simplicity cluster KISS, DRY, and YAGNI applied pragmatically: do-less heuristics, the rule of three, and the trade-offs such as duplication versus the wrong abstraction. Composable with your own conventions.",
   "author": {

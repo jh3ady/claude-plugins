@@ -1,4 +1,4 @@
-# domain-driven-design
+# jh3ady-domain-driven-design
 
 A Claude Code plugin that helps apply domain-driven design pragmatically: three matched skills that work together, one for discovering the domain collaboratively, one for drawing the large-scale model and establishing boundaries, one for filling in the building blocks inside those boundaries. Apply them where domain complexity justifies the investment, not as a blanket mandate.
 
@@ -47,7 +47,7 @@ Event sourcing is out of scope here and lives in its own `event-sourcing` plugin
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install domain-driven-design@jh3ady-claude-plugins
+/plugin install jh3ady-domain-driven-design@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

@@ -1,4 +1,4 @@
-# object-calisthenics
+# jh3ady-object-calisthenics
 
 A Claude Code plugin that applies Jeff Bay's nine rules of object calisthenics
 to the object-oriented code you write and review, pragmatically. Its value is
@@ -63,7 +63,7 @@ duplicated.
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install object-calisthenics@jh3ady-claude-plugins
+/plugin install jh3ady-object-calisthenics@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

@@ -1,4 +1,4 @@
-# secure-coding
+# jh3ady-secure-coding
 
 A Claude Code plugin that carries the developer-facing discipline of writing
 secure application code: the secure-by-design mindset, the proactive controls
@@ -57,7 +57,7 @@ particular layering, though it composes with them.
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install secure-coding@jh3ady-claude-plugins
+/plugin install jh3ady-secure-coding@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

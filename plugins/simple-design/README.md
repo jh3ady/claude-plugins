@@ -1,4 +1,4 @@
-# simple-design
+# jh3ady-simple-design
 
 A Claude Code plugin that applies Kent Beck's four rules of simple design to
 the code you write and review, pragmatically. Its value is not re-teaching each
@@ -61,7 +61,7 @@ combines them. Nothing is duplicated.
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install simple-design@jh3ady-claude-plugins
+/plugin install jh3ady-simple-design@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

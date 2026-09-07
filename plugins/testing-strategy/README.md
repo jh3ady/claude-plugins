@@ -1,4 +1,4 @@
-# testing-strategy
+# jh3ady-testing-strategy
 
 A Claude Code plugin that helps decide the shape and balance of an automated
 test suite: how many tests of each kind, at which level to test what, and what
@@ -58,7 +58,7 @@ any particular layering, though it composes with them.
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install testing-strategy@jh3ady-claude-plugins
+/plugin install jh3ady-testing-strategy@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

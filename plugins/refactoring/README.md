@@ -1,4 +1,4 @@
-# refactoring
+# jh3ady-refactoring
 
 A Claude Code plugin that encodes Martin Fowler's *Refactoring*, 2nd ed. (with Kent Beck, 2018) in three matched skills: one for the method (the discipline of improving design without changing observable behaviour), one for diagnosing code smells (the 24 patterns from Chapter 3 that signal structural problems), and one for the catalogue of named moves (the complete set of refactorings grouped by the book's seven chapters). Together they cover the full cycle: recognising when to refactor, diagnosing which move to apply, and executing it safely with a test net in place.
 
@@ -50,7 +50,7 @@ When you know which move to apply and need its condensed mechanics or a TypeScri
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install refactoring@jh3ady-claude-plugins
+/plugin install jh3ady-refactoring@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

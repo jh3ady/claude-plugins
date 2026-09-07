@@ -1,4 +1,4 @@
-# impeccable-paper
+# jh3ady-impeccable-paper
 
 A Claude Code plugin that adapts the Impeccable design craft to Paper
 (paper.design): design-director quality standards, visual-world commitment,
@@ -61,7 +61,7 @@ recommended handoff for turning finished frames into production code).
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install impeccable-paper@jh3ady-claude-plugins
+/plugin install jh3ady-impeccable-paper@jh3ady-claude-plugins
 ```
 
 ## Relationship to Impeccable

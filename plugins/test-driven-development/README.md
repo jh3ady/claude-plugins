@@ -1,4 +1,4 @@
-# test-driven-development
+# jh3ady-test-driven-development
 
 A Claude Code plugin that helps apply test-driven development (TDD)
 pragmatically, in the classical (Detroit, also called Chicago or classicist)
@@ -59,7 +59,7 @@ particular layering, though it composes with them.
 
 This plugin shares its name with the `test-driven-development` skill from the
 `superpowers` collection. The two are addressed under distinct plugin
-namespaces (`test-driven-development:test-driven-development` versus
+namespaces (`jh3ady-test-driven-development:test-driven-development` versus
 `superpowers:test-driven-development`), so both can be installed without one
 clobbering the other. This one is the classical (Detroit), state-verifying take
 and is the authoritative one for this collection; its description is written to
@@ -69,7 +69,7 @@ trigger on the specific situations above.
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install test-driven-development@jh3ady-claude-plugins
+/plugin install jh3ady-test-driven-development@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

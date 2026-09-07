@@ -1,4 +1,4 @@
-# hexagonal-architecture
+# jh3ady-hexagonal-architecture
 
 A Claude Code plugin that helps apply hexagonal architecture (ports and
 adapters) pragmatically: an application core isolated from its infrastructure,
@@ -30,7 +30,7 @@ skill applies:
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install hexagonal-architecture@jh3ady-claude-plugins
+/plugin install jh3ady-hexagonal-architecture@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

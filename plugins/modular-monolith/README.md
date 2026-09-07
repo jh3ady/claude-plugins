@@ -1,4 +1,4 @@
-# modular-monolith
+# jh3ady-modular-monolith
 
 A Claude Code plugin that helps structure an application as a modular
 monolith, pragmatically: one deployable unit, modules with strictly
@@ -24,7 +24,7 @@ boundaries, or deployment topology, the bundled skill applies:
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install modular-monolith@jh3ady-claude-plugins
+/plugin install jh3ady-modular-monolith@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

@@ -1,4 +1,4 @@
-# simplicity-principles
+# jh3ady-simplicity-principles
 
 A Claude Code plugin that applies the simplicity cluster, KISS, DRY, and
 YAGNI, to the code you write and review, pragmatically: it favors the
@@ -22,7 +22,7 @@ skill applies:
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install simplicity-principles@jh3ady-claude-plugins
+/plugin install jh3ady-simplicity-principles@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

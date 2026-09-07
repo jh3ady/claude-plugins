@@ -1,4 +1,4 @@
-# cqrs
+# jh3ady-cqrs
 
 A Claude Code plugin that helps apply Command Query Responsibility Segregation
 (CQRS) pragmatically: separate the model that handles commands (writes) from
@@ -53,7 +53,7 @@ review a system that splits reads from writes, the bundled skill applies:
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install cqrs@jh3ady-claude-plugins
+/plugin install jh3ady-cqrs@jh3ady-claude-plugins
 ```
 
 ## Adapt to your context

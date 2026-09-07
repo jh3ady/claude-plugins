@@ -1,4 +1,4 @@
-# review-conventions
+# jh3ady-review-conventions
 
 A Claude Code plugin that applies the
 [Conventional Comments](https://conventionalcomments.org/) standard to code
@@ -21,7 +21,7 @@ applies the format `<label> [decorations]: <subject>`, with:
 
 ```bash
 /plugin marketplace add jh3ady/claude-plugins
-/plugin install review-conventions@jh3ady-claude-plugins
+/plugin install jh3ady-review-conventions@jh3ady-claude-plugins
 ```
 
 For commit messages, see the companion `commit-conventions` plugin.

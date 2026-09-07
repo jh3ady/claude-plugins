@@ -1,5 +1,5 @@
 {
-  "name": "dependency-injection",
+  "name": "jh3ady-dependency-injection",
   "version": "0.1.1",
   "description": "Dependency injection applied pragmatically: Pure DI (manual constructor injection) first, the composition root, object lifetimes, and the anti-pattern catalogue, with DI containers referenced as a justified option. Composable with your own conventions.",
   "author": {

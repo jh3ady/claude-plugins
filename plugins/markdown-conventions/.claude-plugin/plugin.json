@@ -1,5 +1,5 @@
 {
-  "name": "markdown-conventions",
+  "name": "jh3ady-markdown-conventions",
   "version": "0.1.0",
   "description": "Markdown formatting conventions applied pragmatically, deferring to the project: a composable baseline (CommonMark, the markdownlint rule set, Prettier defaults) for how Claude writes markdown, plus a PostToolUse hook that reformats each edited file with the formatter the project already configures (dprint, Prettier, or markdownlint-cli2) and stays inert when none is set. Composable with your own conventions.",
   "author": {
