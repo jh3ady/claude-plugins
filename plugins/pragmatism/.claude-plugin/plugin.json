@@ -1,0 +1,21 @@
+{
+  "name": "jh3ady-pragmatism",
+  "version": "0.1.0",
+  "description": "Pragmatism as the arbiter above every other principle: size the design, architecture, abstraction, process, and technology of a piece of work to its expected lifespan, scale, and reversibility; count the cost of build, carry, delay, and repair; prefer boring, known-failure-mode technology; treat quality as a requirement negotiated with users rather than a developer's private ideal; and never mistake pragmatism for sloppiness (broken windows, tactical tornado). Drawn from The Pragmatic Programmer, A Philosophy of Software Design, Software Engineering at Google, Tidy First?, Choose Boring Technology, and Worse is Better. Defines what every sibling plugin means by 'applied pragmatically'. Composable with your own conventions.",
+  "author": {
+    "name": "Jean-Denis VIDOT",
+    "url": "https://github.com/jh3ady"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/jh3ady/claude-plugins/tree/main/plugins/pragmatism",
+  "keywords": [
+    "pragmatism",
+    "pragmatic-programmer",
+    "good-enough-software",
+    "trade-offs",
+    "reversibility",
+    "boring-technology",
+    "over-engineering",
+    "software-craftsmanship"
+  ]
+}
