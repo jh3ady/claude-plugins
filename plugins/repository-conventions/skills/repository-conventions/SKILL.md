@@ -25,7 +25,7 @@ reflects what the majority of popular repositories converge on, and the maintain
 | `FUNDING.yml`             | `.github/`                         | Only for donation-funded projects                            |
 | `CODEOWNERS`              | `.github/`                         | Review routing; optional                                     |
 | `CHANGELOG.md`            | root                               | Optional; releases or a docs site are the common alternative |
-| `AGENTS.md` / `CLAUDE.md` | root                               | One canonical file, the others symlink to it                 |
+| `AGENTS.md` / `CLAUDE.md` | root                               | `AGENTS.md` canonical, `CLAUDE.md` imports it                |
 
 Not every repository needs every file. Match the set to the project's size and audience: a small private repository is
 well served by a README, a license, and an agent instruction file; templates, security policy, and code of conduct earn
@@ -82,10 +82,15 @@ repository, so a file's absence from one repository is not always a gap.
 
 ## AI agent instruction files
 
-Maintain exactly one canonical instruction file and make the other names symlinks to it, so the copies cannot drift
-apart over time. `AGENTS.md`
-is the cross-tool standard name; a project already centered on one tool may keep that tool's name canonical and symlink
-the rest.
+Maintain exactly one canonical instruction file, so the copies cannot drift apart over time. `AGENTS.md` is the
+cross-tool standard name and the default canonical file. Point the other names at it instead of copying it:
+
+- `CLAUDE.md`: Claude Code reads `CLAUDE.md`, not `AGENTS.md`. Make `CLAUDE.md` a file containing `@AGENTS.md`; Claude
+  Code expands the import at session start, and Claude-specific instructions can follow the import. Prefer the import
+  over a symlink: creating a symlink on Windows requires Administrator privileges or Developer Mode.
+- Other tools that read only their own filename: use the tool's import mechanism when it has one, otherwise a symlink.
+
+A project already centered on one tool may keep that tool's name canonical and point the rest at it.
 
 Effective content, in order of value: build and test commands with the project's traps and gotchas, a directory map,
 rules about generated files, commit and pull request conventions, and pointers to deeper documents rather than inlined

@@ -23,8 +23,8 @@ file, the bundled skill applies:
   pointer file.
 - The `.github/` conventions: YAML issue forms with a routing
   `config.yml`, pull request template, SECURITY.md, FUNDING.yml.
-- One canonical AI agent instruction file (AGENTS.md or CLAUDE.md) with
-  the other names as symlinks, never divergent copies.
+- One canonical AI agent instruction file (AGENTS.md by default), with
+  CLAUDE.md importing it through `@AGENTS.md`, never divergent copies.
 
 The skill ships a reference file with the survey behind the baseline:
 adoption rates, file locations, tone registers, and notable outliers

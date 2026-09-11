@@ -184,6 +184,11 @@ to AGENTS.md; bun and pytorch symlink AGENTS.md to CLAUDE.md; vscode points AGEN
 surveyed project maintains divergent content per tool. AGENTS.md is the cross-tool standard name (an open standard since
 2025, stewarded under the Linux Foundation, read by most coding agents).
 
+Claude Code is the notable exception: it reads CLAUDE.md, not AGENTS.md. Its documentation (September 2026) recommends a
+CLAUDE.md that imports the canonical file with `@AGENTS.md`, and accepts a symlink as an alternative. The import is the
+portable choice: creating a symlink on Windows requires Administrator privileges or Developer Mode, and the import
+leaves room for Claude-specific instructions below it.
+
 Sizes cluster in two bands: minimal pointers (roughly 300 bytes to 1.5 KB) and comprehensive guides (8 to 25 KB, roughly
 100 to 500 lines).
 
