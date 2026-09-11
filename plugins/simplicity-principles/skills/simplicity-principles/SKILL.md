@@ -47,6 +47,10 @@ not adding to that complexity through accidental cleverness.
   declining to build for a speculative future need). This skill owns those
   rules' depth; `simple-design` owns how the four combine in priority order as
   the yardstick of the refactor step.
+- **`pragmatism`**: decides whether a design deserves the effort at all,
+  from expected lifespan, scale, reversibility, and the cost of carry. This
+  skill then decides how lean the design is inside. "Applied pragmatically"
+  throughout this skill means what `pragmatism` defines.
 
 ## Adapt to your context
 

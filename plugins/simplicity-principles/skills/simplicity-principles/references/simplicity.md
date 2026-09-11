@@ -274,3 +274,8 @@ resist the most common sources of premature complexity.
 
 Over-application is as harmful as ignoring the principles. Match the level of
 sophistication to the actual need.
+
+How to size that need (expected lifespan and scale, the reversibility of the
+decision, the four costs of a presumptive feature, the design payoff line) is
+owned by the `pragmatism` plugin; this section only states that the three
+principles are subject to it.
