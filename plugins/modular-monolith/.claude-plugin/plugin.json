@@ -1,6 +1,6 @@
 {
   "name": "jh3ady-modular-monolith",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "The modular monolith applied pragmatically: one deployable unit, strictly bounded modules with public APIs, isolated data, and TypeScript-ecosystem boundary enforcement. Composable with your own conventions.",
   "author": {
     "name": "Jean-Denis VIDOT",
