@@ -92,7 +92,8 @@ inseparable element of modularity." (Grzybek, Primer)
 
 export type { PaymentsApi } from "./payments-api";  // the public API (provided interface)
 export type { ChargeRequest, ChargeResult } from "./types";
-export { createPaymentsApi } from "./payments-api"; // builds the in-process implementation
+export type { PaymentsModuleDependencies } from "./payments-module"; // what the module needs
+export { createPaymentsModule } from "./payments-module"; // assembles the module
 
 // Everything else is internal (NOT re-exported):
 // ./handlers/stripe-handler.ts
@@ -111,21 +112,44 @@ export interface PaymentsApi {
   charge(request: ChargeRequest): Promise<ChargeResult>;
 }
 
-// The implementation stays internal; StripeHandler never leaks past the barrel.
-class PaymentsService implements PaymentsApi {
+// Exported for payments-module.ts only: the barrel does not re-export it.
+export class PaymentsService implements PaymentsApi {
   constructor(private readonly handler: StripeHandler) {}
 
   async charge(request: ChargeRequest): Promise<ChargeResult> {
     return this.handler.processCharge(request);
   }
 }
+```
 
-export const createPaymentsApi = (handler: StripeHandler): PaymentsApi =>
-  new PaymentsService(handler);
+```typescript
+// payments/payments-module.ts  - the assembly function the host calls
+
+import { PaymentsApi, PaymentsService } from "./payments-api";
+import { StripeHandler } from "./handlers/stripe-handler";
+
+// Only what lies outside the module: typed configuration, shared resources,
+// other modules' public APIs. Never one of the module's own internal classes.
+export interface PaymentsModuleDependencies {
+  stripe: { secretKey: string };
+}
+
+export const createPaymentsModule = (
+  dependencies: PaymentsModuleDependencies,
+): { api: PaymentsApi } => {
+  // Internals are built here, inside the boundary, never by the caller.
+  const handler = new StripeHandler(dependencies.stripe.secretKey);
+  return { api: new PaymentsService(handler) };
+};
 ```
 
 Consumers depend on the `PaymentsApi` interface from `"@myapp/payments"` (the
-barrel), never on `"@myapp/payments/handlers/stripe-handler"`.
+barrel), never on `"@myapp/payments/handlers/stripe-handler"`. The assembly
+function follows the same rule: it asks only for what lies outside the module
+and builds every internal itself. A factory that takes an internal class as a
+parameter forces its caller to reach past the barrel, which defeats the
+boundary it was meant to expose. Configuration arrives typed; the module never
+reads the environment (see section 3).
 
 ### When not to apply
 
@@ -207,7 +231,7 @@ import { startHttpServer } from "./http-server";
 const configuration = loadConfiguration(process.env);
 const database = createDatabasePool(configuration.database);
 
-const payments = createPaymentsModule({ database, stripe: configuration.stripe });
+const payments = createPaymentsModule({ stripe: configuration.stripe });
 // The dependency between modules is explicit here: orders receives the
 // payments public API and never reaches into payments.
 const orders = createOrdersModule({ database, payments: payments.api });
@@ -665,9 +689,12 @@ export class HttpPaymentsApi implements PaymentsApi {
   }
 }
 
-// Swap the in-process implementation for the HTTP one where the module is wired
-// up at application startup; OrdersService is untouched:
-// new OrdersService(new HttpPaymentsApi(process.env.PAYMENTS_SERVICE_URL))
+// Swap the in-process implementation for the HTTP one in the host (section 3);
+// the orders module, OrdersService included, is untouched:
+// const orders = createOrdersModule({
+//   database,
+//   payments: new HttpPaymentsApi(configuration.payments.serviceUrl),
+// });
 ```
 
 The in-process payments implementation is removed from the monolith only after
