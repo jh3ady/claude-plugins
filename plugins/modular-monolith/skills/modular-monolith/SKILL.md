@@ -24,6 +24,28 @@ Apply it as a pragmatic default, not a dogma.
   separate database is stronger; table ownership by convention is the legacy
   fallback). The invariant is logical ownership, not the storage mechanism.
 
+## The host
+
+The host is the entry point that starts the process and assembles the modules.
+It owns no business capability: treat it as one more consumer of the modules'
+public APIs, never as a module that knows the others.
+
+- **It holds** process concerns only: startup and shutdown, configuration read
+  and validated once, shared technical resources (connection pool, logger,
+  clock), transport-wide concerns (authentication, request context, mapping
+  errors to the protocol), and the assembly of each module through its public
+  API.
+- **It never holds** a business rule, a use case, persistence, or the
+  orchestration of writes across modules: a process that spans modules belongs
+  to a module. The host establishes who is calling; whether that caller may act
+  on a given resource is a rule of the owning module.
+- **Direction**: the host depends on modules, modules never depend on the host.
+  Replacing the host (a CLI, a test harness) must not lose a single business
+  rule.
+- **Wiring**: the composition root that assembles the object graph is covered
+  by the `dependency-injection` skill, and the ports it injects by the
+  `hexagonal-architecture` skill.
+
 ## Enforcement (TypeScript/Node)
 
 TypeScript has no cross-file `internal`, so boundaries are tooling-enforced,
@@ -69,6 +91,6 @@ This skill does not impose them.
 
 ## Reference
 
-For the full taxonomy, boundary and enforcement examples in TypeScript, the
-communication and data-isolation rules, trade-offs, extraction path, and
+For the full taxonomy, boundary, host, and enforcement examples in TypeScript,
+the communication and data-isolation rules, trade-offs, extraction path, and
 anti-patterns, all with sources, read `references/modular-monolith.md`.

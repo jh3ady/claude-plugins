@@ -15,6 +15,8 @@ boundaries, or deployment topology, the bundled skill applies:
 
 - The three invariants: public-API boundaries, deliberate inter-module
   communication, and per-module data isolation.
+- The role of the host: the entry point assembles modules through their
+  public APIs and owns no business capability.
 - Boundary enforcement in the TypeScript/Node ecosystem.
 - The pragmatic rule: coarse modules first, let a module earn its
   independence, and match per-module sophistication to the actual need.

@@ -1,17 +1,19 @@
 # Modular monolith reference
 
 The detailed reference behind the skill: canonical definitions, boundary design
-rules, enforcement techniques, communication patterns, data isolation rules,
-trade-off analysis, extraction guidance, and anti-pattern catalogue.
+rules, the role of the host, enforcement techniques, communication patterns,
+data isolation rules, trade-off analysis, extraction guidance, and anti-pattern
+catalogue.
 
 Standards and sources:
 - Kamil Grzybek, [Modular Monolith: A Primer](https://www.kamilgrzybek.com/blog/posts/modular-monolith-primer): canonical definition and design principles.
+- Kamil Grzybek, [modular-monolith-with-ddd](https://github.com/kgrzybek/modular-monolith-with-ddd): reference implementation with a thin API host.
 - Sam Newman, *Monolith to Microservices*, O'Reilly 2019; [QCon London 2020 talk](https://www.infoq.com/news/2020/05/monolith-decomposition-newman/): taxonomy and extraction strategies.
 - Simon Brown, [QCon London, March 2015](https://simonbrown.je/modular-monolith/): the "well-structured monolith" challenge.
 - Martin Fowler, [Microservice Trade-Offs](https://martinfowler.com/articles/microservice-trade-offs.html) and [MicroservicePremium](https://martinfowler.com/bliki/MicroservicePremium.html): cost-benefit framing.
 - Martin Fowler, [MonolithFirst](https://martinfowler.com/bliki/MonolithFirst.html): the monolith-first argument.
 - Shopify Engineering, [Deconstructing the Monolith](https://shopify.engineering/deconstructing-monolith-designing-software-maximizes-developer-productivity) (2019).
-- Spring Modulith, [Fundamentals](https://docs.spring.io/spring-modulith/reference/fundamentals.html): module vocabulary.
+- Spring Modulith, [Fundamentals](https://docs.spring.io/spring-modulith/reference/fundamentals.html): module vocabulary and the main package as host.
 - Milan Jovanovic, [The Modular Monolith Boundary I Couldn't Take Back](https://www.milanjovanovic.tech/blog/the-modular-monolith-boundary-i-couldnt-take-back): communication guardrail.
 - Brian Foote and Joseph Yoder, [Big Ball of Mud](https://www.laputan.org/mud/), PLoP 1997.
 - Nx, [enforce-module-boundaries](https://nx.dev/docs/features/enforce-module-boundaries); dependency-cruiser, [rules reference](https://github.com/sverweij/dependency-cruiser/blob/main/doc/rules-reference.md); pnpm, [workspaces](https://pnpm.io/workspaces).
@@ -134,7 +136,123 @@ decomposition that scatters a single concern across three places.
 
 ---
 
-## 3. Enforcement in TypeScript / Node
+## 3. The host
+
+The host is the application entry point: the code that starts the process and
+assembles the modules into one running system. Spring Modulith makes it
+structural: "The application's main package is the one that the main
+application class resides in", and "each direct sub-package of the main package
+is considered an application module package."
+([Spring Modulith Fundamentals](https://docs.spring.io/spring-modulith/reference/fundamentals.html))
+Grzybek's reference implementation describes its host as a "Very thin ASP.NET
+MVC Core REST API application", states that the "API contains no application
+logic", and that the "API as a host needs to initialize each module and each
+module has an initialization method."
+([modular-monolith-with-ddd](https://github.com/kgrzybek/modular-monolith-with-ddd))
+
+The host owns no business capability. It is one more consumer of the modules'
+public APIs, bound by the same boundary rule as any module, never a module that
+knows the others.
+
+What belongs in the host:
+
+- **Process lifecycle**: startup, graceful shutdown, health checks.
+- **Configuration**: read from the environment and validated once, at startup,
+  then handed to each module as typed values. A module never reads the
+  environment itself.
+- **Shared technical resources**: the connection pool, the logger, the clock,
+  the in-process event bus implementation. Each module still owns its schema,
+  its migrations, and its transactions; the host only triggers the migrations
+  each module owns.
+- **Transport-wide concerns**: authentication, request context (correlation
+  identifier, tenant), mapping application errors to the protocol (HTTP status
+  codes, message acknowledgements), observability.
+- **Assembly**: each module is created through its public API, and a module
+  receives the public APIs of the modules it depends on from the host. The
+  dependencies between modules become explicit in one place.
+
+What never belongs in the host:
+
+- A business rule or a use case.
+- Persistence: no repository, no query against a module's tables.
+- Orchestration of writes across modules. A process that spans modules belongs
+  to a module, a dedicated process manager when it coordinates several.
+- Resource-level authorization. The host establishes who is calling and may
+  gate a request on a coarse permission (Grzybek checks permissions at the
+  controller level); whether this caller may act on this resource is a rule of
+  the owning module.
+
+The dependency direction is fixed: the host depends on modules, modules never
+depend on the host. A practical test: replace the host with another one (a CLI,
+a worker, a test harness); not a single business rule may be lost.
+
+How the object graph is wired at startup is the composition root, covered by
+the `dependency-injection` skill; the ports it injects into a module are the
+`hexagonal-architecture` skill's concern. This section only fixes what the host
+is allowed to hold.
+
+### TypeScript example: a thin host and its enforcement
+
+```typescript
+// src/host/main.ts - the host: starts the process and assembles the modules.
+// It reaches each module through its public index.ts and holds no business rule.
+
+import { createOrdersModule } from "@myapp/orders";
+import { createPaymentsModule } from "@myapp/payments";
+import { loadConfiguration } from "./configuration";
+import { createDatabasePool } from "./database";
+import { startHttpServer } from "./http-server";
+
+// Fails fast at startup when a variable is missing or invalid.
+const configuration = loadConfiguration(process.env);
+const database = createDatabasePool(configuration.database);
+
+const payments = createPaymentsModule({ database, stripe: configuration.stripe });
+// The dependency between modules is explicit here: orders receives the
+// payments public API and never reaches into payments.
+const orders = createOrdersModule({ database, payments: payments.api });
+
+startHttpServer(configuration.http, [payments, orders]);
+```
+
+```javascript
+// .dependency-cruiser.cjs - keep the host outside the modules
+module.exports = {
+  forbidden: [
+    {
+      name: "no-module-to-host",
+      severity: "error",
+      comment: "Modules never depend on the host; the host depends on modules.",
+      from: { path: "^src/modules/" },
+      to: { path: "^src/host/" },
+    },
+    {
+      name: "host-through-public-api-only",
+      severity: "error",
+      comment: "The host reaches a module only through its public index.ts.",
+      from: { path: "^src/host/" },
+      to: {
+        path: "^src/modules/",
+        pathNot: ["^src/modules/[^/]+/index\\.ts$"],
+      },
+    },
+  ],
+};
+```
+
+### When not to apply
+
+A small application with a single module does not need a dedicated host
+directory: its `main.ts` is the host. Thin means no business rule, not no code:
+configuration validation, error mapping, and observability carry real weight
+and stay in the host rather than being pushed into every module. Composing reads
+from several modules for one screen (a backend-for-frontend endpoint) is a
+legitimate host job as long as it only aggregates and maps, applying no business
+rule.
+
+---
+
+## 4. Enforcement in TypeScript / Node
 
 TypeScript has no cross-file `internal` or package-private keyword.
 `private`, `protected`, and `public` are class-member modifiers only.
@@ -228,7 +346,7 @@ barrel `index.ts` convention is usually enough.
 
 ---
 
-## 4. Inter-module communication
+## 5. Inter-module communication
 
 The default is a direct synchronous call to another module's public API.
 This is explicit, type-safe, easy to trace, and requires no infrastructure.
@@ -303,7 +421,7 @@ without a saga or an outbox pattern, which adds substantial complexity.
 
 ---
 
-## 5. Data isolation
+## 6. Data isolation
 
 The invariant is logical data ownership, not any single storage mechanism.
 Each module owns its data: no other module reads or writes it except through
@@ -418,7 +536,7 @@ module owns each piece of data, and others reach it through its public API.
 
 ---
 
-## 6. Trade-offs and when to use
+## 7. Trade-offs and when to use
 
 ### What a modular monolith keeps
 
@@ -487,7 +605,7 @@ organizational capability, not to a principle applied blindly.
 
 ---
 
-## 7. Extraction to microservice
+## 8. Extraction to microservice
 
 A well-designed modular monolith with isolated data is the best starting point
 for extraction. Well-bounded modules with schema-per-module isolation are
@@ -564,7 +682,7 @@ monolith before crossing the network boundary.
 
 ---
 
-## 8. Anti-patterns
+## 9. Anti-patterns
 
 ### Shared database tables across modules
 
@@ -610,6 +728,17 @@ Exporting internal types, entities, or implementation details from the barrel
 `index.ts` erodes the boundary. If a consumer needs an internal type, the
 public API is incomplete: extend the provided interface rather than leaking the
 internal.
+
+### God host
+
+The host gradually takes over what modules should own: it calls use cases of
+several modules in sequence and applies rules between the calls, queries module
+tables directly for a dashboard, or exposes services that modules import back.
+It becomes an unbounded module that knows every other module, and the
+dependency direction inverts the moment a module imports from it. The fix: move
+each rule to the module that owns it, give a cross-module process to a module,
+and move technical code that modules share out of the host into its own
+package.
 
 ### TypeScript example: layer-organized modules (anti-pattern) vs domain-organized modules (correct)
 
