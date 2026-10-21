@@ -803,15 +803,25 @@ class OrderService {
 ```
 
 ```typescript
-// Composition root: module registration fragments wired together.
-// Each module returns its own slice; the root assembles the graph.
+// Registration fragment: the orders module wires its own slice of the graph.
+// It receives external resources and typed configuration; it never reads the
+// environment itself.
 
-function wireOrdersModule(db: DatabaseConnection): OrderController {
+function wireOrdersModule(
+  db: DatabaseConnection,
+  configuration: { stripeKey: string },
+): OrderController {
   const orderRepository = new SqlOrderRepository(db);
-  const paymentGateway = new StripePaymentGateway(process.env.STRIPE_KEY!);
+  const paymentGateway = new StripePaymentGateway(configuration.stripeKey);
   const orderService = new OrderService(orderRepository, paymentGateway);
   return new OrderController(orderService);
 }
+
+// Composition root (main.ts): the environment is read and validated once,
+// then each module's fragment is called with what it needs.
+const configuration = loadConfiguration(process.env);
+const db = createDatabaseConnection(configuration.database);
+const orderController = wireOrdersModule(db, configuration.orders);
 ```
 
 ### When not to apply
