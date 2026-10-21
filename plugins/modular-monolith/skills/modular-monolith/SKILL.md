@@ -16,8 +16,11 @@ Apply it as a pragmatic default, not a dogma.
   and unreachable from other modules. Define modules by business capability
   (vertical slice), not by technical layer.
 - **Communication**: call another module's public API directly by default.
-  Reach for an in-process event only when you deliberately want decoupling or
-  eventual consistency. Never reach into another module's internals.
+  From a hexagonal module, start that call in a driven adapter behind a port
+  the caller owns, not in its core, unless adopting the called module's model
+  is a deliberate choice. Reach for an in-process event only when you
+  deliberately want decoupling or eventual consistency. Never reach into
+  another module's internals.
 - **Data**: each module owns its data; no other module reads or writes it
   except through that module's public API. No cross-module foreign keys,
   joins, or transactions. Schema-per-module is the canonical enforcement (a

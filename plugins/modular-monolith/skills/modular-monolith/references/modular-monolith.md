@@ -390,6 +390,23 @@ layer is a reasonable addition on a synchronous boundary when the calling
 module should not mirror the domain concepts of the called module; for its full treatment as a Domain-Driven Design context-mapping pattern, see the `ddd-strategic-design` skill.
 ([Grzybek, Integration Styles](https://www.kamilgrzybek.com/blog/posts/modular-monolith-integration-styles))
 
+**Inside a hexagonal module.** "Direct call" fixes the mechanism, a synchronous
+in-process call, not the layer the call starts from. When the calling module is
+structured as ports and adapters, the other module is a secondary actor like a
+database or an external service: the caller's core declares a secondary port in
+its own terms, a driven adapter in the caller's infrastructure implements it by
+calling the other module's public API, and the host hands that public API to
+the caller's assembly function (section 3). The core never imports a contract
+it does not own, and the adapter is where translation happens; when the two
+models diverge substantially, that adapter grows into the anti-corruption layer
+above. The port earns its place on the in-memory double alone. Depending on the
+other module's public API straight from the core remains legitimate when it is
+deliberate: a conformist relationship in Domain-Driven Design terms, where the
+caller adopts the called module's model instead of translating it, worth it
+when translation would only rename fields. Decide it per dependency, not by
+default. A module without a hexagonal core (a CRUD module) simply depends on the
+public API, as in Option A below.
+
 **Contested axis.** Grzybek's reference implementation mandates async events
 between modules. Jovanovic's experience recommends direct calls as the default.
 Both camps agree the choice must be deliberate. Present both, choose with intent.
@@ -410,9 +427,48 @@ export class OrderService {
       amount: order.totalCents,
       customerId: order.customerId,
     });
-    // handle result synchronously in the same transaction
+    // React to the result synchronously. The charge commits in the payments
+    // module's own transaction, never in orders' (section 6).
   }
 }
+```
+
+```typescript
+// OPTION A inside a hexagonal module: the same direct call, started from a
+// driven adapter behind a port the orders core owns.
+
+// orders/application/payment-gateway.ts - the secondary port, in orders' terms.
+import { Order } from "../domain/order";
+
+export type PaymentOutcome = "accepted" | "declined";
+
+export interface PaymentGateway {
+  chargeFor(order: Order): Promise<PaymentOutcome>;
+}
+```
+
+```typescript
+// orders/infrastructure/payments-module-gateway.ts - the driven adapter, the
+// only file in orders that knows the payments contract.
+
+import type { PaymentsApi } from "@myapp/payments";
+import { PaymentGateway, PaymentOutcome } from "../application/payment-gateway";
+import { Order } from "../domain/order";
+
+export class PaymentsModuleGateway implements PaymentGateway {
+  constructor(private readonly paymentsApi: PaymentsApi) {}
+
+  async chargeFor(order: Order): Promise<PaymentOutcome> {
+    const result = await this.paymentsApi.charge({
+      amount: order.totalCents,
+      customerId: order.customerId,
+    });
+    return result.succeeded ? "accepted" : "declined";
+  }
+}
+
+// createOrdersModule (section 3) wraps the payments public API it receives
+// from the host: new PlaceOrder(new PaymentsModuleGateway(dependencies.payments))
 ```
 
 ```typescript
