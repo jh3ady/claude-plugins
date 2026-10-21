@@ -105,8 +105,9 @@ server side request forgery was absorbed into **Broken Access Control** at A01.
 - **Cause**: authorization missing, applied only in the user interface, or keyed
   on client-supplied data.
 - **Prevent**: enforce on the server, deny by default, check object ownership
-  (not just that the caller is logged in), and centralise the decision. Control
-  C1.
+  (not just that the caller is logged in), and centralise the decision in the
+  use case every entry point goes through, not in a single route handler.
+  Control C1.
 - **TypeScript**: never trust an `id` or `role` from the request body; look up
   the resource and confirm the authenticated subject owns or may act on it.
 
@@ -454,16 +455,25 @@ the validated environment at the composition root, never from the code (A04).
 The dependency on `products` and `orders` is a boundary that a threat model would
 examine for A06.
 
+The walkthrough keeps every control in one handler so each is easy to follow.
+In a layered or hexagonal application, the handler keeps authentication and
+input validation (the `requireAuth` gate and step 1), while the object-level
+check and the persistence (steps 2 and 3) move into the use case it calls,
+which receives `userId` as input. The ownership check then runs on every entry
+point (this route, a CLI, a message consumer), not only on this one.
+
 ## Trade-offs and cross-references
 
 - **Rigour follows risk.** ASVS L3 and a full threat model fit a payment
   service; an internal read-only tool needs neither. Over-applying controls has a
   cost (complexity, friction) that the psychological-acceptability principle warns
   against: if the secure path is too painful, people route around it.
-- **`hexagonal-architecture`**: the ports and adapters are the trust boundaries.
-  Validation, authentication, and authorization belong where an adapter admits
-  untrusted data into the core. That skill owns the boundary; this one places the
-  control on it.
+- **`hexagonal-architecture`**: the driving adapters are the trust boundaries.
+  Authentication, input validation, and coarse permission gates belong where an
+  adapter admits untrusted data into the core. Object-level authorization
+  belongs in the core (the use case or a domain policy), which receives the
+  authenticated subject as input, so no entry point can bypass it. That skill
+  owns the boundary; this one places the controls on it.
 - **`clean-code`**: owns disciplined error handling in general; this skill owns
   its security dimension (A10) and the rule that errors never leak detail.
 - **`testing-strategy`** and **`test-driven-development`**: abuse-case and

@@ -142,10 +142,12 @@ reference maps the levels and the practices.
 
 ## Relationship to other skills
 
-- **`hexagonal-architecture`**: the ports and adapters are the trust boundaries.
-  Input validation, authentication, and authorization belong exactly where
-  untrusted data crosses an adapter into the core. That skill owns the boundary
-  structure; this one places the controls on it.
+- **`hexagonal-architecture`**: the driving adapters are the trust boundaries.
+  Authentication, input validation, and coarse permission gates belong where
+  untrusted data crosses an adapter into the core. Object-level authorization
+  belongs in the core (the use case or a domain policy), which receives the
+  authenticated subject as input, so no entry point can bypass it. That skill
+  owns the boundary structure; this one places the controls on it.
 - **`clean-code`**: owns disciplined error handling in general. This skill owns
   its security dimension: the mishandling of exceptional conditions (A10) and
   never leaking sensitive detail through an error.
