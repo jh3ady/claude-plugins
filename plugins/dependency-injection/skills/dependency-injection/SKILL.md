@@ -59,7 +59,9 @@ Prefer the simplest wiring that meets the need:
 - **Hexagonal / ports and adapters**: DI is the wiring that injects adapters at
   the composition root, not the architecture itself.
 - **Modular monolith**: one composition root per application; each module
-  exposes a registration fragment, not its own root.
+  exposes a registration fragment, not its own root. A container per module, as
+  in Grzybek's .NET reference, answers a .NET-specific constraint at the cost of
+  a static service locator; outside .NET, prefer the fragment.
 - **Design patterns**: a Strategy is most often wired through constructor
   injection, and a single shared instance is better expressed as a singleton
   lifetime here than as the Gang of Four Singleton pattern. See

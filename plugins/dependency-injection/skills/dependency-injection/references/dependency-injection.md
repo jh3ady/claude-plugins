@@ -726,6 +726,32 @@ the single place where the graph is assembled.
 ([Seemann, 2015](https://blog.ploeh.dk/2015/01/06/composition-root-reuse/))
 See also the `modular-monolith` reference for boundary design and data isolation.
 
+**Alternative: one container per module.** Grzybek's reference implementation
+states that "Each Module has its own Composition Root, which implies that each
+Module has its own Inversion-of-Control container." The host calls each
+module's `Initialize` method with the shared resources (connection string,
+logger, event bus); the module keeps its container in an internal static field,
+and its facade opens a scope and resolves its mediator from that container on
+every command and query.
+([modular-monolith-with-ddd](https://github.com/kgrzybek/modular-monolith-with-ddd))
+
+It answers a .NET constraint. ASP.NET Core ships one application-wide container
+in which anything registered can be resolved by anyone, and MediatR resolves
+handlers by type, so a single container would let one module dispatch another
+module's internal commands. Separate containers restore at runtime the
+isolation that `internal` and one assembly per module already give at compile
+time. The cost is a static container and a service locator inside each module,
+and every resource that must stay unique (the event bus, the clock) has to be
+passed by hand to every module, or each container builds its own.
+
+Outside .NET the same isolation comes cheaper. In Pure DI, a module's
+registration function keeps its internals in local scope, unreachable from
+outside. NestJS encapsulates a module's providers unless the module exports
+them, inside one application. Spring Modulith keeps a single application
+context and verifies module boundaries instead. Treat the container per module
+as a deliberate answer to the .NET ecosystem's constraint, not as a default to
+reproduce elsewhere.
+
 ### Strategy pattern
 
 Injecting a strategy (GoF) is one form of DI: the strategy is a collaborator
