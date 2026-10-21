@@ -46,9 +46,14 @@ A driving adapter calls a port; a driven adapter implements a port. Keep the
 distinction straight and the dependency direction follows automatically.
 
 The driving adapter is also the trust boundary: it is where untrusted input
-enters, so input validation, authentication, and authorization belong on it
-before the call reaches a port. Placing those controls is covered by the
-`secure-coding` skill; this skill only owns where the boundary sits.
+enters, so it authenticates the caller, validates the input's form, and may gate
+the request on a coarse permission before the call reaches a port. Whether this
+caller may act on this specific resource is a business rule, not a transport
+concern: it belongs in the core (the use case, or a domain policy), which
+receives the authenticated subject as input. Every driving adapter then goes
+through the same check, and a second one (a CLI, a message consumer) cannot
+bypass it. Placing those controls is covered by the `secure-coding` skill; this
+skill only owns where the boundary sits.
 
 The adapter here is the Adapter design pattern applied at the architectural
 boundary: the generic mechanism, wrapping an incompatible interface so it fits
