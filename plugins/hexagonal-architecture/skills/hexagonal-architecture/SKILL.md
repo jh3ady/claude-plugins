@@ -56,7 +56,8 @@ the one the core expects, is covered by the `design-patterns` skill, while this
 skill governs its driving and driven roles around the core.
 
 When a secondary port integrates a foreign model (an external system, a legacy
-system, or another bounded context), translate that model into the domain's
+system, another bounded context, or another module of the same modular
+monolith, even when the call is in-process), translate that model into the domain's
 terms at the boundary so it never leaks past the port. This is where a
 Domain-Driven Design anti-corruption layer comes into play. The two are not
 synonyms, though: an adapter over your own model is a technology boundary, not

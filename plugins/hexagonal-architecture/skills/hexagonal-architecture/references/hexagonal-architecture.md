@@ -269,6 +269,18 @@ Two consequences follow:
   layer and the rest of Domain-Driven Design's context-mapping vocabulary are
   covered by the `ddd-strategic-design` skill, outside this skill's scope.
 
+**Another module as a secondary actor.** In a modular monolith, another module
+of the same application is a secondary actor like any other, even though the
+call is in-process and its public API is a plain interface the core could
+import. Importing it into the core makes the core depend on a contract it does
+not own, which is the leakage this section forbids. Declare a secondary port in
+the core's own terms and implement it with a driven adapter that calls the other
+module's public API; the in-memory double used in tests is the second adapter
+that justifies the port. Adopting the other module's contract directly in the
+core is a deliberate conformist choice, never a default. The module boundary
+itself, and how modules reach each other, are the `modular-monolith` skill's
+concern.
+
 ### When not to apply
 
 Do not invent a port whose only purpose is to mirror an external API or a
