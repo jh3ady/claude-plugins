@@ -482,7 +482,7 @@ export class OrderService {
   async placeOrder(order: Order): Promise<void> {
     await this.orderRepository.save(order);
     // Payments module subscribes to OrderPlaced asynchronously.
-    // Trade-off: payment failure is now eventually consistent, not atomic.
+    // Trade-off: orders no longer learns of a payment failure in the same call.
     await eventBus.publish(new OrderPlaced(order.id, order.totalCents));
   }
 }
@@ -494,10 +494,18 @@ to remain unaware of which downstream modules consume its events.
 
 ### When not to apply
 
-Do not publish in-process events simply because it "feels more decoupled." If
-the ordering and payment steps must succeed or fail together, they belong in
-the same transaction. An event-driven boundary makes that atomicity impossible
-without a saga or an outbox pattern, which adds substantial complexity.
+Do not publish in-process events simply because it "feels more decoupled."
+
+Do not pick the direct call for atomicity either: neither option gives it
+across modules, because a direct call commits in the called module's own
+transaction too (section 6). If two steps must succeed or fail together, the
+boundary is in the wrong place and both belong in the same module. Otherwise,
+plan for partial failure on either path. After a direct call, handle the
+failure synchronously, with a compensating action and idempotent retries. With
+an event, publish it through an outbox so it commits in the same transaction as
+the state change that caused it, and coordinate the steps that may need undoing
+with a saga. The event path costs more machinery, which is why it is not the
+default.
 
 ---
 
