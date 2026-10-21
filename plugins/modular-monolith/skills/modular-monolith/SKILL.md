@@ -24,6 +24,7 @@ Apply it as a pragmatic default, not a dogma.
 - **Data**: each module owns its data; no other module reads or writes it
   except through that module's public API. No cross-module foreign keys,
   joins, or transactions. Schema-per-module is the canonical enforcement (a
+  database role per module lets the database reject cross-module access; a
   separate database is stronger; table ownership by convention is the legacy
   fallback). The invariant is logical ownership, not the storage mechanism.
 
@@ -66,6 +67,11 @@ Prefer the simplest structure that meets the need:
   Splitting later is cheap, merging back is costly. A module boundary is a
   guess, treat it as one.
 - Match per-module sophistication to need: a CRUD module is not a DDD module.
+- Keep shared code technical: building blocks (event publisher, unit of work,
+  clock) that any module may use, that depend on no module and never on the
+  host, hold no business rule, and are injected rather than imported as global
+  instances. A shared kernel is something else: a small business model
+  deliberately co-owned by two named modules (see `ddd-strategic-design`).
 - Do not make everything event-driven in-process; that is hidden coupling in
   disguise. A direct call is the default.
 - A modular monolith is the sensible default. Move to microservices only for

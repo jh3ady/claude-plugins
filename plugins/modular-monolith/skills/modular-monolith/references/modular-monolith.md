@@ -85,6 +85,38 @@ Encapsulation is not separable from modularity: "everything that we share
 outside becomes the public API of the module. Therefore, encapsulation is an
 inseparable element of modularity." (Grzybek, Primer)
 
+### Shared technical code and the shared kernel
+
+Code that several modules need but no module owns has a place of its own,
+distinct from both the modules and the host. Two different things answer to
+that description, and they must not be confused.
+
+**Building blocks** are technical: the abstractions every module may use
+(an event publisher, a unit of work, a clock, a result type) and the plumbing
+behind them. Grzybek's reference implementation keeps them in a
+`BuildingBlocks` folder beside its modules
+([modular-monolith-with-ddd](https://github.com/kgrzybek/modular-monolith-with-ddd)).
+Three rules keep them harmless:
+
+- They hold no business rule and no business concept. An entity, an
+  aggregate, or a rule found there belongs to a specific module.
+- They depend on no module and never on the host. The dependency direction is
+  host, then modules, then building blocks; a building block that imports a
+  module turns into a hidden hub.
+- They are injected, never reached as ambient singletons. A module receives an
+  event publisher or a connection through its assembly function; it does not
+  import a global instance, which the host could not swap and a test could not
+  substitute.
+
+A **shared kernel** is a business decision, not a technical one: in
+Domain-Driven Design, a small, explicitly agreed subset of the domain model
+co-owned by two named modules, changed only with both sides' consent. It is
+legitimate when chosen deliberately and kept small, and the coordination it
+costs is the reason it stays rare. Its full treatment as a context-mapping
+pattern belongs to the `ddd-strategic-design` skill. A `shared/` folder that
+every module feeds with business types is neither: it is the dumping ground of
+section 9.
+
 ### TypeScript example
 
 ```typescript
@@ -184,8 +216,9 @@ What belongs in the host:
 - **Configuration**: read from the environment and validated once, at startup,
   then handed to each module as typed values. A module never reads the
   environment itself.
-- **Shared technical resources**: the connection pool, the logger, the clock,
-  the in-process event bus implementation. Each module still owns its schema,
+- **Shared technical resources**: database connections (one per module when
+  each module has its own database role), the logger, the clock, the
+  in-process event bus implementation. Each module still owns its schema,
   its migrations, and its transactions; the host only triggers the migrations
   each module owns.
 - **Transport-wide concerns**: authentication, request context (correlation
@@ -336,6 +369,13 @@ module.exports = {
         pathNot: ["^src/modules/$1/", "^src/modules/[^/]+/index\\.ts$"],
       },
     },
+    {
+      name: "no-building-blocks-to-module",
+      severity: "error",
+      comment: "Building blocks depend on no module and never on the host.",
+      from: { path: "^src/building-blocks/" },
+      to: { path: "^src/(modules|host)/" },
+    },
   ],
 };
 ```
@@ -475,15 +515,27 @@ export class PaymentsModuleGateway implements PaymentGateway {
 // OPTION B: in-process event when you want deliberate decoupling
 // Use only when you intend eventual consistency or want to invert the dependency.
 
-import { eventBus } from "@myapp/shared/event-bus";
-import { OrderPlaced } from "./events/order-placed";
+import type { EventPublisher, UnitOfWork } from "@myapp/building-blocks";
+import { OrderPlaced } from "./events/order-placed"; // re-exported by the orders barrel
 
+// Injected, not imported: the event infrastructure reaches the module through
+// its assembly function, so the host can swap it and a test can substitute it.
 export class OrderService {
+  constructor(
+    private readonly unitOfWork: UnitOfWork,
+    private readonly orderRepository: OrderRepository,
+    private readonly events: EventPublisher,
+  ) {}
+
   async placeOrder(order: Order): Promise<void> {
-    await this.orderRepository.save(order);
-    // Payments module subscribes to OrderPlaced asynchronously.
+    await this.unitOfWork.run(async () => {
+      await this.orderRepository.save(order);
+      // Written to the orders outbox in the same transaction as the order; a
+      // relay delivers it to subscribers (payments) after commit, so a crash
+      // between the two writes cannot lose it.
+      await this.events.publish(new OrderPlaced(order.id, order.totalCents));
+    });
     // Trade-off: orders no longer learns of a payment failure in the same call.
-    await eventBus.publish(new OrderPlaced(order.id, order.totalCents));
   }
 }
 ```
@@ -533,7 +585,10 @@ operational maturity, not by dogma:
   natural pre-extraction shape.
 - **Schema per module** (one physical database): the canonical compromise, and
   what most references show. Cheap to run, and it can migrate to separate
-  databases later.
+  databases later. Give each module its own database role, granted only on its
+  schema, and the database itself rejects a cross-module read or write; this
+  requires the host to hand each module its own connection rather than a
+  shared one.
 - **Table ownership by convention** (a single owning module per table,
   enforced by review and tooling): the weakest, but often the only reachable
   step in a legacy database that cannot be re-partitioned yet. Preserve the
@@ -564,12 +619,21 @@ separation is a deliberate decision, not a default.
 
 ```typescript
 // orders-repository.ts - uses only the orders schema
-import { db } from "@myapp/shared/database";
+import type { Pool } from "pg";
 
 export class OrdersRepository {
+  // The orders module's own connection, handed over by the host. Under a role
+  // granted only on the orders schema, a cross-schema query fails at the
+  // database instead of relying on review.
+  constructor(private readonly database: Pool) {}
+
   async findById(orderId: string): Promise<Order | null> {
     // queries only the orders schema; no join to payments.invoices
-    return db.query("SELECT * FROM orders.orders WHERE id = $1", [orderId]);
+    const { rows } = await this.database.query(
+      "SELECT id, customer_id, total_cents FROM orders.orders WHERE id = $1",
+      [orderId],
+    );
+    return rows[0] ? toOrder(rows[0]) : null; // map at the edge
   }
 }
 ```
@@ -593,8 +657,8 @@ export class OrdersService {
     // Correct: call the customers module's public API
     const customer = await this.customersApi.findById(order.customerId);
 
-    // Incorrect (never do this):
-    // const customer = db.query("SELECT * FROM customers.accounts WHERE id = $1", [...])
+    // Incorrect (never do this; under a per-module role the database refuses it):
+    // const customer = await database.query("SELECT * FROM customers.accounts WHERE id = $1", [...])
 
     return buildSummary(order, customer);
   }
@@ -782,13 +846,15 @@ API. Schema changes ripple silently to every module that reads or writes the
 table. The canonical fix: assign clear ownership; other modules fetch via the
 owning module's API.
 
-### "Common" or "shared-kernel" dumping ground
+### "Common" dumping ground
 
 A `common/`, `shared/`, or `utils/` module that accumulates business logic
 becomes a dependency of every other module, creating a hidden hub. Keep shared
 code minimal and containing only pure utilities or value types with no business
 rules. Any entity or aggregate that appears in `common/` is a sign that it
-belongs to a specific module.
+belongs to a specific module. Do not excuse such a folder as a "shared kernel":
+a shared kernel is a small business model deliberately co-owned by two named
+modules (section 2), not a place every module feeds.
 
 ### Circular module dependencies
 
